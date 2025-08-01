@@ -615,3 +615,67 @@ Initializing it in a NEXT Project
 ```sh
 npx prisma init
 ```
+
+#### Configuring Data Base (local)
+
+Changing the `DATABASE_UR` Variable in the `.env` file
+
+for example:
+
+```env
+# Local PostgreSQL connection
+DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
+
+# Example:
+DATABASE_URL="postgresql://postgres:mypassword@localhost:5432/issue"
+```
+
+*postgres* is standard username, as well as the Port 5432
+
+Data Base Schema:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Issue {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  status      Status   @default(OPEN)
+  priority    Priority @default(MEDIUM)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  assigneeId  Int?
+  assignee    User?    @relation(fields: [assigneeId], references: [id])
+}
+
+model User {
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String
+  issues Issue[]
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+```
+
+generator client an database db come in with the build
+If your schema.prisma doesn't look that good, use the `npx prisma format` in the terminal to format it
