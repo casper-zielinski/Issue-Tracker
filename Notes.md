@@ -588,3 +588,30 @@ so you have:
   key(css-class):condition(boolean-value)
 })
 `
+
+### Prisma
+
+Prisma is a Database Toolkit for TS/JS that makes working with Database much easier.
+
+You define your Database in a `.prisma` file
+
+```prisma
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+```
+
+Installing it:
+
+```sh
+npm i prisma@{version}
+```
+
+Initializing it in a NEXT Project
+
+```sh
+npx prisma init
+```
