@@ -551,3 +551,40 @@ const Nav = () => {
 export default Nav;
 
 ```
+
+!important If you want to use the navbar in each page, use it in the layout.tsx, idealy before the children, so it will be on top, also, because all components are in the folder of the corresponding page, you don't have to create a components folder
+
+### classnames libary
+
+For better readable classnames, (i personally don't like it so i didn't used it),
+
+Installing it:
+
+```sh
+npm i classnames@latest
+```
+
+Importing it:
+
+```tsx
+import classnames from 'classnames';
+```
+
+Using it: (Example)
+
+```tsx
+<h1 className={
+  classnames({
+    'm-3': true //will be always rendered
+    'text-zinc-400': link.href === currentPath // depending on the condition
+    'text-zinc-900': link.href !== currentPath // depending on the condition
+  })
+}> </h1>
+```
+
+so you have:
+
+`classname({
+  key(css-class):condition(boolean-value)
+})
+`
