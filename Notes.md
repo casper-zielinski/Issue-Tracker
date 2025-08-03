@@ -677,5 +677,309 @@ enum Priority {
 }
 ```
 
+Some of the keywords explained:
+
+- `@id`d id value
+- `@default(autoincrement())` auto-incrementing id
+- `@relation(fields: [assigneId], references: [id])` foreign key referencing the `id` field in the `User` model, which is used to establish the relationship between `Issue` and `User`, whole `assignee User? @relation(fields: [assigneeId], references: [id])`
+- `DateTime @default(now())` default value for the `createdAt` field is the current date and time
+- `DateTime @updatedAt` automatically updates the `updatedAt` field whenever the record is updated
+
 generator client an database db come in with the build
-If your schema.prisma doesn't look that good, use the `npx prisma format` in the terminal to format it
+If your schema.prisma doesn't look that good, use the `npx prisma format` in the terminal to format it.
+Then  the next step is to create a Migration. You can do this by running the following command in your terminal:
+
+```sh
+npx prisma migrate dev
+```
+
+It then ask you for a migration name, use something like: 
+
+`initial migration` or `create-(model-name)-model`
+
+This creates a new migration file in the `migrations` directory. The migration file contains the SQL code to create the tables in your database. You should check then if the databese is created (Used pgAdmin 4 for this example) and the schema is correct.
+
+### Building API
+
+Create a new folder in the APP Folder called api, there i created a issues folder for the issues API, for other API's, another folder
+
+Then add a route file (route.ts)
+inside this file export a POST function which takes a request parameter of the type NextRequest. You then await the request Promise (convert from JSON Response to JS Object) in a Variable, a body constant. But we have to validate the data, we can use **zod** for this.
+
+**Zod** is a TypeScript-first Schema Validationlibary
+
+with this you can
+
+1. Create Schema defenition with `z.Object`
+
+also, you only need to post values that are needed to be posted, so you don't need to post a id value which is default, or any default value at all (not always!)
+
+```ts
+import { z } from "zod";
+
+const createNameSchema = z.object({
+  title: z.string().min(1).max(255),
+  description: z.string().min(1),
+});
+
+```
+
+2. Validation
+
+```ts
+ const validation = createIssueSchema.safeParse(body);
+```
+
+safeparse doesn't throw a error, but returns either a succes or a error
+
+Example of checking it
+
+```ts
+if (!validation.success)
+    return NextResponse.json(validation.error.message, { status: 400 });
+```
+
+This is a *Errror Message*
+
+#### Next.js API Notes- Route, Client, Postman & File Structure
+
+1. File Structure (APP Router)
+
+- API Routes must be named `route.ts/js` - **nothing else!**
+
+- Folder name = URL Path
+
+```text
+src/app/api/issues/route.ts    → /api/issues
+src/app/api/users/route.ts     → /api/users
+src/app/api/auth/login/route.ts → /api/auth/login
+```
+
+```text
+src/
+├── app/
+│   ├── api/
+│   │   ├── issues/
+│   │   │   └── route.ts      ← POST /api/issues
+│   │   ├── users/
+│   │   │   └── route.ts      ← GET/POST /api/users
+│   │   └── auth/
+│   │       └── login/
+│   │           └── route.ts  ← POST /api/auth/login
+│   ├── page.tsx              ← Homepage
+│   └── layout.tsx
+├── components/
+├── lib/                      ← Utility functions
+└── prisma/
+    ├── client.ts            ← Database client
+    └── schema.prisma        ← Database schema
+```
+
+🚨 Common Mistakes:
+
+- **api/issues.ts** instead of **api/issues/route.ts**
+
+- Folder name != URL (e.g., issue bs issues)
+
+2. route.ts - API Endpoints
+
+Basic Structure: 
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+
+// GET Request 
+export async function GET(request: NextRequest) {
+  // Handle GET request logic
+  return NextResponse.json(data, { status: 200 });
+}
+
+// POST Request
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  // Handle POST request logic
+  return NextResponse.json(newData, {
+    { status: 201 }
+  });
+}
+
+//PUT, DELETE, PATCH also possible
+```
+
+What happens in your route.ts
+
+1. Import required modules 
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import prima from '@db/client'
+```
+
+`@db/client` Path config in tsconfig.json `"@db/client": ["./prisma/client.ts"]`
+
+2. Schema validation with Zod
+
+```ts
+const createIssueSchema = z.object({
+  title: z.string().min(1).max(255),
+  description: z.string().min(1),
+});
+```
+
+3. POST Function
+
+```ts
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const validation = createIssueSchema.safeParse(body);
+
+  //if valadation doesn't succed, throw 400 status, Bad Request
+  if (!validation.success) {
+    return NextResponse.json(validation.error.message, { status: 400 });
+  }
+
+  // Save to database
+  const newIssue = await prisma.issue.create({
+    data: validation.data,
+  });
+
+  return NextResponse.json(newIssue, { status: 201 });
+}
+```
+
+**Important Points**:
+
+- **NextRequest** = Incoming Request (with Body, Headers, etc.)
+
+- **NextResponse** = Outgoing Response (JSON, Status Code)
+
+- **Status Codes:**
+  - `200` = OK (GET successful)
+  - `201` = Created (POST successful)
+  - `400` = Bad Request (Validation failed)
+  - `404` = Not Found
+  - `500` = Server Error
+
+3. client.ts - Prisma Database Client
+
+What client.ts does:
+
+```ts
+import { PrismaClient } from "../src/generated/prisma";
+
+const prismaClientSingleton = () => {
+  return new PrismaClient();
+};
+
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+export default prisma;
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
+
+```
+
+**Why Use This Pattern**?
+*The Problem*:
+
+Without this: 
+
+- Every API route creates a new database connection
+
+- Next.js hot reload = 100s of database connections
+
+- Result: "Too many connections" error
+
+*The Solution*:
+
+- One global Prisma instance for the entire app
+- Development: Stored globally to survive hot reloads
+- Production: Fresh instance per server (which is fine)
+
+**Key Parts**:
+
+- ?? operator: Use existing instance OR create new one
+
+- globalThis: Works in all environments
+
+- process.env.NODE_ENV: Only store globally in development
+
+```ts
+import prisma from '@db/client';
+
+// Create
+await prisma.issue.create({ data: { }})
+
+//Read
+await prisma.issue.findMany();
+
+// Delete
+await prisma.issue.delete({ where: { id: 1} })
+
+// Update
+await prisma.issue.update({
+  where: { id: 1 },
+  data: { title: 'Updated Title' }
+});
+```
+
+4. Quick References
+
+API Route Template:
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import prisma from '@db/client';
+
+const schema = z.object({
+  // your validation schema
+});
+
+export async function POST(request: NextRequest) {
+
+  try {
+    const body = await request.json();
+    const validation = schema.safeParse(body);
+    
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.message }, 
+        { status: 400 }
+      );
+    }
+     // Your business logic here
+    const result = await prisma.model.create({ data: body });
+    
+    return NextResponse.json(result, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal server error" }, 
+      { status: 500 }
+    );
+  }
+}
+```
+
+!important
+
+- Folder structure matters!
+`/api/issues/route.ts` = `/api/issues`
+endpoint
+
+- Always validate input with Zod or similar
+
+- Use meaningful status codes (200, 201, 400, 404, 500)
+
+- Test with Postman before building frontend
+
+- Use console.log to debug
