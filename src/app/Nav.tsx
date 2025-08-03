@@ -29,21 +29,31 @@ const Nav = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-sky-300 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <Link href="/Dashboard">Dashboard</Link>
+              <Link
+                href="/Dashboard"
+                className={currentPath === "/Dashboard" ? "bg-yellow-100" : ""}
+              >
+                Dashboard
+              </Link>
             </li>
             <li>
-              <Link href="/Issues">Issues</Link>
+              <Link
+                href="/Issues"
+                className={currentPath === "/Issues" ? "bg-yellow-100" : ""}
+              >
+                Issues
+              </Link>
             </li>
           </ul>
         </div>
         <div
           className={
             currentPath === "/"
-              ? "m-3 border-5 bg-gray-900 border-gray-900 shadow rounded"
-              : "m-3 border-5 border-sky-700 hover:bg-gray-900  hover:border-gray-900 hover:shadow-2xl rounded"
+              ? "m-3 border-5 bg-yellow-100 border-yellow-100 shadow rounded"
+              : "m-3 border-5 border-sky-700 hover:bg-yellow-100  hover:border-yellow-100 hover:shadow-2xl rounded"
           }
         >
           <Link href="/">
@@ -53,8 +63,8 @@ const Nav = () => {
         <Link
           className={
             currentPath === "/"
-              ? "bg-gray-900 border-1 border-gray-900 btn btn-ghost text-xl rounded-2xl"
-              : "border-1 border-sky-700 btn btn-ghost text-xl rounded-2xl"
+              ? "bg-yellow-100 border-1 border-yellow-100 btn btn-ghost text-xl rounded-2xl hover:text-black"
+              : "border-1 border-sky-700 btn btn-ghost text-xl rounded-2xl hover:text-white"
           }
           href="/"
         >
@@ -67,7 +77,7 @@ const Nav = () => {
                 href="/Dashboard"
                 className={
                   currentPath === "/Dashboard"
-                    ? "bg-gray-900 border-1 border-gray-900"
+                    ? "bg-yellow-100 border-1 border-yellow-100"
                     : "border-1 border-sky-700"
                 }
               >
@@ -79,7 +89,7 @@ const Nav = () => {
                 href="/Issues"
                 className={
                   currentPath === "/Issues"
-                    ? "bg-gray-900 border-1 border-gray-900"
+                    ? "bg-yellow-100 border-1 border-yellow-100"
                     : "border-1 border-sky-700"
                 }
               >
