@@ -983,3 +983,15 @@ endpoint
 - Test with Postman before building frontend
 
 - Use console.log to debug
+
+### Radix UI
+
+Radix UI is a library of unstyled, accessible components for building React applications. It provides a set of primitives that you can style according to your design system. 
+
+Installing it: 
+
+```bash
+npm install @radix-ui/react-accordion
+```
+
+Check all steps: [Radix Get Started](https://www.radix-ui.com/themes/docs/overview/getting-started)

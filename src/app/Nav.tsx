@@ -12,7 +12,7 @@ const Nav = () => {
     <div className="navbar bg-sky-700 shadow-sm">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
             <svg
               className="h-5 w-5"
               fill="none"
@@ -34,7 +34,7 @@ const Nav = () => {
             <li>
               <Link
                 href="/Dashboard"
-                className={currentPath === "/Dashboard" ? "bg-yellow-100" : ""}
+                className={currentPath === "/Dashboard" ? "bg-white" : ""}
               >
                 Dashboard
               </Link>
@@ -42,7 +42,7 @@ const Nav = () => {
             <li>
               <Link
                 href="/Issues"
-                className={currentPath === "/Issues" ? "bg-yellow-100" : ""}
+                className={currentPath === "/Issues" ? "bg-white" : ""}
               >
                 Issues
               </Link>
@@ -52,32 +52,33 @@ const Nav = () => {
         <div
           className={
             currentPath === "/"
-              ? "m-3 border-5 bg-yellow-100 border-yellow-100 shadow rounded"
-              : "m-3 border-5 border-sky-700 hover:bg-yellow-100  hover:border-yellow-100 hover:shadow-2xl rounded"
+              ? "m-3 border-5 bg-sky-500 border-sky-500 shadow rounded"
+              : "m-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl rounded"
           }
         >
           <Link href="/">
             <VscEditSession />
           </Link>
         </div>
+
         <Link
           className={
             currentPath === "/"
-              ? "bg-yellow-100 border-1 border-yellow-100 btn btn-ghost text-xl rounded-2xl hover:text-black"
+              ? "bg-white border-1 border-white btn btn-ghost text-xl rounded-2xl text-black"
               : "border-1 border-sky-700 btn btn-ghost text-xl rounded-2xl hover:text-white"
           }
           href="/"
         >
           Issue Tracker
         </Link>
-        <div className="hidden lg:flex">
+        <div className="hidden md:flex">
           <ul className="menu menu-horizontal px-1 flex space-x-2">
             <li>
               <Link
                 href="/Dashboard"
                 className={
                   currentPath === "/Dashboard"
-                    ? "bg-yellow-100 border-1 border-yellow-100"
+                    ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }
               >
@@ -89,7 +90,7 @@ const Nav = () => {
                 href="/Issues"
                 className={
                   currentPath === "/Issues"
-                    ? "bg-yellow-100 border-1 border-yellow-100"
+                    ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }
               >
