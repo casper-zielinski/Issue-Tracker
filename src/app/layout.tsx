@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./global.css";
 import Nav from "./Nav";
 import "@radix-ui/themes/styles.css";
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Theme } from "@radix-ui/themes";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -20,7 +20,6 @@ export default function RootLayout({
           <Theme appearance="light" grayColor="sage" radius="large" scaling="110%">
           <Nav />
           <main className="p-2">{children}</main>
-          <ThemePanel />
         </Theme>
       </body>
     </html>
