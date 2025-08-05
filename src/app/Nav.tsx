@@ -52,12 +52,18 @@ const Nav = () => {
         <div
           className={
             currentPath === "/"
-              ? "m-3 border-5 bg-sky-500 border-sky-500 shadow rounded"
+              ? "m-3 border-5 bg-white border-white shadow rounded"
               : "m-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl rounded"
           }
         >
           <Link href="/">
-            <VscEditSession />
+            <VscEditSession
+              className={
+                currentPath === "/"
+                  ? "text-black"
+                  : ""
+              }
+            />
           </Link>
         </div>
 
@@ -65,7 +71,7 @@ const Nav = () => {
           className={
             currentPath === "/"
               ? "bg-white border-1 border-white btn btn-ghost text-xl rounded-2xl text-black"
-              : "border-1 border-sky-700 btn btn-ghost text-xl rounded-2xl hover:text-white"
+              : "border-1 border-sky-700 btn btn-ghost text-xl rounded-2xl hover:border-sky-600 hover:bg-sky-600"
           }
           href="/"
         >

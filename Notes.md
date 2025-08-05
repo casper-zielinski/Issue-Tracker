@@ -995,3 +995,5 @@ npm install @radix-ui/react-accordion
 ```
 
 Check all steps: [Radix Get Started](https://www.radix-ui.com/themes/docs/overview/getting-started)
+
+with the `<ThemePanel />` Element you can check how your theme is applied to the components. Then you can easily copy it to the layout.tsx
