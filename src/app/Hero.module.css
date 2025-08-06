@@ -1,11 +1,11 @@
 .Hero{
       width: 100% !important;
-      height: calc(100vh - 1.75rem) !important;
+      height: 100vh !important;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
       position: relative;
-      background-image:linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.5)), url("/IssuePic.png") ;
+      background-image:linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.5)), url("/IssuePic.webp") ;
 }
 
 .Hero::after
