@@ -9,7 +9,7 @@ const Nav = () => {
   const currentPath = usePathname();
 
   return (
-    <div className="navbar bg-sky-700 shadow-sm">
+    <div className="navbar bg-sky-700 shadow-sm h-3">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -52,8 +52,8 @@ const Nav = () => {
         <div
           className={
             currentPath === "/"
-              ? "m-3 border-5 bg-white border-white shadow rounded"
-              : "m-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl rounded"
+              ? "mx-3 border-5 bg-white border-white shadow rounded"
+              : "mx-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl rounded"
           }
         >
           <Link href="/">
@@ -61,7 +61,7 @@ const Nav = () => {
               className={
                 currentPath === "/"
                   ? "text-black"
-                  : ""
+                  : "hover:shadow-lg"
               }
             />
           </Link>

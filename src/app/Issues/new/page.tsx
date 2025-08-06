@@ -70,10 +70,10 @@ const NewIssuePage = () => {
           name="Issue"
           control={control}
           render={({ field }) => (
-            <div className="w-1/2 min-w-3xs lg:w-2/3 focus-within:border-black focus-within:border-3 focus-within:bg-black focus-within:shadow-lg rounded transition-all">
+            <div className="w-1/2 min-w-3xs lg:w-2/3 focus-within:shadow-lg rounded transition-all">
               <SimpleMDE
                 placeholder="Issue"
-                className="bg-sky-700 rounded border-2"
+                className="bg-sky-700 rounded border-2 focus-within:shadow-2xl"
                 {...field}
               />
             </div>

@@ -808,7 +808,7 @@ export async function POST(request: NextRequest) {
 
 What happens in your route.ts
 
-1. Import required modules 
+1. Import required modules
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
@@ -997,3 +997,42 @@ npm install @radix-ui/react-accordion
 Check all steps: [Radix Get Started](https://www.radix-ui.com/themes/docs/overview/getting-started)
 
 with the `<ThemePanel />` Element you can check how your theme is applied to the components. Then you can easily copy it to the layout.tsx
+
+### Importing something dynamically
+
+```tsx
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+  loading: () => (
+    <div className="bg-gray-300 animate-pulse w-1/1 h-100 rounded" />
+  ),
+});
+```
+
+Hauptgründe für Dynamic Imports:
+
+1. Server-Side-Rendering (SSR) Konfilkte
+
+- Next.js rendert Seiten standardmäßig auf dem Server
+
+- Viele React-Komponenten (wie SimpleMDE [das ist ein Markdown Editor in einer React-Web-Seite]) nutzen Browser-APIs (window, document, etc.)
+
+- Diese APIs existieren auf dem Server nicht --> Fehler beim Build/Rendering
+
+- `ssr: false` verhindert das serverseitige Rendern dieser Komponente
+
+2. Bundle-Size Optimierung
+
+- Die Komponente wird nur geladen, wenn sie tatsächlich benötigt wird (Code Splitting)
+
+- Reduziert die initiale Bundle-Größe
+
+- Bessere Performane, besonders bei größeren Editoren wie SimpleMDe
+
+3. Conditional Loading
+
+- Komponenten können basierend auf Bedinungen geladen werden
+
+- Nützlich für Features, die nur unter bestimmten Umständen gebraucht werden
+
+dass was bei loading steht wird dann während der lade Zeit angezeigt

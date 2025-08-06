@@ -19,7 +19,7 @@ export default function RootLayout({
       <body>
           <Theme appearance="light" grayColor="sage" radius="large" scaling="110%">
           <Nav />
-          <main className="p-2">{children}</main>
+          <main>{children}</main>
         </Theme>
       </body>
     </html>
