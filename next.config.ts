@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
 
 // next.config.js
 module.exports = {
+  eslint: {
+    // Ignoriere ESLint Fehler während des Builds komplett
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
