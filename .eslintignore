@@ -1,0 +1,7 @@
+# Generated files
+**/wasm-engine-edge*
+**/*.wasm
+**/node_modules
+**/.next
+**/dist
+**/build
