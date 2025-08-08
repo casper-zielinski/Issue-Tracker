@@ -1,0 +1,41 @@
+.barText{
+      font-size: clamp(12px, 1.8vw, 18px);
+      font-weight: 500;
+      color: grey;
+}
+
+.barShadowBlue{
+      box-shadow: 0 0 10px rgb(27, 76, 150);
+}
+
+.barShadowBlue:hover{
+      box-shadow: 0 0 20px rgb(18, 51, 100),
+      0 0 10px rgb(16, 75, 164);
+}
+
+.barShadowOrange{
+      box-shadow: 0 0 10px rgb(255,165,0);
+}
+
+.barShadowOrange:hover{
+      box-shadow: 0 0 20px rgb(255,140,0),
+      0 0 10px rgb(255,165,0);
+}
+
+.barShadowRed{
+      box-shadow: 0 0 10px rgb(150, 27, 27);
+}
+
+.barShadowRed:hover{
+      box-shadow: 0 0 20px rgb(100, 18, 18),
+      0 0 10px rgb(164, 16, 16);
+}
+
+.barShadowGreen{
+      box-shadow: 0 0 10px rgb(144,238,144);
+}
+
+.barShadowGreen:hover{
+      box-shadow: 0 0 20px rgb(50,205,50),
+      0 0 10px rgb(144,238,144);
+}

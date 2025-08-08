@@ -1,0 +1,120 @@
+import styles from "./BarCharts.module.css";
+
+enum status {
+  OPEN = "open",
+  CLOSED = "closed",
+  IN_PROGRESS = "in progress",
+}
+
+interface lowPriorityIssue {
+  amount: number;
+  status: status;
+}
+
+interface mediumPriorityIssue {
+  amount: number;
+  status: status;
+}
+
+interface hightPriorityIssue {
+  amount: number;
+  status: status;
+}
+
+interface urgentPriorityIssue {
+  amount: number;
+  status: status;
+}
+
+interface issues {
+  lowPriorityIssues: lowPriorityIssue[];
+  mediumPriorityIssues: mediumPriorityIssue[];
+  highPriorityIssues: hightPriorityIssue[];
+  urgentPriorityIssues: urgentPriorityIssue[];
+}
+
+const data: issues = {
+  lowPriorityIssues: [
+    {
+      amount: 0,
+      status: status.OPEN,
+    },
+    {
+      amount: 3,
+      status: status.IN_PROGRESS,
+    },
+    {
+      amount: 4,
+      status: status.CLOSED,
+    },
+  ],
+  highPriorityIssues: [
+    {
+      amount: 7,
+      status: status.OPEN,
+    },
+    {
+      amount: 3,
+      status: status.IN_PROGRESS,
+    },
+    {
+      amount: 4,
+      status: status.CLOSED,
+    },
+  ],
+  mediumPriorityIssues: [
+    {
+      amount: 2,
+      status: status.OPEN,
+    },
+    {
+      amount: 3,
+      status: status.IN_PROGRESS,
+    },
+    {
+      amount: 4,
+      status: status.CLOSED,
+    },
+  ],
+  urgentPriorityIssues: [
+    {
+      amount: 2,
+      status: status.OPEN,
+    },
+    {
+      amount: 1,
+      status: status.IN_PROGRESS,
+    },
+    {
+      amount: 4,
+      status: status.CLOSED,
+    },
+  ],
+};
+
+export const barCharts = [
+  {
+    Style: styles.barShadowBlue,
+    Data: data.mediumPriorityIssues,
+    Title: "Medium Priority",
+    Color: "#8884d8",
+  },
+  {
+    Style: styles.barShadowOrange,
+    Data: data.highPriorityIssues,
+    Title: "High Priority",
+    Color: "#EB970C",
+  },
+  {
+    Style: styles.barShadowRed,
+    Data: data.urgentPriorityIssues,
+    Title: "Urgent Priority",
+    Color: "#EB130C",
+  },
+  {
+    Style: styles.barShadowGreen,
+    Data: data.lowPriorityIssues,
+    Title: "Low Priority",
+    Color: "#82ca9d",
+  },
+];
