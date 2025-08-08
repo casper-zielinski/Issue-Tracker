@@ -19,10 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Theme appearance="dark" grayColor="sage" radius="large" scaling="90%">
+        <Theme appearance="dark" grayColor="sage" radius="large" scaling="100%" className="min-h-screen flex flex-col">
           <Nav />
-          <main>{children}</main>
-          <ThemePanel />
+          <main className="flex-1">{children}</main>
           <Footer />
         </Theme>
       </body>
