@@ -1036,3 +1036,96 @@ Hauptgründe für Dynamic Imports:
 - Nützlich für Features, die nur unter bestimmten Umständen gebraucht werden
 
 dass was bei loading steht wird dann während der lade Zeit angezeigt
+
+### Next JS Deployment Trouble Shooting (with Vercel)
+
+**Problem 1**: ESLint Error in Generated Files
+
+Error:
+
+```bash
+Warning: Expected an assignment or function call and instead saw an expression.  @typescript-eslint/no-unused-expressions
+```
+
+Massive errors in files like `wasm-engine-edge` or other generated third-party-files
+
+**Root Cause**:
+
+- ESLint tries to check automatically generated files
+
+- These files are not meant for human editing
+
+- Results in "false positive" warnings
+
+**Solution 1**: Ignore ESLint during build (Recommended)
+
+```js
+//next.config.js
+
+module.exports = {
+  eslint: {
+    ignoreDuringBuilds: true, // Ignore ESLint errors during build
+  },
+  // ... rest of config
+};
+```
+
+**Solution 2**: Create .eslint ignore
+
+```text
+# .eslintignore
+**/wasm-engine-edge*
+**/*.wasm
+**/node_modules
+**/.next
+**/dist
+**/build
+```
+
+Thist is okay because:
+
+- Errors are in third-party code you don't control
+
+- Your own code still gets checked in the IDE
+
+- Standard practice in production deployments
+
+- The app work perfectly fine
+
+**Problem 2**: Prisma Client Erron on Vercel
+
+```bash
+Error [PrismaClientInitializationError]: Prisma has detected that this project was built on Vercel, which caches dependencies. This leads to an outdated Prisma Client because Prisma's auto-generation isn't triggered.
+```
+
+**Root Cause**:
+
+- Vercel caches dependencies to speed up builds
+
+- Prisma doesn't get automatically generated
+
+- Build tries to use outdated Prisma Client
+
+**Solution** (I choosed):
+
+- Go to Vercel Dashboard --> Settings --> Build & Development Settings
+
+- Build Command: `npx prisma generate && next build` or `prisma generate && npm run build`
+
+- This ensures Prisma Client is generated during each build
+
+**Important Note**: 
+
+- **Database does NOT need to be running** for the build
+
+- `prisma generate` only create client code, no DB connection needed
+
+- DB connection is only needed at runtime
+
+**For Production SetUp**:
+
+1. Set up hosted database (PlanetScale, Supabase, Railway, etc.)
+
+2. Set environment variables in Vercel:
+
+    - `DATABASE_URL` = your database connection string (also in your .env file)

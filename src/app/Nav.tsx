@@ -35,6 +35,9 @@ const Nav = () => {
               <Link
                 href="/Dashboard"
                 className={currentPath === "/Dashboard" ? "bg-white" : ""}
+                onClick={() => {
+                  (document.activeElement as HTMLElement)?.blur(); //to close the dropdown, as HTMLElement because blur is a HTMLElement method
+                }}
               >
                 Dashboard
               </Link>
@@ -43,6 +46,9 @@ const Nav = () => {
               <Link
                 href="/Issues"
                 className={currentPath === "/Issues" ? "bg-white" : ""}
+                onClick={() => {
+                  (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
+                }}
               >
                 Issues
               </Link>
@@ -53,16 +59,12 @@ const Nav = () => {
           className={
             currentPath === "/"
               ? "mx-3 border-5 bg-white border-white shadow rounded"
-              : "mx-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl rounded"
+              : "mx-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl hover:text-white rounded"
           }
         >
           <Link href="/">
             <VscEditSession
-              className={
-                currentPath === "/"
-                  ? "text-black"
-                  : "hover:shadow-lg"
-              }
+              className={currentPath === "/" ? "text-black" : ""}
             />
           </Link>
         </div>
