@@ -98,23 +98,82 @@ export const barCharts = [
     Data: data.mediumPriorityIssues,
     Title: "Medium Priority",
     Color: "#8884d8",
+    TotalAmount: data.mediumPriorityIssues.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.amount,
+      0
+    ),
   },
   {
     Style: styles.barShadowOrange,
     Data: data.highPriorityIssues,
     Title: "High Priority",
     Color: "#EB970C",
+    TotalAmount: data.highPriorityIssues.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.amount,
+      0
+    ),
   },
   {
     Style: styles.barShadowRed,
     Data: data.urgentPriorityIssues,
     Title: "Urgent Priority",
     Color: "#EB130C",
+    TotalAmount: data.urgentPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
   },
   {
     Style: styles.barShadowGreen,
     Data: data.lowPriorityIssues,
     Title: "Low Priority",
     Color: "#82ca9d",
+    TotalAmount: data.lowPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
+  },
+];
+
+export const barChartsPriority = [
+  {
+    Style: styles.barShadowGreen,
+    Data: data.lowPriorityIssues,
+    Title: "Low Priority",
+    Color: "#82ca9d",
+    TotalAmount: data.lowPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
+  },
+  {
+    Style: styles.barShadowBlue,
+    Data: data.mediumPriorityIssues,
+    Title: "Medium Priority",
+    Color: "#8884d8",
+    TotalAmount: data.mediumPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
+  },
+  {
+    Style: styles.barShadowOrange,
+    Data: data.highPriorityIssues,
+    Title: "High Priority",
+    Color: "#EB970C",
+    TotalAmount: data.highPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
+  },
+  {
+    Style: styles.barShadowRed,
+    Data: data.urgentPriorityIssues,
+    Title: "Urgent Priority",
+    Color: "#EB130C",
+    TotalAmount: data.urgentPriorityIssues.reduce(
+      (accumulater, currentValue) => accumulater + currentValue.amount,
+      0
+    ),
   },
 ];
