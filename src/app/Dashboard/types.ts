@@ -33,6 +33,12 @@ interface issues {
   urgentPriorityIssues: urgentPriorityIssue[];
 }
 
+type issue =
+  | lowPriorityIssue
+  | mediumPriorityIssue
+  | hightPriorityIssue
+  | urgentPriorityIssue;
+
 const data: issues = {
   lowPriorityIssues: [
     {
@@ -92,7 +98,15 @@ const data: issues = {
   ],
 };
 
-export const barCharts = [
+export type Chart = {
+  Style: string;
+  Data: issue[];
+  Title: string;
+  Color: string;
+  TotalAmount: number;
+};
+
+export const barCharts: Chart[] = [
   {
     Style: styles.barShadowBlue,
     Data: data.mediumPriorityIssues,
@@ -135,7 +149,7 @@ export const barCharts = [
   },
 ];
 
-export const barChartsPriority = [
+export const barChartsPriority: Chart[] = [
   {
     Style: styles.barShadowGreen,
     Data: data.lowPriorityIssues,
