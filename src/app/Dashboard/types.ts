@@ -1,3 +1,4 @@
+import { $Enums } from "@/generated/prisma";
 import styles from "./BarCharts.module.css";
 
 enum status {
@@ -97,6 +98,22 @@ const data: issues = {
     },
   ],
 };
+
+export interface Issue {
+  id: number;
+  Title: string;
+  Issue: string;
+  Status: $Enums.Status;
+  Priority: $Enums.Priority;
+  createdAt: Date;
+  updatedAt: Date;
+  author: string | null;
+}
+
+export interface amount {
+  amount: number;
+  Status: string;
+}
 
 export type Chart = {
   Style: string;
