@@ -62,6 +62,33 @@ const DashboardPage = () => {
     },
   ];
 
+  const lwoPriorityAmount: amount[] = [
+    {
+      amount:
+        issues?.filter(
+          (current) =>
+            current.Status === "OPEN" && current.Priority === "LOW"
+        ).length ?? 0,
+      Status: "OPEN",
+    },
+    {
+      amount:
+        issues?.filter(
+          (current) =>
+            current.Status === "CLOSED" && current.Priority === "LOW"
+        ).length ?? 0,
+      Status: "CLOSED",
+    },
+    {
+      amount:
+        issues?.filter(
+          (current) =>
+            current.Status === "IN_PROGRESS" && current.Priority === "LOW"
+        ).length ?? 0,
+      Status: "IN PROGRESS",
+    },
+  ];
+
   return (
     <div className="grid gap-x-3 gap-y-6 grid-cols-12 mt-10 mb-5">
       <h1 className="col-span-12 text-3xl font-bold text-center">Dashboard</h1>
@@ -74,7 +101,7 @@ const DashboardPage = () => {
       {barChartCharts.map((chart, index) => (
         <div
           className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center flex justify-center flex-col items-center`}
-          key={index + chart.Title + chart.TotalAmount}
+          key={index + chart.Title + chart.Style}
         >
           <h2 className="font-bold grid grid-cols-2">
             <span className="text-start">{chart.Title}</span>

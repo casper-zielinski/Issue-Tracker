@@ -37,7 +37,10 @@ const IssuePage = () => {
 
       {error && (
         <div className="col-span-12 grid grid-cols-3 grid-flow-col">
-          <div role="alert" className="alert alert-error col-span-2 md:col-span-1">
+          <div
+            role="alert"
+            className="alert alert-error col-span-2 md:col-span-1"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 shrink-0 stroke-current"

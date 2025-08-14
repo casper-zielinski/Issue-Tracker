@@ -2,9 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@db/client";
 
+const PriorityEnum = z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]);
+
 const createIssueSchema = z.object({
   Title: z.string().min(1, "Title is required").max(255),
   Issue: z.string().min(1, "Describtion is required"),
+  Priority: PriorityEnum.default("MEDIUM"),
 });
 
 export async function POST(request: NextRequest) {
@@ -17,9 +20,11 @@ export async function POST(request: NextRequest) {
     data: {
       Title: body.Title,
       Issue: body.Issue,
+      Priority: body.Priority,
     },
   });
 
+  console.log(request.body);
   return NextResponse.json(newIssue, { status: 201 });
 }
 
