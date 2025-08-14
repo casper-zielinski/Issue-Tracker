@@ -18,7 +18,7 @@ import axios from "axios";
 const DashboardPage = () => {
   const [barChartCharts, setBarChartCharts] = useState(barCharts);
   const [issues, setIssues] = useState<Issue[]>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchIssues();
@@ -31,11 +31,9 @@ const DashboardPage = () => {
     } catch (error) {
       console.log("Error fetching data to the Bar Charts: ", error);
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   }
-
-  if (loading) return <div>Is Loading...</div>;
 
   const mediumPriorityAmount: amount[] = [
     {
@@ -75,25 +73,41 @@ const DashboardPage = () => {
 
       {barChartCharts.map((chart, index) => (
         <div
-          className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center`}
+          className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center flex justify-center flex-col items-center`}
           key={index + chart.Title + chart.TotalAmount}
         >
           <h2 className="font-bold grid grid-cols-2">
             <span className="text-start">{chart.Title}</span>
-            <span className="text-end hidden md:block">{`Total Amount of Issues: ${mediumPriorityAmount.reduce(
-              (sum, item) => sum + item.amount,
-              0
-            )}`}</span>
+            <div className="text-end hidden md:block">
+              {loading ? (
+                `Total Amount of Issues: ${mediumPriorityAmount.reduce(
+                  (sum, item) => sum + item.amount,
+                  0
+                )}`
+              ) : (
+                <div>
+                  <span>Total amount of Issues:</span>
+                  <span className="loading loading-spinner text-accent ms-2"></span>
+                </div>
+              )}
+            </div>
           </h2>
-          <ResponsiveContainer width="100%" height="92.5%">
-            <BarChart data={mediumPriorityAmount} title={chart.Title}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="Status" className={styles.barText} />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="amount" fill={chart.Color} />
-            </BarChart>
-          </ResponsiveContainer>
+
+          {loading ? (
+            <ResponsiveContainer width="100%" height="85%">
+              <BarChart data={mediumPriorityAmount} title={chart.Title}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="Status" className={styles.barText} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="amount" fill={chart.Color} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex justify-center items-center h-10/12">
+              <span className="loading loading-bars loading-xxl scale-300"></span>
+            </div>
+          )}
         </div>
       ))}
     </div>

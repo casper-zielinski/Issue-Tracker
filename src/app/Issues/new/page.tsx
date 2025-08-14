@@ -8,6 +8,7 @@ import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { $Enums } from "@/generated/prisma";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -19,12 +20,27 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 interface IssueForm {
   Title: string;
   Issue: string;
+  Priority: $Enums.Priority;
 }
 
 const NewIssuePage = () => {
   const { register, control, handleSubmit } = useForm<IssueForm>();
   const router = useRouter();
   const [error, setError] = useState("");
+  const [priority, setPriority] = useState(33);
+
+  const rangeColor = (range: number) => {
+    switch (range) {
+      case 0:
+        return "success";
+      case 33:
+        return "primary";
+      case 66:
+        return "warning";
+      case 99:
+        return "error";
+    }
+  };
 
   async function postToApi(data: IssueForm) {
     try {
@@ -82,6 +98,31 @@ const NewIssuePage = () => {
         <Button className="font-bold font-mono" type="submit">
           Submit New Issue
         </Button>
+        <div className="w-full max-w-xs mt-4">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={priority}
+            className={`range range-${rangeColor(
+              priority
+            )} md:range-lg lg:range-xl`}
+            step={33}
+            onChange={(input) => setPriority(parseInt(input.target.value))}
+          />
+          <div className="flex justify-between px-2.5 mt-2 text-xs">
+            <span>|</span>
+            <span>|</span>
+            <span>|</span>
+            <span>|</span>
+          </div>
+          <div className="flex justify-between px-2.5 mt-2 text-xs">
+            <span className={priority === 0 ? "font-bold" : ""}>Low</span>
+            <span className={priority === 33 ? "font-bold" : ""}>Medium</span>
+            <span className={priority === 66 ? "font-bold" : ""}>High</span>
+            <span className={priority === 99 ? "font-bold" : ""}>Urgent</span>
+          </div>
+        </div>
       </form>
     </>
   );

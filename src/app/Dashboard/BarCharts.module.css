@@ -1,5 +1,5 @@
 .barText{
-      font-size: clamp(12px, 1.8vw, 18px);
+      font-size: clamp(10px, 1.8vw, 18px);
       font-weight: 500;
       color: grey;
 }
