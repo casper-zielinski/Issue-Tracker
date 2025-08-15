@@ -97,7 +97,7 @@ const Nav = () => {
               <Link
                 href="/Issues"
                 className={
-                  currentPath === "/Issues"
+                  currentPath.match(/^\/Issues(\/.*)?$/) !== null
                     ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }

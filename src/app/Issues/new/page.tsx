@@ -27,20 +27,6 @@ const NewIssuePage = () => {
   const { register, control, handleSubmit } = useForm<IssueForm>();
   const router = useRouter();
   const [error, setError] = useState("");
-  const [priority, setPriority] = useState(33);
-
-  const rangeColor = (range: number) => {
-    switch (range) {
-      case 0:
-        return "success";
-      case 33:
-        return "primary";
-      case 66:
-        return "warning";
-      case 99:
-        return "error";
-    }
-  };
 
   async function postToApi(data: IssueForm) {
     try {
@@ -55,7 +41,7 @@ const NewIssuePage = () => {
   return (
     <>
       {error && (
-        <div className="flex flex-col space-y-1 items-center p-3">
+        <div className="flex flex-col space-y-1 items-center">
           <Callout.Root
             size="2"
             color="red"
@@ -70,58 +56,62 @@ const NewIssuePage = () => {
       )}
 
       <form
-        className="flex flex-col space-y-3 p-3 items-center"
+        className="grid grid-cols-12 gap-4 p-3"
         onSubmit={handleSubmit((data) => {
           postToApi(data);
         })}
       >
-        <div className="w-1/2 min-w-3xs lg:w-2/3 focus-within:shadow-lg">
+        <div className="col-span-12 flex justify-center">
           <TextField.Root
             placeholder="Title"
             {...register("Title")}
-            className="border-2"
+            className="border-2 w-4/5 min-w-4xs lg:w-2/3 focus-within:shadow-lg"
           ></TextField.Root>
         </div>
-        <Controller
-          name="Issue"
-          control={control}
-          render={({ field }) => (
-            <div className="w-1/2 min-w-3xs lg:w-2/3 focus-within:shadow-lg rounded transition-all">
-              <SimpleMDE
-                placeholder="Issue"
-                className="bg-sky-700 rounded border-2 focus-within:shadow-2xl"
-                {...field}
-              />
-            </div>
-          )}
-        />
-        <Button className="font-bold font-mono" type="submit">
-          Submit New Issue
-        </Button>
-        <div className="w-full max-w-xs mt-4">
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={priority}
-            className={`range range-${rangeColor(
-              priority
-            )} md:range-lg lg:range-xl`}
-            step={33}
-            onChange={(input) => setPriority(parseInt(input.target.value))}
+
+        <div className="dropdown dropdown-start col-span-2">
+          <div tabIndex={0} role="button" className="btn m-1">
+            Priority
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm"
+          >
+            <li>
+              <a>Low</a>
+            </li>
+            <li>
+              <a>Medium</a>
+            </li>
+            <li>
+              <a>High</a>
+            </li>
+            <li>
+              <a>Urgent</a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="col-span-12">
+          <Controller
+            name="Issue"
+            control={control}
+            render={({ field }) => (
+              <div className="rounded transition-all">
+                <SimpleMDE
+                  placeholder="Issue"
+                  className="bg-sky-700 rounded border-2 w-1/1 md:w-6/7 focus-within:shadow-2xl text-black justify-self-center"
+                  {...field}
+                />
+              </div>
+            )}
           />
-          <div className="flex justify-between px-2.5 mt-2 text-xs">
-            <span>|</span>
-            <span>|</span>
-            <span>|</span>
-            <span>|</span>
-          </div>
-          <div className="flex justify-between px-2.5 mt-2 text-xs">
-            <span className={priority === 0 ? "font-bold" : ""}>Low</span>
-            <span className={priority === 33 ? "font-bold" : ""}>Medium</span>
-            <span className={priority === 66 ? "font-bold" : ""}>High</span>
-            <span className={priority === 99 ? "font-bold" : ""}>Urgent</span>
-          </div>
+        </div>
+
+        <div className="col-span-12 flex justify-center">
+          <Button className="font-bold font-mono" type="submit">
+            Submit New Issue
+          </Button>
         </div>
       </form>
     </>
