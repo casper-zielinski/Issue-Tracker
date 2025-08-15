@@ -188,42 +188,38 @@ const DashboardPage = () => {
 
       <SortButton />
 
-      {barCharts.map((chart, index) => (
-        <div
-          className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center flex justify-center flex-col items-center`}
-          key={index}
-        >
-          <h2 className="font-bold grid grid-cols-2">
-            <span className="text-start">{chart.title}</span>
-            <div className="text-end hidden md:block">
-              {loading ? (
-                `Total Amount of Issues: ${chart.totalamount}`
-              ) : (
-                <div>
-                  <span>Total amount of Issues:</span>
-                  <span className="loading loading-spinner text-accent ms-2"></span>
+      {barCharts.map((chart, index) =>
+        loading ? (
+          <div
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center`}
+            key={index}
+          >
+            <>
+              <h2 className="font-bold grid grid-cols-2">
+                <span className="text-start">{chart.title}</span>
+                <div className="text-end hidden md:block">
+                  Total Amount of Issues: {chart.totalamount}
                 </div>
-              )}
-            </div>
-          </h2>
+              </h2>
 
-          {loading ? (
-            <ResponsiveContainer width="100%" height="85%">
-              <BarChart data={chart.amounts} title={chart.title}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="Status" className={styles.barText} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="amount" fill={chart.Color} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex justify-center items-center h-10/12">
-              <span className="loading loading-bars loading-xxl scale-300"></span>
-            </div>
-          )}
-        </div>
-      ))}
+              <ResponsiveContainer width="100%" height="85%">
+                <BarChart data={chart.amounts} title={chart.title}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="Status" className={styles.barText} />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="amount" fill={chart.Color} />
+                </BarChart>
+              </ResponsiveContainer>
+            </>
+          </div>
+        ) : (
+          <div
+            key={index}
+            className="w-11/12 h-52 bg-gray-600 border-16 border-gray-600 animate-pulse col-span-12 md:col-span-6 rounded justify-self-center"
+          ></div>
+        )
+      )}
     </div>
   );
 };
