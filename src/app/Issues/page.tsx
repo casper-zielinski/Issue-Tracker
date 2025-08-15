@@ -69,8 +69,8 @@ const IssuePage = () => {
               {issue.Title}
             </p>
             <p className="text-gray-500 my-1">Describtion:</p>
-            <p className="my-1 bg-black p-2 rounded">{issue.Issue}</p>
-            <div className="badge badge-warning m-2">{issue.Priority}</div>
+            <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
+            <div className="badge badge-warning m-2">{issue?.Priority}</div>
             <div className="badge badge-soft badge-warning m-2">
               {issue.Status}
             </div>

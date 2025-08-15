@@ -8,7 +8,7 @@ import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { $Enums } from "@/generated/prisma";
+import { $Enums, Priority, Status } from "@/generated/prisma";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -24,16 +24,21 @@ interface IssueForm {
 }
 
 const NewIssuePage = () => {
-  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const { register, control, handleSubmit } = useForm<IssueForm>({
+    defaultValues: {
+      Priority: "MEDIUM",
+    },
+  });
   const router = useRouter();
   const [error, setError] = useState("");
+  const [priority, setPriority] = useState("MEDIUM");
+  const [textShower, setTextShower] = useState(true);
 
   async function postToApi(data: IssueForm) {
     try {
       await axios.post("/api/issues", data);
       router.push("/Issues");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       setError("An Error Occurred");
     }
   }
@@ -69,28 +74,86 @@ const NewIssuePage = () => {
           ></TextField.Root>
         </div>
 
-        <div className="dropdown dropdown-start col-span-2">
-          <div tabIndex={0} role="button" className="btn m-1">
-            Priority
-          </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm"
-          >
-            <li>
-              <a>Low</a>
-            </li>
-            <li>
-              <a>Medium</a>
-            </li>
-            <li>
-              <a>High</a>
-            </li>
-            <li>
-              <a>Urgent</a>
-            </li>
-          </ul>
-        </div>
+        <Controller
+          name="Priority"
+          control={control}
+          render={({ field }) => (
+            <div className="dropdown dropdown-start col-span-2">
+              <div tabIndex={0} role="button" className="btn m-1">
+                {textShower ? "Priority" : field.value}
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm"
+              >
+                <li>
+                  <a
+                    className={
+                      priority === "LOW"
+                        ? "bg-green-600 text-black font-bold"
+                        : ""
+                    }
+                    onClick={() => {
+                      setPriority("LOW");
+                      setTextShower(false);
+                      field.onChange(Priority.LOW);
+                    }}
+                  >
+                    Low
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={
+                      priority === "MEDIUM"
+                        ? "bg-blue-600 text-black font-bold"
+                        : ""
+                    }
+                    onClick={() => {
+                      setPriority("MEDIUM");
+                      setTextShower(false);
+                      field.onChange(Priority.MEDIUM);
+                    }}
+                  >
+                    Medium
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={
+                      priority === "HIGH"
+                        ? "bg-orange-600 text-black font-bold"
+                        : ""
+                    }
+                    onClick={() => {
+                      setPriority("HIGH");
+                      setTextShower(false);
+                      field.onChange(Priority.HIGH);
+                    }}
+                  >
+                    High
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className={
+                      priority === "URGENT"
+                        ? "bg-red-600 text-black font-bold"
+                        : ""
+                    }
+                    onClick={() => {
+                      setPriority("URGENT");
+                      setTextShower(false);
+                      field.onChange(Priority.URGENT);
+                    }}
+                  >
+                    Urgent
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
+        />
 
         <div className="col-span-12">
           <Controller
