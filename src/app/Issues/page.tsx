@@ -5,6 +5,7 @@ import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
+import { $Enums } from "@/generated/prisma";
 
 const IssuePage = () => {
   const [issues, setIssues] = useState<Issue[]>();
@@ -23,12 +24,36 @@ const IssuePage = () => {
     }
   }
 
+  const getBadgeColorPriority = (key: $Enums.Priority) => {
+    switch (key) {
+      case "LOW":
+        return "success";
+      case "MEDIUM":
+        return "info";
+      case "HIGH":
+        return "warning";
+      case "URGENT":
+        return "error";
+    }
+  };
+
+  const getBadgeColorStatus = (key: $Enums.Status) => {
+    switch (key) {
+      case "OPEN":
+        return "error";
+      case "IN_PROGRESS":
+        return "accent";
+      case "CLOSED":
+        return "success";
+    }
+  };
+
   useEffect(() => {
     fetchIssues();
   }, []);
 
   return (
-    <div className="p-3 grid grid-cols-12 space-x-3 space-y-3">
+    <div className="p-3 grid grid-cols-12 space-x-3 space-y-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
       <div className="col-span-12">
         <Button>
           <Link href="/Issues/new">New Issue</Link>
@@ -70,18 +95,26 @@ const IssuePage = () => {
             </p>
             <p className="text-gray-500 my-1">Describtion:</p>
             <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
-            <div className="badge badge-warning m-2">{issue?.Priority}</div>
-            <div className="badge badge-soft badge-warning m-2">
-              {issue.Status}
+            <div
+              className={`badge badge-${getBadgeColorPriority(issue.Priority)} m-2`}
+            >
+              {issue?.Priority}
+            </div>
+            <div
+              className={`badge badge-soft badge-${getBadgeColorStatus(
+                issue?.Status
+              )} m-2`}
+            >
+              {issue?.Status}
             </div>
           </div>
         ))
       ) : (
         <>
-          <div className="bg-gray-600 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
-          <div className="bg-gray-600 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
-          <div className="bg-gray-600 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
-          <div className="bg-gray-600 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
+          <div className="bg-gray-950 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
+          <div className="bg-gray-950 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
+          <div className="bg-gray-950 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
+          <div className="bg-gray-950 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
         </>
       )}
     </div>

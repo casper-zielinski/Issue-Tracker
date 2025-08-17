@@ -183,15 +183,17 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="grid gap-x-3 gap-y-6 grid-cols-12 mt-10 mb-5">
-      <h1 className="col-span-12 text-3xl font-bold text-center">Dashboard</h1>
+    <div className="grid gap-x-3 gap-y-6 grid-cols-12 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
+      <h1 className="col-span-12 text-3xl font-bold text-center mt-5">
+        Dashboard
+      </h1>
 
       <SortButton />
 
       {barCharts.map((chart, index) =>
         loading ? (
           <div
-            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center`}
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
             key={index}
           >
             <>
@@ -216,7 +218,7 @@ const DashboardPage = () => {
         ) : (
           <div
             key={index}
-            className="w-11/12 h-52 bg-gray-600 border-16 border-gray-600 animate-pulse col-span-12 md:col-span-6 rounded justify-self-center"
+            className="w-11/12 h-52 bg-gray-950 border-16 border-gray-950 animate-pulse col-span-12 md:col-span-6 rounded justify-self-center"
           ></div>
         )
       )}

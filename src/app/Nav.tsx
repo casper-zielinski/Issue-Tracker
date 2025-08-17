@@ -12,7 +12,7 @@ const Nav = () => {
     <div className="navbar bg-sky-700 shadow-sm h-3">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               className="h-5 w-5"
               fill="none"
@@ -79,7 +79,7 @@ const Nav = () => {
         >
           Issue Tracker
         </Link>
-        <div className="hidden md:flex">
+        <div className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1 flex space-x-2">
             <li>
               <Link
