@@ -1,13 +1,24 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Chart } from "./types";
-import { Button } from "@radix-ui/themes/src/index.js";
+import { Filter } from "lucide-react";
+import { BarCharts } from "./types";
+import { Dispatch, SetStateAction } from "react";
 
-const SortButton = () => {
+interface SortButtonProps {
+  DefaultBarChart: BarCharts[];
+  Barchart: BarCharts[];
+  setBarChart: Dispatch<SetStateAction<BarCharts[]>>;
+}
+
+const SortButton = ({
+  Barchart,
+  setBarChart,
+  DefaultBarChart,
+}: SortButtonProps) => {
   return (
     <div className="col-span-12">
       <div className="dropdown dropdown-start ms-5">
         <div tabIndex={0} role="button" className="btn m-1">
-          Sort
+          <span className="me-3">Sort</span>
+          <Filter />
         </div>
         <ul
           tabIndex={0}
@@ -41,16 +52,33 @@ const SortButton = () => {
                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
               >
                 <li>
-                  <a>⬇️</a>
+                  <a
+                    onClick={() => {
+                      setBarChart((prev) =>
+                        [...prev].sort((a, b) => a.totalamount - b.totalamount)
+                      );
+                      console.log(Barchart);
+                    }}
+                  >
+                    ⬇️
+                  </a>
                 </li>
                 <li>
-                  <a>⬆️</a>
+                  <a
+                    onClick={() =>
+                      setBarChart((prev) =>
+                        [...prev].sort((a, b) => b.totalamount - a.totalamount)
+                      )
+                    }
+                  >
+                    ⬆️
+                  </a>
                 </li>
               </ul>
             </div>
           </li>
           <li>
-            <a>Default</a>
+            <a onClick={() => setBarChart(DefaultBarChart)}>Default</a>
           </li>
         </ul>
       </div>

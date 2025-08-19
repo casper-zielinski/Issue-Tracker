@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
 import { $Enums } from "@/generated/prisma";
+import { Plus } from "lucide-react";
 
 const IssuePage = () => {
   const [issues, setIssues] = useState<Issue[]>();
@@ -27,24 +27,24 @@ const IssuePage = () => {
   const getBadgeColorPriority = (key: $Enums.Priority) => {
     switch (key) {
       case "LOW":
-        return "success";
+        return "badge-success";
       case "MEDIUM":
-        return "info";
+        return "badge-info";
       case "HIGH":
-        return "warning";
+        return "badge-warning";
       case "URGENT":
-        return "error";
+        return "badge-error";
     }
   };
 
   const getBadgeColorStatus = (key: $Enums.Status) => {
     switch (key) {
       case "OPEN":
-        return "error";
+        return "badge-error";
       case "IN_PROGRESS":
-        return "accent";
+        return "badge-accent";
       case "CLOSED":
-        return "success";
+        return "badge-success";
     }
   };
 
@@ -53,11 +53,12 @@ const IssuePage = () => {
   }, []);
 
   return (
-    <div className="p-3 grid grid-cols-12 space-x-3 space-y-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
+    <div className="p-3 grid grid-cols-12 space-x-3 space-y-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
       <div className="col-span-12">
-        <Button>
+        <button className="btn btn-primary btn-md">
           <Link href="/Issues/new">New Issue</Link>
-        </Button>
+          <Plus />
+        </button>
       </div>
 
       {error && (
@@ -88,20 +89,20 @@ const IssuePage = () => {
         issues?.map((issue, index) => (
           <div
             key={index}
-            className="bg-gray-950 p-3 my-1 text-white col-span-12 md:col-span-6 rounded hover:shadow-lg hover:scale-101 hover:-translate-y-0.5 transition-all"
+            className="bg-gray-950 p-3 my-1 text-white col-span-12 md:col-span-6 rounded justify-center hover:scale-101 hover:-translate-y-0.5 transition-all"
           >
             <p className="text-xl font-bold text-blue-400 mb-2">
               {issue.Title}
             </p>
             <p className="text-gray-500 my-1">Describtion:</p>
             <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
-            <div
-              className={`badge badge-${getBadgeColorPriority(issue.Priority)} m-2`}
+            <span
+              className={`badge ${getBadgeColorPriority(issue.Priority)} m-2`}
             >
               {issue?.Priority}
-            </div>
+            </span>
             <div
-              className={`badge badge-soft badge-${getBadgeColorStatus(
+              className={`badge badge-soft ${getBadgeColorStatus(
                 issue?.Status
               )} m-2`}
             >

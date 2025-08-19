@@ -27,7 +27,7 @@ Example:
 With a libary like React, you control when and how to use components.
 Witj a framework like Next.js, the framework controls the app structure, handles routing, rendering, and even the server logic-- it just tells you where to plug in your logic.
 
-Frameworks often handle: 
+Frameworks often handle:
 
 - Routing
 - State managment
@@ -986,9 +986,9 @@ endpoint
 
 ### Radix UI
 
-Radix UI is a library of unstyled, accessible components for building React applications. It provides a set of primitives that you can style according to your design system. 
+Radix UI is a library of unstyled, accessible components for building React applications. It provides a set of primitives that you can style according to your design system.
 
-Installing it: 
+Installing it:
 
 ```bash
 npm install @radix-ui/react-accordion
@@ -1114,7 +1114,7 @@ Error [PrismaClientInitializationError]: Prisma has detected that this project w
 
 - This ensures Prisma Client is generated during each build
 
-**Important Note**: 
+**Important Note**:
 
 - **Database does NOT need to be running** for the build
 

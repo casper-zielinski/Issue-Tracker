@@ -172,9 +172,9 @@ const NewIssuePage = () => {
         </div>
 
         <div className="col-span-12 flex justify-center">
-          <Button className="font-bold font-mono" type="submit">
+          <button className="font-bold btn btn-primary btn-md" type="submit">
             Submit New Issue
-          </Button>
+          </button>
         </div>
       </form>
     </>

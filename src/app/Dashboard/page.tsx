@@ -12,16 +12,14 @@ import {
 import styles from "./BarCharts.module.css";
 import SortButton from "./SortButton";
 import { amount, BarCharts, Issue } from "./types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 const DashboardPage = () => {
   const [issues, setIssues] = useState<Issue[]>();
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchIssues();
-  }, []);
+  const [barCharts, setBarCharts] = useState<BarCharts[]>([]);
+  const [defaultBarChart, setDefaultBarChart] = useState<BarCharts[]>([]);
 
   async function fetchIssues() {
     try {
@@ -29,169 +27,186 @@ const DashboardPage = () => {
       setIssues(data);
     } catch (error) {
       console.log("Error fetching data to the Bar Charts: ", error);
-    } finally {
-      setLoading(true);
     }
   }
 
-  const lowPriorityAmount: amount[] = [
-    {
-      amount:
-        issues?.filter(
-          (current) => current.Status === "OPEN" && current.Priority === "LOW"
-        ).length ?? 0,
-      Status: "OPEN",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) => current.Status === "CLOSED" && current.Priority === "LOW"
-        ).length ?? 0,
-      Status: "CLOSED",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "IN_PROGRESS" && current.Priority === "LOW"
-        ).length ?? 0,
-      Status: "IN PROGRESS",
-    },
-  ];
+  useEffect(() => {
+    fetchIssues();
+  }, []);
 
-  const mediumPriorityAmount: amount[] = [
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "OPEN" && current.Priority === "MEDIUM"
-        ).length ?? 0,
-      Status: "OPEN",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "CLOSED" && current.Priority === "MEDIUM"
-        ).length ?? 0,
-      Status: "CLOSED",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "IN_PROGRESS" && current.Priority === "MEDIUM"
-        ).length ?? 0,
-      Status: "IN PROGRESS",
-    },
-  ];
+  const barCharted = useMemo(() => {
+    if (!issues || issues?.length < 0) return;
 
-  const highPriorityAmount: amount[] = [
-    {
-      amount:
-        issues?.filter(
-          (current) => current.Status === "OPEN" && current.Priority === "HIGH"
-        ).length ?? 0,
-      Status: "OPEN",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "CLOSED" && current.Priority === "HIGH"
-        ).length ?? 0,
-      Status: "CLOSED",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "IN_PROGRESS" && current.Priority === "HIGH"
-        ).length ?? 0,
-      Status: "IN PROGRESS",
-    },
-  ];
+    const lowPriorityAmount: amount[] = [
+      {
+        amount:
+          issues?.filter(
+            (current) => current.Status === "OPEN" && current.Priority === "LOW"
+          ).length ?? 0,
+        Status: "OPEN",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "CLOSED" && current.Priority === "LOW"
+          ).length ?? 0,
+        Status: "CLOSED",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "IN_PROGRESS" && current.Priority === "LOW"
+          ).length ?? 0,
+        Status: "IN PROGRESS",
+      },
+    ];
 
-  const urgentPriorityAmount: amount[] = [
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "OPEN" && current.Priority === "URGENT"
-        ).length ?? 0,
-      Status: "OPEN",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "CLOSED" && current.Priority === "URGENT"
-        ).length ?? 0,
-      Status: "CLOSED",
-    },
-    {
-      amount:
-        issues?.filter(
-          (current) =>
-            current.Status === "IN_PROGRESS" && current.Priority === "URGENT"
-        ).length ?? 0,
-      Status: "IN PROGRESS",
-    },
-  ];
+    const mediumPriorityAmount: amount[] = [
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "OPEN" && current.Priority === "MEDIUM"
+          ).length ?? 0,
+        Status: "OPEN",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "CLOSED" && current.Priority === "MEDIUM"
+          ).length ?? 0,
+        Status: "CLOSED",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "IN_PROGRESS" && current.Priority === "MEDIUM"
+          ).length ?? 0,
+        Status: "IN PROGRESS",
+      },
+    ];
 
-  const barCharts: BarCharts[] = [
-    {
-      totalamount: lowPriorityAmount.reduce(
-        (prev, curr) => prev + curr.amount,
-        0
-      ),
-      amounts: lowPriorityAmount,
-      Style: styles.barShadowGreen,
-      title: "Low Priority",
-      Color: "Green",
-    },
-    {
-      totalamount: mediumPriorityAmount.reduce(
-        (prev, curr) => prev + curr.amount,
-        0
-      ),
-      amounts: mediumPriorityAmount,
-      Style: styles.barShadowBlue,
-      title: "Medium Priority",
-      Color: "Blue",
-    },
-    {
-      totalamount: highPriorityAmount.reduce(
-        (prev, curr) => prev + curr.amount,
-        0
-      ),
-      amounts: highPriorityAmount,
-      Style: styles.barShadowOrange,
-      title: "High Priority",
-      Color: "Orange",
-    },
-    {
-      totalamount: urgentPriorityAmount.reduce(
-        (prev, curr) => prev + curr.amount,
-        0
-      ),
-      amounts: urgentPriorityAmount,
-      Style: styles.barShadowRed,
-      title: "Urgent Priority",
-      Color: "Red",
-    },
-  ];
+    const highPriorityAmount: amount[] = [
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "OPEN" && current.Priority === "HIGH"
+          ).length ?? 0,
+        Status: "OPEN",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "CLOSED" && current.Priority === "HIGH"
+          ).length ?? 0,
+        Status: "CLOSED",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "IN_PROGRESS" && current.Priority === "HIGH"
+          ).length ?? 0,
+        Status: "IN PROGRESS",
+      },
+    ];
+
+    const urgentPriorityAmount: amount[] = [
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "OPEN" && current.Priority === "URGENT"
+          ).length ?? 0,
+        Status: "OPEN",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "CLOSED" && current.Priority === "URGENT"
+          ).length ?? 0,
+        Status: "CLOSED",
+      },
+      {
+        amount:
+          issues?.filter(
+            (current) =>
+              current.Status === "IN_PROGRESS" && current.Priority === "URGENT"
+          ).length ?? 0,
+        Status: "IN PROGRESS",
+      },
+    ];
+
+    const barChartsValues: BarCharts[] = [
+      {
+        totalamount: lowPriorityAmount.reduce(
+          (prev, curr) => prev + curr.amount,
+          0
+        ),
+        amounts: lowPriorityAmount,
+        Style: styles.barShadowGreen,
+        title: "Low Priority",
+        Color: "Green",
+      },
+      {
+        totalamount: mediumPriorityAmount.reduce(
+          (prev, curr) => prev + curr.amount,
+          0
+        ),
+        amounts: mediumPriorityAmount,
+        Style: styles.barShadowBlue,
+        title: "Medium Priority",
+        Color: "Blue",
+      },
+      {
+        totalamount: highPriorityAmount.reduce(
+          (prev, curr) => prev + curr.amount,
+          0
+        ),
+        amounts: highPriorityAmount,
+        Style: styles.barShadowOrange,
+        title: "High Priority",
+        Color: "Orange",
+      },
+      {
+        totalamount: urgentPriorityAmount.reduce(
+          (prev, curr) => prev + curr.amount,
+          0
+        ),
+        amounts: urgentPriorityAmount,
+        Style: styles.barShadowRed,
+        title: "Urgent Priority",
+        Color: "Red",
+      },
+    ];
+
+    setBarCharts(barChartsValues);
+    setDefaultBarChart(barChartsValues);
+    setLoading(true);
+    return barChartsValues;
+  }, [issues]);
 
   return (
-    <div className="grid gap-x-3 gap-y-6 grid-cols-12 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
+    <div className="grid gap-x-3 gap-y-6 grid-cols-12 min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
       <h1 className="col-span-12 text-3xl font-bold text-center mt-5">
         Dashboard
       </h1>
 
-      <SortButton />
+      <SortButton
+        Barchart={barCharts}
+        DefaultBarChart={defaultBarChart}
+        setBarChart={setBarCharts}
+      />
 
-      {barCharts.map((chart, index) =>
-        loading ? (
+      {loading ? (
+        barCharts?.map((chart, index) => (
           <div
             className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
             key={index}
@@ -215,12 +230,22 @@ const DashboardPage = () => {
               </ResponsiveContainer>
             </>
           </div>
-        ) : (
+        ))
+      ) : (
+        <>
           <div
-            key={index}
-            className="w-11/12 h-52 bg-gray-950 border-16 border-gray-950 animate-pulse col-span-12 md:col-span-6 rounded justify-self-center"
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
           ></div>
-        )
+          <div
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
+          ></div>
+          <div
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
+          ></div>
+          <div
+            className={`w-11/12 h-52 bg-gray-950 border-16 border-gray-950 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
+          ></div>
+        </>
       )}
     </div>
   );
