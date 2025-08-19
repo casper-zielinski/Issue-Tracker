@@ -46,7 +46,7 @@ const NewIssuePage = () => {
   return (
     <>
       {error && (
-        <div className="flex flex-col space-y-1 items-center">
+        <div className="flex flex-col space-y-1 items-center mt-3">
           <Callout.Root
             size="2"
             color="red"

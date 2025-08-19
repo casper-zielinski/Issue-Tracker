@@ -1,4 +1,4 @@
-import { Filter } from "lucide-react";
+import { Filter, ArrowDown, ArrowUp } from "lucide-react";
 import { BarCharts } from "./types";
 import { Dispatch, SetStateAction } from "react";
 
@@ -22,7 +22,7 @@ const SortButton = ({
         </div>
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          className="dropdown-content menu bg-base-100 rounded-box z-1 w-44 p-2 shadow-sm"
         >
           <li>
             <div className="dropdown dropdown-right">
@@ -31,13 +31,25 @@ const SortButton = ({
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-20 p-1 shadow-sm"
               >
                 <li>
-                  <a>⬇️</a>
+                  <a
+                    onClick={() => {
+                      setBarChart([...DefaultBarChart]);
+                    }}
+                  >
+                    <ArrowDown />
+                  </a>
                 </li>
                 <li>
-                  <a>⬆️</a>
+                  <a
+                    onClick={() => {
+                      setBarChart([...DefaultBarChart].reverse());
+                    }}
+                  >
+                    <ArrowUp />
+                  </a>
                 </li>
               </ul>
             </div>
@@ -49,7 +61,7 @@ const SortButton = ({
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-20 p-2 shadow-sm"
               >
                 <li>
                   <a
@@ -60,7 +72,7 @@ const SortButton = ({
                       console.log(Barchart);
                     }}
                   >
-                    ⬇️
+                    <ArrowDown />
                   </a>
                 </li>
                 <li>
@@ -71,7 +83,7 @@ const SortButton = ({
                       )
                     }
                   >
-                    ⬆️
+                    <ArrowUp />
                   </a>
                 </li>
               </ul>

@@ -34,6 +34,7 @@ const DashboardPage = () => {
     fetchIssues();
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const barCharted = useMemo(() => {
     if (!issues || issues?.length < 0) return;
 
@@ -212,9 +213,9 @@ const DashboardPage = () => {
             key={index}
           >
             <>
-              <h2 className="font-bold grid grid-cols-2">
+              <h2 className="font-bold grid grid-cols-2 text-sm sm:text-base mb-3">
                 <span className="text-start">{chart.title}</span>
-                <div className="text-end hidden md:block">
+                <div className="text-end">
                   Total Amount of Issues: {chart.totalamount}
                 </div>
               </h2>
@@ -247,6 +248,7 @@ const DashboardPage = () => {
           ></div>
         </>
       )}
+      <div className="absolute -z-10 top-0 left-1/4 w-80 h-80 bg-sky-700/40 rounded-full blur-3xl animate-pulse"></div>
     </div>
   );
 };
