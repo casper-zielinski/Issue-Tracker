@@ -3,6 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Clock, TrendingUp, Users } from "lucide-react";
+import GradientOrbs from "./GradientOrbs";
 
 const Hero = () => {
   const router = useRouter();
@@ -23,7 +24,8 @@ const Hero = () => {
             </span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Add and Close Issues while Tracking them using this Issue Tracker and AI
+            Add and Close Issues while Tracking them using this Issue Tracker
+            and AI
           </p>
         </div>
 
@@ -80,8 +82,8 @@ const Hero = () => {
       </div>
 
       {/* Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-700/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gray-700/20 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+      <GradientOrbs classname="top-1/4 left-1/4 w-96 h-96" />
+      <GradientOrbs classname="bottom-1/4 right-1/4 w-96 h-96" />
     </div>
   );
 };

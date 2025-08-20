@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Callout, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import dynamic from "next/dynamic";
@@ -8,7 +8,8 @@ import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { $Enums, Priority, Status } from "@/generated/prisma";
+import { $Enums, Priority } from "@/generated/prisma";
+import GradientOrbs from "@/app/GradientOrbs";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -177,6 +178,8 @@ const NewIssuePage = () => {
           </button>
         </div>
       </form>
+      <GradientOrbs classname="top-14 left-14 h-96 w-96 -z-10" />
+      <GradientOrbs classname="bottom-14 right-14 h-96 w-96 -z-10" />
     </>
   );
 };

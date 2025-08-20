@@ -14,6 +14,7 @@ import SortButton from "./SortButton";
 import { amount, BarCharts, Issue } from "./types";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import GradientOrbs from "../GradientOrbs";
 
 const DashboardPage = () => {
   const [issues, setIssues] = useState<Issue[]>();
@@ -248,7 +249,7 @@ const DashboardPage = () => {
           ></div>
         </>
       )}
-      <div className="absolute -z-10 top-0 left-1/4 w-80 h-80 bg-sky-700/40 rounded-full blur-3xl animate-pulse"></div>
+      <GradientOrbs classname="-z-10 top-0 left-1/4 w-80 h-80"/>
     </div>
   );
 };

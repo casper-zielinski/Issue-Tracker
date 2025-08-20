@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
 import { $Enums } from "@/generated/prisma";
-import { Plus } from "lucide-react";
+import { Plus, Edit } from "lucide-react";
+import GradientOrbs from "../GradientOrbs";
+import { useRouter } from "next/navigation";
 
 const IssuePage = () => {
   const [issues, setIssues] = useState<Issue[]>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   async function fetchIssues() {
     try {
@@ -53,10 +55,13 @@ const IssuePage = () => {
   }, []);
 
   return (
-    <div className="p-3 grid grid-cols-12 space-x-3 space-y-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
-      <div className="col-span-12">
-        <button className="btn btn-primary btn-md">
-          <Link href="/Issues/new">New Issue</Link>
+    <div className="p-3 grid grid-cols-12 justify-items-center space-x-3 space-y-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
+      <div className="col-span-12 justify-self-start">
+        <button
+          className="btn btn-primary btn-md"
+          onClick={() => router.push("/Issues/new")}
+        >
+          New Issue
           <Plus />
         </button>
       </div>
@@ -86,27 +91,38 @@ const IssuePage = () => {
       )}
 
       {loading ? (
-        issues?.map((issue, index) => (
+        issues?.map((issue) => (
           <div
-            key={index}
-            className="bg-gray-950 p-3 my-1 text-white col-span-12 md:col-span-6 rounded justify-center hover:scale-101 hover:-translate-y-0.5 transition-all"
+            key={issue.id}
+            className="bg-gray-950 p-3 my-1 text-white col-span-12 md:col-span-6 rounded hover:scale-101 hover:-translate-y-0.5 transition-all"
           >
             <p className="text-xl font-bold text-blue-400 mb-2">
               {issue.Title}
             </p>
             <p className="text-gray-500 my-1">Describtion:</p>
             <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
-            <span
-              className={`badge ${getBadgeColorPriority(issue.Priority)} m-2`}
-            >
-              {issue?.Priority}
-            </span>
-            <div
-              className={`badge badge-soft ${getBadgeColorStatus(
-                issue?.Status
-              )} m-2`}
-            >
-              {issue?.Status}
+            <div className="grid grid-cols-4 space-x-7 items-center">
+              <div className="col-span-1 flex">
+                <span
+                  className={`badge ${getBadgeColorPriority(
+                    issue.Priority
+                  )} m-2`}
+                >
+                  {issue?.Priority}
+                </span>
+                <span
+                  className={`badge badge-soft ${getBadgeColorStatus(
+                    issue?.Status
+                  )} m-2`}
+                >
+                  {issue?.Status}
+                </span>
+              </div>
+              <div className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl" onClick={() => {console.log("issue id: ", issue.id);
+                console.log("issue:", issue.Title)
+              }}>
+                <Edit />
+              </div>
             </div>
           </div>
         ))
@@ -118,6 +134,8 @@ const IssuePage = () => {
           <div className="bg-gray-950 animate-pulse col-span-12 md:col-span-6 w-11/12 h-44 rounded"></div>
         </>
       )}
+      <GradientOrbs classname="top-32 left-8 w-24 h-24 -z-10" />
+      <GradientOrbs classname="bottom-10 right-8 w-96 h-96 -z-10" />
     </div>
   );
 };
