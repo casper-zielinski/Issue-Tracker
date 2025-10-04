@@ -24,7 +24,6 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  console.log(request.body);
   return NextResponse.json(newIssue, { status: 201 });
 }
 

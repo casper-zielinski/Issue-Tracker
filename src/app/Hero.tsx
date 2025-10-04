@@ -1,12 +1,8 @@
-"use client";
-
 import React from "react";
-import { useRouter } from "next/navigation";
-import { AlertCircle, Clock, TrendingUp, Users } from "lucide-react";
 import GradientOrbs from "./GradientOrbs";
+import CTAButtons from "./components/CTAButtons";
 
 const Hero = () => {
-  const router = useRouter();
   return (
     <div className="relative bg-black min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Grid */}
@@ -25,60 +21,11 @@ const Hero = () => {
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
             Add and Close Issues while Tracking them using this Issue Tracker
-            and AI
           </p>
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <button
-            className="px-8 py-4 bg-sky-700 hover:bg-sky-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-sky-700/25"
-            onClick={() => router.push("/Issues")}
-          >
-            Issues
-          </button>
-          <button
-            className="px-8 py-4 border-2 border-sky-700 text-sky-400 hover:bg-sky-700/10 font-semibold rounded-lg transition-all duration-300"
-            onClick={() => router.push("/Dashboard")}
-          >
-            Dashboard
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-4">
-          <div className="text-center">
-            <div className="flex justify-center mb-2">
-              <AlertCircle className="w-8 h-8 text-sky-400" />
-            </div>
-            <div className="text-3xl font-bold text-white mb-1">10K+</div>
-            <div className="text-sm text-gray-400">Issues Tracked</div>
-          </div>
-
-          <div className="text-center">
-            <div className="flex justify-center mb-2">
-              <Users className="w-8 h-8 text-sky-400" />
-            </div>
-            <div className="text-3xl font-bold text-white mb-1">500+</div>
-            <div className="text-sm text-gray-400">Active Teams</div>
-          </div>
-
-          <div className="text-center">
-            <div className="flex justify-center mb-2">
-              <Clock className="w-8 h-8 text-sky-400" />
-            </div>
-            <div className="text-3xl font-bold text-white mb-1">40%</div>
-            <div className="text-sm text-gray-400">Faster Resolution</div>
-          </div>
-
-          <div className="text-center">
-            <div className="flex justify-center mb-2">
-              <TrendingUp className="w-8 h-8 text-sky-400" />
-            </div>
-            <div className="text-3xl font-bold text-white mb-1">99.9%</div>
-            <div className="text-sm text-gray-400">Uptime</div>
-          </div>
-        </div>
+        <CTAButtons />
       </div>
 
       {/* Gradient Orbs */}

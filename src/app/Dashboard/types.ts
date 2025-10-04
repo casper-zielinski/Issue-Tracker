@@ -1,5 +1,4 @@
 import { $Enums } from "@/generated/prisma";
-import styles from "./BarCharts.module.css";
 
 export interface Issue {
   id: number;

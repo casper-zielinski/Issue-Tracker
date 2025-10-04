@@ -1,20 +1,21 @@
 "use client";
 
-import { Callout, TextField } from "@radix-ui/themes";
+import { TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { $Enums, Priority } from "@/generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
   loading: () => (
-    <div className="bg-gray-300 animate-pulse w-1/1 h-100 rounded" />
+    <div className="flex justify-center">
+      <div className="bg-gray-500 animate-pulse w-10/12 h-100 rounded"></div>
+    </div>
   ),
 });
 
@@ -45,19 +46,34 @@ const NewIssuePage = () => {
   }
 
   return (
-    <>
+    <div className="min-h-screen">
       {error && (
-        <div className="flex flex-col space-y-1 items-center mt-3">
-          <Callout.Root
-            size="2"
-            color="red"
-            className="w-1/2 min-w-3xs lg:w-2/3 border-2"
+        <div className="col-span-12 grid grid-cols-3 grid-flow-col md:justify-center p-3 scrollbar-hide">
+          <div
+            role="alert"
+            className="alert alert-error col-span-3 md:col-span-1"
           >
-            <Callout.Icon>
-              <ExclamationTriangleIcon />
-            </Callout.Icon>
-            <Callout.Text>{error}</Callout.Text>
-          </Callout.Root>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 md:h-9 w-6 md:w-9 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span className="md:text-base">Error! Could not load issues</span>
+            <button
+              className="btn btn-sm md:btn-md btn-neutral rounded-2xl"
+              onClick={() => setError("")}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
 
@@ -71,7 +87,8 @@ const NewIssuePage = () => {
           <TextField.Root
             placeholder="Title"
             {...register("Title")}
-            className="border-2 w-4/5 min-w-4xs lg:w-2/3 focus-within:shadow-lg"
+            className="border-2 w-4/5 lg:w-2/3 focus-within:shadow-lg"
+            size={"3"}
           ></TextField.Root>
         </div>
 
@@ -85,7 +102,7 @@ const NewIssuePage = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm text-black dark:text-white"
               >
                 <li>
                   <a
@@ -164,7 +181,7 @@ const NewIssuePage = () => {
               <div className="rounded transition-all">
                 <SimpleMDE
                   placeholder="Issue"
-                  className="bg-sky-700 rounded border-2 w-1/1 md:w-6/7 focus-within:shadow-2xl text-black justify-self-center"
+                  className="bg-sky-700 rounded w-1/1 md:w-6/7 m-4 focus-within:shadow-2xl text-black justify-self-center"
                   {...field}
                 />
               </div>
@@ -178,9 +195,9 @@ const NewIssuePage = () => {
           </button>
         </div>
       </form>
-      <GradientOrbs classname="top-14 left-14 h-96 w-96 -z-10" />
-      <GradientOrbs classname="bottom-14 right-14 h-96 w-96 -z-10" />
-    </>
+      <GradientOrbs classname="hidden md:block top-14 left-14 h-96 w-96 -z-10" />
+      <GradientOrbs classname="hidden md:block bottom-14 right-14 h-96 w-96 -z-10" />
+    </div>
   );
 };
 

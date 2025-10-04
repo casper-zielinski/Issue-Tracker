@@ -11,6 +11,7 @@ const Nav = () => {
   return (
     <div className="navbar bg-sky-700 shadow-sm h-3">
       <div className="navbar-start">
+        {/* Mobile Dropdown */}
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -39,7 +40,7 @@ const Nav = () => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown, as HTMLElement because blur is a HTMLElement method
                 }}
               >
-                Dashboard
+                <span className="text-black">Dashboard</span>
               </Link>
             </li>
             <li>
@@ -50,11 +51,23 @@ const Nav = () => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
                 }}
               >
-                Issues
+                <span className="text-black">Issues</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/Settings"
+                className={currentPath === "/Settings" ? "bg-white" : ""}
+                onClick={() => {
+                  (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
+                }}
+              >
+                <span className="text-black">Settings</span>
               </Link>
             </li>
           </ul>
         </div>
+        {/* Desktop Navbar */}
         <div
           className={
             currentPath === "/"
@@ -103,6 +116,18 @@ const Nav = () => {
                 }
               >
                 Issues
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/Settings"
+                className={
+                  currentPath === "/Settings"
+                    ? "bg-white border-1 border-white text-black"
+                    : "border-1 border-sky-700"
+                }
+              >
+                Settings
               </Link>
             </li>
           </ul>

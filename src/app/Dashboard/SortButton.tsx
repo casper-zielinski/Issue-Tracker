@@ -16,7 +16,11 @@ const SortButton = ({
   return (
     <div className="col-span-12">
       <div className="dropdown dropdown-start ms-5">
-        <div tabIndex={0} role="button" className="btn m-1">
+        <div
+          tabIndex={0}
+          role="button"
+          className="btn m-1 text-black dark:text-white"
+        >
           <span className="me-3">Sort</span>
           <Filter />
         </div>
@@ -26,7 +30,11 @@ const SortButton = ({
         >
           <li>
             <div className="dropdown dropdown-right">
-              <div tabIndex={0} role="button" className="m-1">
+              <div
+                tabIndex={0}
+                role="button"
+                className="m-1 text-black dark:text-white"
+              >
                 By Priority
               </div>
               <ul
@@ -39,7 +47,7 @@ const SortButton = ({
                       setBarChart([...DefaultBarChart]);
                     }}
                   >
-                    <ArrowDown />
+                    <ArrowDown className="text-black dark:text-white" />
                   </a>
                 </li>
                 <li>
@@ -48,7 +56,7 @@ const SortButton = ({
                       setBarChart([...DefaultBarChart].reverse());
                     }}
                   >
-                    <ArrowUp />
+                    <ArrowUp className="text-black dark:text-white" />
                   </a>
                 </li>
               </ul>
@@ -56,7 +64,11 @@ const SortButton = ({
           </li>
           <li>
             <div className="dropdown dropdown-right">
-              <div tabIndex={0} role="button" className="m-1">
+              <div
+                tabIndex={0}
+                role="button"
+                className="m-1 text-black dark:text-white"
+              >
                 By Totalamounts
               </div>
               <ul
@@ -72,7 +84,7 @@ const SortButton = ({
                       console.log(Barchart);
                     }}
                   >
-                    <ArrowDown />
+                    <ArrowDown className="text-black dark:text-white" />
                   </a>
                 </li>
                 <li>
@@ -83,14 +95,19 @@ const SortButton = ({
                       )
                     }
                   >
-                    <ArrowUp />
+                    <ArrowUp className="text-black dark:text-white" />
                   </a>
                 </li>
               </ul>
             </div>
           </li>
           <li>
-            <a onClick={() => setBarChart(DefaultBarChart)}>Default</a>
+            <a
+              onClick={() => setBarChart(DefaultBarChart)}
+              className="m-1 text-black dark:text-white"
+            >
+              Default
+            </a>
           </li>
         </ul>
       </div>

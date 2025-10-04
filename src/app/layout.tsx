@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./global.css";
 import Nav from "./Nav";
 import "@radix-ui/themes/styles.css";
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Theme } from "@radix-ui/themes";
 import Footer from "./Footer";
+import StoreProvider from "../../redux/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -17,14 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Theme appearance="dark" grayColor="sage" radius="large" scaling="100%" className="min-h-screen flex flex-col">
-          <Nav />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </Theme>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className="min-h-screen flex flex-col">
+          <Theme appearance="dark" grayColor="sage" radius="large" scaling="100%">
+            <Nav />
+            <main className="flex-1 grow">{children}</main>
+            <Footer />
+          </Theme>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

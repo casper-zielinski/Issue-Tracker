@@ -1,7 +1,7 @@
 .barText{
       font-size: clamp(10px, 1.8vw, 18px);
       font-weight: 500;
-      color: grey;
+      color: oklch(95% 0.01 270);
 }
 
 .barShadowBlue{
