@@ -17,6 +17,13 @@ import GradientOrbs from "../GradientOrbs";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 import ProfileTab from "./ProfileTab";
+import NotificationsTab from "./NotificationsTab";
+import AppearanceTab from "./AppearanceTab";
+import SecurityTab from "./SecurityTab";
+import DataTab from "./DataTab";
+import { signOut } from "../supabase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
 
 /**
  * SettingsPage Component
@@ -35,21 +42,12 @@ const SettingsPage = () => {
   // Tab navigation state
   const [activeTab, setActiveTab] = useState("profile");
 
-  // Settings state management
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    weekly: true,
-  });
-  const [theme, setTheme] = useState("dark");
-  const [language, setLanguage] = useState("en");
-  const [autoSave, setAutoSave] = useState(true);
-
   // UI state management
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+  const logedIn = useSelector((state: RootState) => state.logInState.logedIn);
 
   const handleSave = () => {
     setShowSaveSuccess(true);
@@ -57,10 +55,8 @@ const SettingsPage = () => {
   };
 
   const handleReset = () => {
-    setNotifications({ email: true, push: false, weekly: true });
-    setTheme("dark");
-    setLanguage("en");
-    setAutoSave(true);
+    // Note: Reset functionality would need to be implemented within each tab component
+    console.log("Reset functionality should be handled by individual tabs");
   };
 
   const tabs = [
@@ -86,7 +82,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Authentication Section */}
-        {!isLoggedIn && (
+        {!logedIn && (
           <div className="col-span-12 flex justify-center mb-6">
             <div className="bg-gray-900 rounded-lg p-6 text-center max-w-md">
               <h3 className="text-xl font-bold text-white mb-2">
@@ -166,246 +162,24 @@ const SettingsPage = () => {
         <div className="col-span-12 md:col-span-9">
           <div className="bg-gray-900 rounded-lg p-6">
             {/* Profile Tab */}
-            {activeTab === "profile" && (
-              <ProfileTab closeLoginOrSignUpTab={setIsLoggedIn} />
-            )}
+            {activeTab === "profile" && <ProfileTab />}
 
             {/* Notifications Tab */}
-            {activeTab === "notifications" && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Notification Preferences
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-                    <div>
-                      <h3 className="text-white font-medium">
-                        Email Notifications
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        Receive issue updates via email
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="toggle toggle-primary"
-                      checked={notifications.email}
-                      onChange={(e) =>
-                        setNotifications((prev) => ({
-                          ...prev,
-                          email: e.target.checked,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-                    <div>
-                      <h3 className="text-white font-medium">
-                        Push Notifications
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        Get real-time notifications in browser
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="toggle toggle-primary"
-                      checked={notifications.push}
-                      onChange={(e) =>
-                        setNotifications((prev) => ({
-                          ...prev,
-                          push: e.target.checked,
-                        }))
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-                    <div>
-                      <h3 className="text-white font-medium">Weekly Summary</h3>
-                      <p className="text-gray-400 text-sm">
-                        Weekly digest of your issue activity
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="toggle toggle-primary"
-                      checked={notifications.weekly}
-                      onChange={(e) =>
-                        setNotifications((prev) => ({
-                          ...prev,
-                          weekly: e.target.checked,
-                        }))
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === "notifications" && <NotificationsTab />}
 
             {/* Appearance Tab */}
-            {activeTab === "appearance" && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Appearance Settings
-                </h2>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-gray-300 mb-2">Theme</label>
-                    <select
-                      className="select select-bordered w-full max-w-xs"
-                      value={theme}
-                      onChange={(e) => setTheme(e.target.value)}
-                    >
-                      <option value="light">Light</option>
-                      <option value="dark">Dark</option>
-                      <option value="auto">Auto</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-2">Language</label>
-                    <select
-                      className="select select-bordered w-full max-w-xs"
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                    >
-                      <option value="en">English</option>
-                      <option value="de">Deutsch</option>
-                      <option value="fr">Français</option>
-                      <option value="es">Español</option>
-                    </select>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
-                    <div>
-                      <h3 className="text-white font-medium">Auto-save</h3>
-                      <p className="text-gray-400 text-sm">
-                        Automatically save form inputs
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      className="toggle toggle-primary"
-                      checked={autoSave}
-                      onChange={(e) => setAutoSave(e.target.checked)}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === "appearance" && <AppearanceTab />}
 
             {/* Security Tab */}
-            {activeTab === "security" && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Security Settings
-                </h2>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-gray-300 mb-2">
-                      Current Password
-                    </label>
-                    <input
-                      type="password"
-                      className="input input-bordered w-full max-w-md"
-                      placeholder="Enter current password"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-2">
-                      New Password
-                    </label>
-                    <input
-                      type="password"
-                      className="input input-bordered w-full max-w-md"
-                      placeholder="Enter new password"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-gray-300 mb-2">
-                      Confirm New Password
-                    </label>
-                    <input
-                      type="password"
-                      className="input input-bordered w-full max-w-md"
-                      placeholder="Confirm new password"
-                    />
-                  </div>
-
-                  <button className="btn btn-warning btn-md">
-                    Update Password
-                  </button>
-
-                  <div className="divider"></div>
-
-                  <div className="p-4 bg-gray-800 rounded-lg">
-                    <h3 className="text-white font-medium mb-2">
-                      Two-Factor Authentication
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Add an extra layer of security to your account
-                    </p>
-                    <button className="btn btn-outline btn-primary">
-                      Enable 2FA
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === "security" && <SecurityTab />}
 
             {/* Data Tab */}
-            {activeTab === "data" && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Data Management
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="p-4 bg-gray-800 rounded-lg">
-                    <h3 className="text-white font-medium mb-2">Export Data</h3>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Download all your issues and data
-                    </p>
-                    <button className="btn btn-info">Export JSON</button>
-                  </div>
-
-                  <div className="p-4 bg-gray-800 rounded-lg">
-                    <h3 className="text-white font-medium mb-2">Import Data</h3>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Import issues from another system
-                    </p>
-                    <input
-                      type="file"
-                      className="file-input file-input-bordered w-full max-w-xs"
-                    />
-                  </div>
-
-                  <div className="divider"></div>
-
-                  <div className="p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-                    <h3 className="text-red-400 font-medium mb-2">
-                      Danger Zone
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Permanently delete your account and all data
-                    </p>
-                    <button className="btn btn-error">Delete Account</button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === "data" && <DataTab />}
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="col-span-12 flex justify-center gap-4 mt-6">
+        <div className="col-span-12 flex justify-center gap-4 mt-6 mb-3">
           <button
             className="btn btn-primary btn-xs md:btn-lg flex items-center gap-2"
             onClick={handleSave}
@@ -429,11 +203,11 @@ const SettingsPage = () => {
       <GradientOrbs classname="top-1/2 left-1/4 w-24 h-24 -z-10" />
 
       {/* Demo Button to toggle login state */}
-      {isLoggedIn && (
+      {logedIn && (
         <div className="fixed bottom-8 md:bottom-16 right-4">
           <button
             className="btn btn-outline btn-sm"
-            onClick={() => setIsLoggedIn(false)}
+            onClick={() => signOut(dispatch)}
           >
             Sign Out
           </button>
@@ -444,14 +218,12 @@ const SettingsPage = () => {
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
-        onLogin={() => setIsLoggedIn(true)}
       />
 
       {/* Signup Modal */}
       <SignupModal
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}
-        onSignup={() => setIsLoggedIn(true)}
       />
     </div>
   );

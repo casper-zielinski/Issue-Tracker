@@ -4,9 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { VscEditSession } from "react-icons/vsc";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Nav = () => {
   const currentPath = usePathname();
+  const user = useSelector((state: RootState) => state.userState);
 
   return (
     <div className="navbar bg-sky-700 shadow-sm h-3">
@@ -131,6 +134,11 @@ const Nav = () => {
               </Link>
             </li>
           </ul>
+        </div>
+      </div>
+      <div className="avatar avatar-placeholder ml-auto">
+        <div className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full">
+          <span>{user.email ? user.email.substring(0, 2) : ""}</span>
         </div>
       </div>
     </div>

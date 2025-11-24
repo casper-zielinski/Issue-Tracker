@@ -2,17 +2,14 @@
 
 import React, { useState } from "react";
 import { X, Eye, EyeOff, Mail, Lock, LogIn } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "../../../redux/store";
 import { useDispatch } from "react-redux";
-import { signUp } from "../../../redux/slices/logSlice";
-import { signIn } from "../../../redux/slices/userSlice";
+import { logIn } from "../supabase/auth";
 
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: () => void;
 }
 
 /**
@@ -23,7 +20,7 @@ interface LoginModalProps {
  * and error handling. On successful login, updates Redux state and
  * redirects to home page.
  */
-const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
+const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   // State for password visibility toggle
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,27 +65,8 @@ const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
       return;
     }
 
-    // Authenticate with Supabase
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
-    // Update Redux state with user data
-    dispatch(
-      signIn({
-        username: data.user?.email?.split(".")[0],
-        email: data.user?.email,
-      })
-    );
-    dispatch(signUp());
-    setLoading(false);
+    // login with Supabase
+    logIn(formData.email, formData.password, dispatch);
     router.push("/");
   };
 

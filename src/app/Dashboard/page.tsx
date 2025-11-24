@@ -44,7 +44,7 @@ const DashboardPage = () => {
     try {
       const { data } = await axios.get("/api/issues");
       setIssues(data);
-    } catch (error) {
+    } catch {
       setError(true);
     }
   }
@@ -215,7 +215,7 @@ const DashboardPage = () => {
 
   return (
     <div className="grid gap-y-7 grid-cols-12 min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">
-      <div className="col-span-12 text-center my-4">
+      <div className="col-span-12 text-center mt-4 mb-2">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
           <DashboardIcon className="w-10 h-10 text-sky-400" />
           Dashboard
@@ -223,13 +223,14 @@ const DashboardPage = () => {
         <p className="text-gray-300 text-lg">
           View your Issues under a Dashboard
         </p>
+        <div className="justify-self-start">
+          <SortButton
+            Barchart={barCharts}
+            DefaultBarChart={defaultBarChart}
+            setBarChart={setBarCharts}
+          />
+        </div>
       </div>
-
-      <SortButton
-        Barchart={barCharts}
-        DefaultBarChart={defaultBarChart}
-        setBarChart={setBarCharts}
-      />
 
       {error && (
         <div className="col-span-12 grid grid-cols-3 grid-flow-col p-3">
@@ -261,7 +262,7 @@ const DashboardPage = () => {
       {!loading ? (
         barCharts?.map((chart, index) => (
           <div
-            className={`w-11/12 h-72 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
+            className={`w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
             key={index}
           >
             <>

@@ -8,11 +8,11 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
 import { signIn } from "../../../redux/slices/userSlice";
 import { signUp } from "../../../redux/slices/logSlice";
+import { signInUser } from "../supabase/auth";
 
 interface SignupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSignup: () => void;
 }
 
 /**
@@ -23,7 +23,7 @@ interface SignupModalProps {
  * password visibility toggles, and error handling. On successful
  * registration, updates Redux state and redirects to home page.
  */
-const SignupModal = ({ isOpen, onClose, onSignup }: SignupModalProps) => {
+const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   // Password visibility state for both password fields
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -53,53 +53,23 @@ const SignupModal = ({ isOpen, onClose, onSignup }: SignupModalProps) => {
     setLoading(true);
     setError("");
 
-    // Basic validation
-    if (
-      !formData.email ||
-      !formData.password ||
-      !formData.fullName ||
-      !formData.username
-    ) {
-      setError("Please fill in all required fields");
+    try {
+      signInUser(
+        formData.username,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
+        formData.fullName,
+        dispatch
+      );
+
       setLoading(false);
-      return;
+      onClose();
+      router.push("/");
+    } catch {
+      setError("Error");
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      setLoading(false);
-      return;
-    }
-
-    const { data, error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-      return;
-    }
-
-    dispatch(
-      signIn({
-        username: formData.username,
-        email: data.user?.email,
-      })
-    );
-    dispatch(signUp());
-    setLoading(false);
-    onClose();
-    router.push("/");
-
-    // Simulate signup process (no API call)
   };
 
   const handleClose = () => {
@@ -117,7 +87,7 @@ const SignupModal = ({ isOpen, onClose, onSignup }: SignupModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-hidden">
       <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md relative border border-gray-700 shadow-2xl">
         {/* Close Button */}
         <button

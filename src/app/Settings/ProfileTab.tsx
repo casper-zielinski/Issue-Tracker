@@ -1,40 +1,21 @@
-import { supabase } from "@/lib/supabase";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
-interface User {
-  email: string;
-  id: string;
-}
-
-interface ProfileTabProps {
-  closeLoginOrSignUpTab: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
-  const [userInfo, SetUser] = useState<User>({
-    email: "",
-    id: "",
-  });
-
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      SetUser({
-        email: user.email || "",
-        id: user.id,
-      });
-      closeLoginOrSignUpTab(true);
-    }
-
-    
-  };
+const ProfileTab = () => {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
+  const userInfo = useSelector((state: RootState) => state.userState);
 
   useEffect(() => {
-    getUser();
-  }, []);
+    if (userInfo) {
+      setUsername(userInfo.username);
+      setEmail(userInfo.email);
+    }
+  }, [userInfo]);
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white mb-4">Profile Settings</h2>
@@ -46,7 +27,8 @@ const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
             type="text"
             className="input input-bordered w-full"
             placeholder="John Doe"
-            defaultValue="John Doe"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
@@ -55,7 +37,8 @@ const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
             type="email"
             className="input input-bordered w-full"
             placeholder="john@example.com"
-            defaultValue={userInfo.email}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>
@@ -64,7 +47,8 @@ const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
             type="text"
             className="input input-bordered w-full"
             placeholder="johndoe"
-            defaultValue="johndoe"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div>
@@ -74,6 +58,7 @@ const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
             className="input input-bordered w-full"
             placeholder="Software Developer"
             defaultValue="Software Developer"
+            readOnly
           />
         </div>
       </div>
@@ -83,7 +68,8 @@ const ProfileTab = ({ closeLoginOrSignUpTab }: ProfileTabProps) => {
         <textarea
           className="textarea textarea-bordered w-full h-24"
           placeholder="Tell us about yourself..."
-          defaultValue="Passionate developer with expertise in web technologies."
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
         ></textarea>
       </div>
     </div>
