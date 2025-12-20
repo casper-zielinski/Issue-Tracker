@@ -2,12 +2,9 @@
 
 import React, { useState } from "react";
 import { X, Eye, EyeOff, User, Mail, Lock, UserPlus } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
-import { signIn } from "../../../redux/slices/userSlice";
-import { signUp } from "../../../redux/slices/logSlice";
 import { signInUser } from "../supabase/auth";
 
 interface SignupModalProps {

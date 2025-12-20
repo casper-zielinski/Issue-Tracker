@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 
@@ -10,7 +10,8 @@ const ProfileTab = () => {
   const userInfo = useSelector((state: RootState) => state.userState);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo.email) {
+      setName(userInfo.name)
       setUsername(userInfo.username);
       setEmail(userInfo.email);
     }

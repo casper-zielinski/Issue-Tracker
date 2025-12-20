@@ -14,6 +14,7 @@ interface AuthProps {
 const Auth = ({ children }: AuthProps) => {
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
+    console.log("start getting user");
     const getUser = async () => {
       const {
         data: { user },
@@ -24,9 +25,10 @@ const Auth = ({ children }: AuthProps) => {
       } else {
         dispatch(
           signIn({
-            username: user?.email?.split(".")[0],
-            email: user?.email,
-            id: user?.id,
+            name: user.user_metadata.full_name || "Your Name",
+            username: user?.email?.split(".")[0] || "Your Username",
+            email: user?.email || "Your Email",
+            id: user?.id || "Your Id",
           })
         );
         dispatch(signUp());

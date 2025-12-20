@@ -39,3 +39,15 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+// export async function PUT(request: NextRequest) {
+//   try {
+//     const body = await request.json();
+//     const newIssue = body.newIssue;
+//   } catch (error) {
+//     return NextResponse.json({
+//       error: "Failed to updated issue",
+//       status: 500,
+//     });
+//   }
+// }
