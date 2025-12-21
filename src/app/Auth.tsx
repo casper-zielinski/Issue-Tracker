@@ -1,42 +1,25 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
-import React, { useEffect } from "react";
-import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../redux/slices/userSlice";
-import { logOut, signUp } from "../../redux/slices/logSlice";
+import { signIn, signOut, User } from "../../redux/slices/userSlice";
+import { AppDispatch } from "../../redux/store";
+import { Issue } from "./Dashboard/types";
 
 interface AuthProps {
-  children: React.ReactNode;
+  user: User | null;
+  issues: Issue[];
 }
 
-const Auth = ({ children }: AuthProps) => {
+const Auth = ({ user, issues }: AuthProps) => {
   const dispatch: AppDispatch = useDispatch();
-  useEffect(() => {
-    console.log("start getting user");
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
 
-      if (!user || user.email === "") {
-        dispatch(logOut());
-      } else {
-        dispatch(
-          signIn({
-            name: user.user_metadata.full_name || "Your Name",
-            username: user?.email?.split(".")[0] || "Your Username",
-            email: user?.email || "Your Email",
-            id: user?.id || "Your Id",
-          })
-        );
-        dispatch(signUp());
-      }
-    };
-    getUser();
-  }, [dispatch]);
-  return <>{children}</>;
+  if (!user || !user.id) {
+    dispatch(signOut());
+  } else {
+    dispatch(signIn(user));
+  }
+
+  return <></>;
 };
 
 export default Auth;

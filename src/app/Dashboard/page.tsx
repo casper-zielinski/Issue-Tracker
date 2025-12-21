@@ -16,7 +16,6 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import GradientOrbs from "../GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import { PlaceholderBarCharts } from "@/Constants/PlaceHolderCharts";
 
 /**
  * DashboardPage Component
@@ -42,8 +41,12 @@ const DashboardPage = () => {
    */
   async function fetchIssues() {
     try {
-      const { data } = await axios.get("/api/issues");
-      setIssues(data.issues);
+      const {
+        data: {
+          data: { issues },
+        },
+      } = await axios.get("/api/issues");
+      setIssues(issues);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -258,6 +261,7 @@ const DashboardPage = () => {
 
       <div className="grid gap-y-7 grid-cols-12 py-5">
         {!loading &&
+          !error &&
           barCharts?.map((chart, index) => (
             <div
               className={`w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}

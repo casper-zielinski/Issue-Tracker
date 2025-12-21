@@ -7,7 +7,7 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   datasource: {
-    // Use DIRECT_URL for migrations (this was your previous directUrl)
-    url: env('DIRECT_URL'),
+    url: env('DATABASE_URL'),
+    shadowDatabaseUrl: env('DIRECT_URL'), // wenn du das brauchst
   },
 });

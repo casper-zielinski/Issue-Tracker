@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
-import { $Enums } from "@/generated/prisma";
+import { Status, Priority } from "@/generated/prisma";
 import { Plus, Edit } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
 import { useRouter } from "next/navigation";
@@ -33,8 +33,12 @@ const IssuePage = () => {
    */
   async function fetchIssues() {
     try {
-      const { data } = await axios.get("/api/issues");
-      setIssues(data);
+      const {
+        data: {
+          data: { issues },
+        },
+      } = await axios.get("/api/issues");
+      setIssues(issues);
     } catch (error) {
       setError(true);
       console.log("Error fetching data to the Issue Page: ", error);
@@ -48,7 +52,7 @@ const IssuePage = () => {
    * @param key - Priority enum value
    * @returns CSS class string for badge styling
    */
-  const getBadgeColorPriority = (key: $Enums.Priority) => {
+  const getBadgeColorPriority = (key: Priority) => {
     switch (key) {
       case "LOW":
         return "badge-success";
@@ -66,7 +70,7 @@ const IssuePage = () => {
    * @param key - Status enum value
    * @returns CSS class string for badge styling
    */
-  const getBadgeColorStatus = (key: $Enums.Status) => {
+  const getBadgeColorStatus = (key: Status) => {
     switch (key) {
       case "OPEN":
         return "badge-error";

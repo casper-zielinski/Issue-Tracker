@@ -2,16 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { VscEditSession } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useRouter } from "next/navigation";
 
 const Nav = () => {
+  const [rendered, setRendered] = useState(false);
   const currentPath = usePathname();
   const user = useSelector((state: RootState) => state.userState);
   const router = useRouter();
+
+  useEffect(() => {
+    setRendered(true);
+  }, []);
 
   return (
     <div className="navbar bg-sky-700 shadow-sm h-3">
@@ -144,7 +149,9 @@ const Nav = () => {
           className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full"
           onClick={() => router.push("/Settings")}
         >
-          <span>{user.email ? user.email.substring(0, 2) : ""}</span>
+          <span>
+            {rendered && user.email ? user.email.substring(0, 2) : ""}
+          </span>
         </div>
       </div>
     </div>

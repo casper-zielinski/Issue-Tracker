@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/supabase";
 import { AppDispatch } from "../../../redux/store";
 import {
   signIn,
@@ -11,6 +11,7 @@ import { logOut, signUp } from "../../../redux/slices/logSlice";
  * @param dispatch to set Global Redux State
  */
 export const signOut = async (dispatch: AppDispatch) => {
+  const supabase = createClient();
   dispatch(logOut());
   dispatch(signOutSlice());
   await supabase.auth.signOut();
@@ -27,6 +28,7 @@ export const logIn = async (
   password: string,
   dispatch: AppDispatch
 ) => {
+  const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
@@ -53,6 +55,7 @@ export const signInUser = async (
   fullName: string,
   dispatch: AppDispatch
 ) => {
+  const supabase = createClient();
   if (!email || !password || !fullName || !username) {
     throw Error("Empty fields");
   }
