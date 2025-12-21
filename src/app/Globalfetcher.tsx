@@ -1,7 +1,7 @@
 "use server";
 
+import prisma from "@db/client";
 import AuthProvider from "./Auth";
-import axios from "axios";
 import { createClient } from "@/lib/supabase/server";
 
 const Globalfetcher = async () => {
@@ -16,8 +16,8 @@ const Globalfetcher = async () => {
     bio: "",
   };
 
-  const issueResponse = await axios.get(`${process.env.API_URL}/api/issues`);
-  const issues = issueResponse.data;
+  // do not call you own API's in Server Components if you can just use backend logic here
+  const issues = await prisma.issue.findMany();
 
   return <AuthProvider issues={issues} user={user} />;
 };
