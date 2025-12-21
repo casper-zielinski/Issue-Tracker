@@ -6,10 +6,12 @@ import React from "react";
 import { VscEditSession } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
   const currentPath = usePathname();
   const user = useSelector((state: RootState) => state.userState);
+  const router = useRouter();
 
   return (
     <div className="navbar bg-sky-700 shadow-sm h-3">
@@ -70,7 +72,7 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        {/* Desktop Navbar */}
+        {/* View on both Mobile & Desktop*/}
         <div
           className={
             currentPath === "/"
@@ -95,6 +97,7 @@ const Nav = () => {
         >
           Issue Tracker
         </Link>
+        {/* Desktop view*/}
         <div className="hidden lg:flex">
           <ul className="menu menu-horizontal px-1 flex space-x-2">
             <li>
@@ -137,7 +140,10 @@ const Nav = () => {
         </div>
       </div>
       <div className="avatar avatar-placeholder ml-auto">
-        <div className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full">
+        <div
+          className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full"
+          onClick={() => router.push("/Settings")}
+        >
           <span>{user.email ? user.email.substring(0, 2) : ""}</span>
         </div>
       </div>

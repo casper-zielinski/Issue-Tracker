@@ -68,7 +68,7 @@ const SettingsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 p-3">
+    <div className="min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 p-3 pt-6">
       <div className="grid grid-cols-12 gap-4 max-w-7xl mx-auto">
         {/* Header */}
         <div className="col-span-12 text-center mb-6">

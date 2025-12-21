@@ -82,14 +82,14 @@ const IssuePage = () => {
   }, []);
 
   return (
-    <div className="p-3 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
+    <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
       <div className="text-center flex flex-col my-2">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
           <AiOutlineIssuesClose className="w-10 h-10 text-sky-400" />
           Issues
         </h1>
         <p className="text-gray-300 text-lg">View and Edit your Issues</p>
-        <div className="self-start mt-2">
+        <div className="self-start my-5">
           <button
             className="btn btn-primary btn-md"
             onClick={() => router.push("/Issues/new")}
@@ -101,8 +101,8 @@ const IssuePage = () => {
       </div>
 
       {error && (
-        <div className="col-span-12 p-10 h-10 grid grid-cols-3 grid-flow-col md:justify-center">
-          <div role="alert" className="alert alert-error col-span-3">
+        <div className="p-1 absolute top-1/2 left-1/2 -translate-1/2">
+          <div role="alert" className="alert alert-error w-[85vw]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 md:h-9 w-6 md:w-9 shrink-0 stroke-current"
@@ -116,13 +116,11 @@ const IssuePage = () => {
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span className="md:text-lg">Error! Could not load issues</span>
-            <button
-              className="btn btn-sm md:btn-md btn-neutral rounded-2xl"
-              onClick={() => setError(false)}
-            >
-              Close
-            </button>
+            <p className="md:text-lg">
+              <span className="font-bold">Error! Could not load issues</span>{" "}
+              <br />
+              Try checking your internet connection
+            </p>
           </div>
         </div>
       )}

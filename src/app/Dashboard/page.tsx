@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import GradientOrbs from "../GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
+import { PlaceholderBarCharts } from "@/Constants/PlaceHolderCharts";
 
 /**
  * DashboardPage Component
@@ -42,10 +43,10 @@ const DashboardPage = () => {
   async function fetchIssues() {
     try {
       const { data } = await axios.get("/api/issues");
-      console.log(data);
-      setIssues(data);
+      setIssues(data.issues);
       setLoading(false);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError(true);
       setLoading(false);
     }
@@ -212,36 +213,8 @@ const DashboardPage = () => {
     return barChartsValues;
   }, [issues]);
 
-  if (error)
-    return (
-      <div className="p-3 min-h-screen flex justify-center items-center bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">
-        <div role="alert" className="alert alert-error">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 md:h-9 w-6 md:w-9 shrink-0 stroke-current"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span className="md:text-lg">Error! Could not load issues</span>
-          <button
-            className="btn btn-sm md:btn-md btn-neutral rounded-2xl"
-            onClick={() => setError(false)}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    );
-
   return (
-    <section className="p-3 min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">
+    <section className="p-3 pt-6 relative min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">
       <div className="text-center mb-2">
         <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
           <DashboardIcon className="w-10 h-10 text-sky-400" />
@@ -250,14 +223,38 @@ const DashboardPage = () => {
         <p className="text-gray-300 text-lg">
           View your Issues under a Dashboard
         </p>
-        <div className="justify-self-start my-2">
+        <div className="justify-self-start my-5">
           <SortButton
-            Barchart={barCharts}
             DefaultBarChart={defaultBarChart || barCharts}
             setBarChart={setBarCharts}
           />
         </div>
       </div>
+
+      {error && (
+        <div className="p-1 absolute top-1/2 left-1/2 -translate-1/2">
+          <div role="alert" className="alert alert-error w-[85vw]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 md:h-9 w-6 md:w-9 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <p className="md:text-lg">
+              <span className="font-bold">Error! Could not load issues</span>{" "}
+              <br />
+              Try checking your internet connection
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-y-7 grid-cols-12 py-5">
         {!loading &&

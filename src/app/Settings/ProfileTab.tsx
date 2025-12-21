@@ -11,7 +11,7 @@ const ProfileTab = () => {
 
   useEffect(() => {
     if (userInfo.email) {
-      setName(userInfo.name)
+      setName(userInfo.name);
       setUsername(userInfo.username);
       setEmail(userInfo.email);
     }
@@ -26,7 +26,7 @@ const ProfileTab = () => {
           <label className="block text-gray-300 mb-2">Full Name</label>
           <input
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-zinc-900"
             placeholder="John Doe"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -36,7 +36,7 @@ const ProfileTab = () => {
           <label className="block text-gray-300 mb-2">Email</label>
           <input
             type="email"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-zinc-900"
             placeholder="john@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -46,7 +46,7 @@ const ProfileTab = () => {
           <label className="block text-gray-300 mb-2">Username</label>
           <input
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-zinc-900"
             placeholder="johndoe"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -56,7 +56,7 @@ const ProfileTab = () => {
           <label className="block text-gray-300 mb-2">Job Title</label>
           <input
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-zinc-900"
             placeholder="Software Developer"
             defaultValue="Software Developer"
             readOnly
@@ -67,7 +67,7 @@ const ProfileTab = () => {
       <div>
         <label className="block text-gray-300 mb-2">Bio</label>
         <textarea
-          className="textarea textarea-bordered w-full h-24"
+          className="textarea textarea-bordered w-full h-24 bg-zinc-900"
           placeholder="Tell us about yourself..."
           value={bio}
           onChange={(e) => setBio(e.target.value)}

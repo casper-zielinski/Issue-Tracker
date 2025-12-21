@@ -25,7 +25,7 @@ const AppearanceTab = () => {
         <div>
           <label className="block text-gray-300 mb-2">Theme</label>
           <select
-            className="select select-bordered w-full max-w-xs"
+            className="select select-bordered w-full max-w-xs bg-zinc-900"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           >
@@ -38,7 +38,7 @@ const AppearanceTab = () => {
         <div>
           <label className="block text-gray-300 mb-2">Language</label>
           <select
-            className="select select-bordered w-full max-w-xs"
+            className="select select-bordered w-full max-w-xs bg-zinc-900"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
           >

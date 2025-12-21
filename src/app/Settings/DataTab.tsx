@@ -31,7 +31,7 @@ const DataTab = () => {
           </p>
           <input
             type="file"
-            className="file-input file-input-bordered w-full max-w-xs"
+            className="file-input file-input-bordered file-input-neutral w-full max-w-xs bg-zinc-900"
           />
         </div>
 

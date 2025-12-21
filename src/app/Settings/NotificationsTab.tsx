@@ -33,7 +33,7 @@ const NotificationsTab = () => {
           </div>
           <input
             type="checkbox"
-            className="toggle toggle-primary"
+            className="toggle toggle-neutral"
             checked={notifications.email}
             onChange={(e) =>
               setNotifications((prev) => ({

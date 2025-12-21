@@ -4,42 +4,33 @@ import { Dispatch, SetStateAction } from "react";
 
 interface SortButtonProps {
   DefaultBarChart: BarCharts[];
-  Barchart: BarCharts[];
   setBarChart: Dispatch<SetStateAction<BarCharts[]>>;
 }
 
-const SortButton = ({
-  Barchart,
-  setBarChart,
-  DefaultBarChart,
-}: SortButtonProps) => {
+const SortButton = ({ setBarChart, DefaultBarChart }: SortButtonProps) => {
   return (
     <div className="col-span-12">
       <div className="dropdown dropdown-start ms-5">
         <div
           tabIndex={0}
           role="button"
-          className="btn m-1 text-black dark:text-white"
+          className="btn m-1 text-white bg-zinc-950"
         >
           <span className="me-3">Sort</span>
           <Filter />
         </div>
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box z-1 w-44 p-2 shadow-sm"
+          className="dropdown-content menu bg-zinc-900 rounded-box z-1 w-44 p-2 shadow-sm"
         >
           <li>
             <div className="dropdown dropdown-right">
-              <div
-                tabIndex={0}
-                role="button"
-                className="m-1 text-black dark:text-white"
-              >
+              <div tabIndex={0} role="button" className="m-1 text-white">
                 By Priority
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-20 p-1 shadow-sm"
+                className="dropdown-content menu bg-zinc-900 rounded-box z-1 w-20 p-1 shadow-sm"
               >
                 <li>
                   <a
@@ -47,7 +38,7 @@ const SortButton = ({
                       setBarChart([...DefaultBarChart]);
                     }}
                   >
-                    <ArrowDown className="text-black dark:text-white" />
+                    <ArrowDown className="text-white" />
                   </a>
                 </li>
                 <li>
@@ -56,7 +47,7 @@ const SortButton = ({
                       setBarChart([...DefaultBarChart].reverse());
                     }}
                   >
-                    <ArrowUp className="text-black dark:text-white" />
+                    <ArrowUp className="text-white" />
                   </a>
                 </li>
               </ul>
@@ -64,16 +55,12 @@ const SortButton = ({
           </li>
           <li>
             <div className="dropdown dropdown-right">
-              <div
-                tabIndex={0}
-                role="button"
-                className="m-1 text-black dark:text-white"
-              >
+              <div tabIndex={0} role="button" className="m-1 text-white">
                 By Totalamounts
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-20 p-2 shadow-sm"
+                className="dropdown-content menu bg-zinc-900 rounded-box z-1 w-20 p-2 shadow-sm"
               >
                 <li>
                   <a
@@ -81,10 +68,9 @@ const SortButton = ({
                       setBarChart((prev) =>
                         [...prev].sort((a, b) => a.totalamount - b.totalamount)
                       );
-                      console.log(Barchart);
                     }}
                   >
-                    <ArrowDown className="text-black dark:text-white" />
+                    <ArrowDown className="text-white" />
                   </a>
                 </li>
                 <li>
@@ -95,7 +81,7 @@ const SortButton = ({
                       )
                     }
                   >
-                    <ArrowUp className="text-black dark:text-white" />
+                    <ArrowUp className="text-white" />
                   </a>
                 </li>
               </ul>
@@ -104,7 +90,7 @@ const SortButton = ({
           <li>
             <a
               onClick={() => setBarChart(DefaultBarChart)}
-              className="m-1 text-black dark:text-white"
+              className="m-1 text-white"
             >
               Default
             </a>
