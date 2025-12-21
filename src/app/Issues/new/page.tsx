@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { $Enums, Priority } from "@/generated/prisma";
+import { Priority } from "@/generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -22,7 +22,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 interface IssueForm {
   Title: string;
   Issue: string;
-  Priority: $Enums.Priority;
+  Priority: Priority;
 }
 
 const NewIssuePage = () => {
