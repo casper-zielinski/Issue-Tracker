@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  schemas   = ["auth", "public"]
+  provider = "postgresql"
+  schemas  = ["auth", "public"]
 }
 
 model Issue {
