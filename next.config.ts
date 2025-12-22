@@ -21,12 +21,11 @@ const nextConfig: import('next').NextConfig = {
     ],
   },
   webpack: (config) => {
-    if (config.resolve) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        '@/generated': path.resolve(__dirname, 'src/generated'),
-      };
-    }
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@/generated/prisma': path.resolve(__dirname, 'src/generated/prisma'),
+      '@/generated': path.resolve(__dirname, 'src/generated'),
+    };
     return config;
   },
 };
