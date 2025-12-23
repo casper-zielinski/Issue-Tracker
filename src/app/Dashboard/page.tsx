@@ -11,11 +11,16 @@ import {
 } from "recharts";
 import styles from "./BarCharts.module.css";
 import SortButton from "./SortButton";
-import { amount, BarCharts, Issue } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { BarCharts, Issue } from "./types";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import GradientOrbs from "../GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setIssuesCache } from "../../../redux/slices/issuesSlice";
+import { deserializeIssues, serializeIssues } from "@/hooks/serializeIssues";
+import { SetBarCharts } from "@/hooks/setIssues";
 
 /**
  * DashboardPage Component
@@ -30,191 +35,55 @@ import { DashboardIcon } from "@radix-ui/react-icons";
  */
 const DashboardPage = () => {
   // State management for issues data and chart configuration
-  const [issues, setIssues] = useState<Issue[]>();
+  const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
   const [barCharts, setBarCharts] = useState<BarCharts[]>([]);
   const [error, setError] = useState(false);
+  const issuesCache = useSelector(
+    (state: RootState) => state.issueState.issues
+  );
+  const dispatch: AppDispatch = useDispatch();
 
   /**
    * Fetches issues data from API endpoint
    * Used to populate dashboard charts and analytics
+   * calls the api if the cache is empty, otherwise uses the cache
    */
-  async function fetchIssues() {
-    try {
-      const {
-        data: {
-          data: { issues },
-        },
-      } = await axios.get("/api/issues");
-      setIssues(issues);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-      setLoading(false);
+  const fetchIssues = useCallback(async () => {
+    if (!issuesCache || issuesCache.length === 0) {
+      try {
+        const {
+          data: {
+            data: { issues },
+          },
+        } = await axios.get("/api/issues");
+        setIssues(issues);
+        dispatch(setIssuesCache({ issues: serializeIssues(issues) }));
+      } catch (error) {
+        console.error(error);
+        setError(true);
+      }
+    } else {
+      setIssues(deserializeIssues(issuesCache));
     }
-  }
+
+    setLoading(false);
+    return;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   useEffect(() => {
     fetchIssues();
-  }, []);
+  }, [fetchIssues]);
 
-  const defaultBarChart = useMemo(() => {
-    if (!issues || issues?.length < 0) return;
+  // to set the default barchart for the first render */
+  const defaultBarChart = SetBarCharts(issues);
 
-    const lowPriorityAmount: amount[] = [
-      {
-        amount:
-          issues?.filter(
-            (current) => current.Status === "OPEN" && current.Priority === "LOW"
-          ).length ?? 0,
-        Status: "OPEN",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "CLOSED" && current.Priority === "LOW"
-          ).length ?? 0,
-        Status: "CLOSED",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "IN_PROGRESS" && current.Priority === "LOW"
-          ).length ?? 0,
-        Status: "IN PROGRESS",
-      },
-    ];
-
-    const mediumPriorityAmount: amount[] = [
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "OPEN" && current.Priority === "MEDIUM"
-          ).length ?? 0,
-        Status: "OPEN",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "CLOSED" && current.Priority === "MEDIUM"
-          ).length ?? 0,
-        Status: "CLOSED",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "IN_PROGRESS" && current.Priority === "MEDIUM"
-          ).length ?? 0,
-        Status: "IN PROGRESS",
-      },
-    ];
-
-    const highPriorityAmount: amount[] = [
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "OPEN" && current.Priority === "HIGH"
-          ).length ?? 0,
-        Status: "OPEN",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "CLOSED" && current.Priority === "HIGH"
-          ).length ?? 0,
-        Status: "CLOSED",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "IN_PROGRESS" && current.Priority === "HIGH"
-          ).length ?? 0,
-        Status: "IN PROGRESS",
-      },
-    ];
-
-    const urgentPriorityAmount: amount[] = [
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "OPEN" && current.Priority === "URGENT"
-          ).length ?? 0,
-        Status: "OPEN",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "CLOSED" && current.Priority === "URGENT"
-          ).length ?? 0,
-        Status: "CLOSED",
-      },
-      {
-        amount:
-          issues?.filter(
-            (current) =>
-              current.Status === "IN_PROGRESS" && current.Priority === "URGENT"
-          ).length ?? 0,
-        Status: "IN PROGRESS",
-      },
-    ];
-
-    const barChartsValues: BarCharts[] = [
-      {
-        totalamount: lowPriorityAmount.reduce(
-          (prev, curr) => prev + curr.amount,
-          0
-        ),
-        amounts: lowPriorityAmount,
-        Style: styles.barShadowGreen,
-        title: "Low Priority",
-        Color: "Green",
-      },
-      {
-        totalamount: mediumPriorityAmount.reduce(
-          (prev, curr) => prev + curr.amount,
-          0
-        ),
-        amounts: mediumPriorityAmount,
-        Style: styles.barShadowBlue,
-        title: "Medium Priority",
-        Color: "Blue",
-      },
-      {
-        totalamount: highPriorityAmount.reduce(
-          (prev, curr) => prev + curr.amount,
-          0
-        ),
-        amounts: highPriorityAmount,
-        Style: styles.barShadowOrange,
-        title: "High Priority",
-        Color: "Orange",
-      },
-      {
-        totalamount: urgentPriorityAmount.reduce(
-          (prev, curr) => prev + curr.amount,
-          0
-        ),
-        amounts: urgentPriorityAmount,
-        Style: styles.barShadowRed,
-        title: "Urgent Priority",
-        Color: "Red",
-      },
-    ];
-
-    setBarCharts(barChartsValues);
-    return barChartsValues;
-  }, [issues]);
+  // setting the state barchart with the defaultbarchart state, which will change after using the sort button */
+  useEffect(() => {
+    setBarCharts(defaultBarChart);
+  }, [defaultBarChart]);
 
   return (
     <section className="p-3 pt-6 relative min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">

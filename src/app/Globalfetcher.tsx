@@ -4,7 +4,11 @@ import prisma from "@db/client";
 import AuthProvider from "./Auth";
 import { createClient } from "@/lib/supabase/server";
 
-const Globalfetcher = async () => {
+interface GlobalfetcherProps {
+  children: React.ReactNode;
+}
+
+const Globalfetcher = async ({ children }: GlobalfetcherProps) => {
   const supabase = await createClient();
 
   const userResponse = await supabase.auth.getUser();
@@ -19,7 +23,13 @@ const Globalfetcher = async () => {
   // do not call you own API's in Server Components if you can just use backend logic here
   const issues = await prisma.issue.findMany();
 
-  return <AuthProvider issues={issues} user={user} />;
+  console.log("GLOBAL FETCHER");
+
+  return (
+    <AuthProvider issues={issues} user={user}>
+      {children}
+    </AuthProvider>
+  );
 };
 
 export default Globalfetcher;

@@ -24,17 +24,18 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en">
         <body className="min-h-screen flex flex-col overflow-y-scroll scrollbar-hide">
-          <Globalfetcher />
-          <Theme
-            appearance="dark"
-            grayColor="sage"
-            radius="large"
-            scaling="100%"
-          >
-            <Nav />
-            <main className="flex-1 grow">{children}</main>
-            <Footer />
-          </Theme>
+          <Globalfetcher>
+            <Theme
+              appearance="dark"
+              grayColor="sage"
+              radius="large"
+              scaling="100%"
+            >
+              <Nav />
+              <main className="flex-1 grow">{children}</main>
+              <Footer />
+            </Theme>
+          </Globalfetcher>
         </body>
       </html>
     </StoreProvider>

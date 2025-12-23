@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
-import { Status, Priority } from "@/generated/prisma";
 import { Plus, Edit } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
 import { useRouter } from "next/navigation";
 import { AiOutlineIssuesClose } from "react-icons/ai";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { deserializeIssues, serializeIssues } from "@/hooks/serializeIssues";
+import { setIssuesCache } from "../../../redux/slices/issuesSlice";
+import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 
 /**
  * IssuePage Component
@@ -24,66 +28,43 @@ const IssuePage = () => {
   // State management for issues data and UI states
   const [issues, setIssues] = useState<Issue[]>();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const issuesCache = useSelector(
+    (state: RootState) => state.issueState.issues
+  );
+  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
 
   /**
    * Fetches all issues from the API endpoint
    * Updates loading and error states accordingly
    */
-  async function fetchIssues() {
-    try {
-      const {
-        data: {
-          data: { issues },
-        },
-      } = await axios.get("/api/issues");
-      setIssues(issues);
-    } catch (error) {
-      setError(true);
-      console.log("Error fetching data to the Issue Page: ", error);
-    } finally {
-      setLoading(true);
+  const fetchIssues = useCallback(async () => {
+    if (!issuesCache || issuesCache.length === 0) {
+      try {
+        const {
+          data: {
+            data: { issues },
+          },
+        } = await axios.get("/api/issues");
+        setIssues(issues);
+        dispatch(setIssuesCache({ issues: serializeIssues(issues) }));
+      } catch (error) {
+        setError(true);
+        console.log("Error fetching data to the Issue Page: ", error);
+      }
+    } else {
+      setIssues(deserializeIssues(issuesCache));
     }
-  }
 
-  /**
-   * Returns appropriate DaisyUI badge color class based on issue priority
-   * @param key - Priority enum value
-   * @returns CSS class string for badge styling
-   */
-  const getBadgeColorPriority = (key: Priority) => {
-    switch (key) {
-      case "LOW":
-        return "badge-success";
-      case "MEDIUM":
-        return "badge-info";
-      case "HIGH":
-        return "badge-warning";
-      case "URGENT":
-        return "badge-error";
-    }
-  };
-
-  /**
-   * Returns appropriate DaisyUI badge color class based on issue status
-   * @param key - Status enum value
-   * @returns CSS class string for badge styling
-   */
-  const getBadgeColorStatus = (key: Status) => {
-    switch (key) {
-      case "OPEN":
-        return "badge-error";
-      case "IN_PROGRESS":
-        return "badge-accent";
-      case "CLOSED":
-        return "badge-success";
-    }
-  };
+    setLoading(false);
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetchIssues();
-  }, []);
+  }, [fetchIssues]);
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
@@ -129,7 +110,7 @@ const IssuePage = () => {
         </div>
       )}
 
-      {issues?.length === 0 && loading && (
+      {issues?.length === 0 && !loading && (
         <div className="col-span-12 p-10 h-10 grid grid-cols-3 grid-flow-col md:justify-center">
           <div role="alert" className="alert alert-info col-span-3">
             <svg
@@ -153,7 +134,7 @@ const IssuePage = () => {
       )}
 
       <div className="grid grid-cols-12 gap-4 my-5">
-        {loading ? (
+        {!loading ? (
           issues?.map((issue) => (
             <div
               key={issue.id}
