@@ -3,12 +3,10 @@
  */
 export interface DataResponse {
   data: unknown;
-  status: number;
   message: string;
 }
 
 export interface ErrorResponse {
   error: unknown;
-  status: number;
   message: string;
 }

@@ -146,7 +146,7 @@ const Nav = () => {
       </div>
       <div className="avatar avatar-placeholder ml-auto">
         <div
-          className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full"
+          className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full cursor-pointer"
           onClick={() => router.push("/Settings")}
         >
           <span>

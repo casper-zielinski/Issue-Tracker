@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
 import { Plus, Edit } from "lucide-react";
@@ -34,13 +34,14 @@ const IssuePage = () => {
   );
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
+  const retry = useRef(false);
 
   /**
    * Fetches all issues from the API endpoint
    * Updates loading and error states accordingly
    */
   const fetchIssues = useCallback(async () => {
-    if (!issuesCache || issuesCache.length === 0) {
+    if (!issuesCache || issuesCache.length === 0 || retry.current) {
       try {
         const {
           data: {
@@ -65,6 +66,21 @@ const IssuePage = () => {
   useEffect(() => {
     fetchIssues();
   }, [fetchIssues]);
+
+  const editIssue = async (id: number) => {
+    try {
+      const response = await axios.patch(`/api/issues/${id}`, {
+        Title: "EDITED ISSUE!",
+      });
+
+      retry.current = true;
+      console.log(response);
+      fetchIssues();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
@@ -164,10 +180,7 @@ const IssuePage = () => {
                 </div>
                 <div
                   className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl"
-                  onClick={() => {
-                    console.log("issue id: ", issue.id);
-                    console.log("issue:", issue.Title);
-                  }}
+                  onClick={() => router.push(`Issues/edit/${issue.id}`)}
                 >
                   <Edit />
                 </div>

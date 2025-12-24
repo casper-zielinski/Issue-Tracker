@@ -4,10 +4,15 @@
 .Background{
       width: 100% !important;
       height: 100vh !important;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      position: relative;
-      background-image:linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.5)), url("/IssuePic.webp") ;
 }
 
+/* Verhindert das beim Modal die Maus nicht pointer ist wenn die maus außerhalb des modals ist (für das schließen des modals) */
+.modal-backdrop button {
+      cursor: auto !important;
+}
+
+/* Verhindert das Layout-Shift beim Modal öffnen */
+:root {
+  scrollbar-gutter: unset !important;
+  @apply bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 
+}
