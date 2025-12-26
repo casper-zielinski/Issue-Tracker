@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@db/client";
 import { DataResponse, ErrorResponse } from "@/Interfaces/APIInterfaces";
+import { PriorityArray } from "@/Constants/PriorityStatus";
 
-export const PriorityEnum = z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]);
+export const PriorityEnum = z.enum(PriorityArray);
 
 const createIssueSchema = z.object({
   Title: z.string().min(1, "Title is required").max(255),

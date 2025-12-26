@@ -5,7 +5,7 @@ import { Status, Priority } from "@/generated/prisma";
  * @param key - Priority enum value
  * @returns CSS class string for badge styling
  */
-export const getBadgeColorPriority = (key: Priority) => {
+export const getBadgeColorPriority = (key: Priority | string) => {
   switch (key) {
     case "LOW":
       return "badge-success";
@@ -15,6 +15,8 @@ export const getBadgeColorPriority = (key: Priority) => {
       return "badge-warning";
     case "URGENT":
       return "badge-error";
+    default:
+      throw new Error("Invalid Priority");
   }
 };
 
@@ -23,7 +25,7 @@ export const getBadgeColorPriority = (key: Priority) => {
  * @param key - Status enum value
  * @returns CSS class string for badge styling
  */
-export const getBadgeColorStatus = (key: Status) => {
+export const getBadgeColorStatus = (key: Status | string) => {
   switch (key) {
     case "OPEN":
       return "badge-error";
@@ -31,5 +33,7 @@ export const getBadgeColorStatus = (key: Status) => {
       return "badge-accent";
     case "CLOSED":
       return "badge-success";
+    default:
+      throw new Error("Invalid Status");
   }
 };

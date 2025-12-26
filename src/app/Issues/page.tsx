@@ -34,14 +34,13 @@ const IssuePage = () => {
   );
   const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
-  const retry = useRef(false);
 
   /**
    * Fetches all issues from the API endpoint
    * Updates loading and error states accordingly
    */
   const fetchIssues = useCallback(async () => {
-    if (!issuesCache || issuesCache.length === 0 || retry.current) {
+    if (!issuesCache || issuesCache.length === 0) {
       try {
         const {
           data: {
@@ -66,21 +65,6 @@ const IssuePage = () => {
   useEffect(() => {
     fetchIssues();
   }, [fetchIssues]);
-
-  const editIssue = async (id: number) => {
-    try {
-      const response = await axios.patch(`/api/issues/${id}`, {
-        Title: "EDITED ISSUE!",
-      });
-
-      retry.current = true;
-      console.log(response);
-      fetchIssues();
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">

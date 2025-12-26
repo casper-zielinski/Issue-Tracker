@@ -3,9 +3,10 @@ import prisma from "@db/client";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { PriorityEnum } from "../route";
-import { Prisma } from "@/generated/prisma";
+import { Issue, Prisma } from "@/generated/prisma";
+import { StatusArray } from "@/Constants/PriorityStatus";
 
-const StatusEnum = z.enum(["OPEN", "CLOSED", "IN PROGRESS"]);
+const StatusEnum = z.enum(StatusArray);
 
 const updateIssueSchema = z.object({
   Title: z.string().min(1, "Title is required").max(255).optional(),
@@ -13,6 +14,61 @@ const updateIssueSchema = z.object({
   Priority: PriorityEnum.default("MEDIUM").optional(),
   Status: StatusEnum.default("OPEN").optional(),
 });
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: number }> }
+) {
+  const id = parseInt((await params).id.toString());
+
+  if (!id) {
+    return NextResponse.json(
+      {
+        error: "No Id Provided",
+        message: `ID is not provided, look at the type of the id and if it exists`,
+      } as ErrorResponse,
+      { status: 400 }
+    );
+  }
+
+  try {
+    const issue: Issue | null = await prisma.issue.findUnique({
+      where: { id: id },
+    });
+
+    if (!issue) {
+      return NextResponse.json(
+        {
+          error: "Issue not found",
+          message: "The Issue with this ID was not found",
+        } as ErrorResponse,
+        {
+          status: 404,
+        }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        data: {
+          issue: issue,
+          id: id,
+        },
+        message: "Successfully got issue with id",
+      } as DataResponse,
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        error: error,
+        message: `Error getting Issue with id: ${id}`,
+      } as ErrorResponse,
+      { status: 500 }
+    );
+  }
+}
 
 /**
  * patch method to edit the issues
