@@ -16,10 +16,6 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import GradientOrbs from "../GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import { AppDispatch, RootState } from "../../../redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { setIssuesCache } from "../../../redux/slices/issuesSlice";
-import { deserializeIssues, serializeIssues } from "@/hooks/serializeIssues";
 import { SetBarCharts } from "@/hooks/setIssues";
 
 /**
@@ -39,39 +35,26 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [barCharts, setBarCharts] = useState<BarCharts[]>([]);
   const [error, setError] = useState(false);
-  const issuesCache = useSelector(
-    (state: RootState) => state.issueState.issues
-  );
-  const dispatch: AppDispatch = useDispatch();
 
   /**
    * Fetches issues data from API endpoint
    * Used to populate dashboard charts and analytics
-   * calls the api if the cache is empty, otherwise uses the cache
    */
   const fetchIssues = useCallback(async () => {
-    if (!issuesCache || issuesCache.length === 0) {
-      try {
-        const {
-          data: {
-            data: { issues },
-          },
-        } = await axios.get("/api/issues");
-        setIssues(issues);
-        dispatch(setIssuesCache({ issues: serializeIssues(issues) }));
-      } catch (error) {
-        console.error(error);
-        setError(true);
-      }
-    } else {
-      setIssues(deserializeIssues(issuesCache));
+    try {
+      const {
+        data: {
+          data: { issues },
+        },
+      } = await axios.get("/api/issues");
+      setIssues(issues);
+    } catch (error) {
+      console.error(error);
+      setError(true);
     }
 
     setLoading(false);
-    return;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     fetchIssues();

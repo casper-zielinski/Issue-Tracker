@@ -16,20 +16,22 @@ const updateIssueSchema = z.object({
 });
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  _: NextRequest,
+  { params }: { params: Promise<{ id: number }> },
 ) {
-  const id = parseInt((await params).id.toString());
-
-  if (!id) {
+  const awaitedParams = await params;
+  if (!awaitedParams || !awaitedParams.id) {
     return NextResponse.json(
       {
         error: "No Id Provided",
         message: `ID is not provided, look at the type of the id and if it exists`,
       } as ErrorResponse,
-      { status: 400 }
+      { status: 400 },
     );
   }
+
+  // parsting to int, otherwise prisma will recognize this as a string
+  const id = parseInt(awaitedParams.id.toString());
 
   try {
     const issue: Issue | null = await prisma.issue.findUnique({
@@ -44,7 +46,7 @@ export async function GET(
         } as ErrorResponse,
         {
           status: 404,
-        }
+        },
       );
     }
 
@@ -56,7 +58,7 @@ export async function GET(
         },
         message: "Successfully got issue with id",
       } as DataResponse,
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
@@ -65,7 +67,7 @@ export async function GET(
         error: error,
         message: `Error getting Issue with id: ${id}`,
       } as ErrorResponse,
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -75,7 +77,7 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  { params }: { params: Promise<{ id: number }> },
 ) {
   try {
     const body = await request.json();
@@ -88,7 +90,7 @@ export async function PATCH(
         } as ErrorResponse,
         {
           status: 401,
-        }
+        },
       );
     }
 
@@ -115,14 +117,14 @@ export async function PATCH(
         },
         message: "Successfully updated issue",
       } as DataResponse,
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     if (error instanceof Prisma.PrismaClientValidationError) {
       return NextResponse.json(
         { error: error.cause, message: error.message } as ErrorResponse,
-        { status: 500 }
+        { status: 500 },
       );
     } else {
       return NextResponse.json(
@@ -132,13 +134,16 @@ export async function PATCH(
         } as ErrorResponse,
         {
           status: 500,
-        }
+        },
       );
     }
   }
 }
 
-export async function DELETE({ params }: { params: Promise<{ id: number }> }) {
+export async function DELETE(
+  _: NextRequest,
+  { params }: { params: Promise<{ id: number }> },
+) {
   try {
     const id = (await params).id;
 
@@ -151,7 +156,7 @@ export async function DELETE({ params }: { params: Promise<{ id: number }> }) {
         } as ErrorResponse,
         {
           status: 404,
-        }
+        },
       );
     }
 
@@ -168,7 +173,7 @@ export async function DELETE({ params }: { params: Promise<{ id: number }> }) {
         },
         message: `Successfully deleted the Issue with the ID ${id}`,
       } as DataResponse,
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
@@ -176,7 +181,7 @@ export async function DELETE({ params }: { params: Promise<{ id: number }> }) {
         error: "Internal Server Error: \n" + error,
         message: "A Error in the Delete Function of a Single Issue occured",
       } as ErrorResponse,
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

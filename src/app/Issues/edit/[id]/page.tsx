@@ -1,29 +1,20 @@
 "use client";
 
 import { use, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../../redux/store";
 import { notFound, useRouter } from "next/navigation";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
-import { Edit, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import axios, { AxiosError } from "axios";
-import {
-  appendIssueCache,
-  editIssue,
-} from "../../../../../redux/slices/issuesSlice";
-import { serializeIssues } from "@/hooks/serializeIssues";
 import { useForm } from "react-hook-form";
 import { PriorityArray, StatusArray } from "@/Constants/PriorityStatus";
 import { Priority, Status } from "@/generated/prisma";
+import { Issue } from "@/app/Dashboard/types";
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const [loading, setLoading] = useState(true);
+  const [issue, setIssue] = useState<Issue | null>(null);
   const router = useRouter();
-  const dispatch: AppDispatch = useDispatch();
-  const issue = useSelector((state: RootState) =>
-    state.issueState.issues.find((issue) => issue.id.toString() === id)
-  );
 
   interface EditIssue {
     Title?: string;
@@ -49,7 +40,13 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const fetchIssues = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/issues/${id}`);
-      dispatch(appendIssueCache(serializeIssues([data.data.issue])));
+      const fetched = data.data.issue;
+      setIssue(fetched);
+      setValue("Title", fetched.Title);
+      setValue("Issue", fetched.Issue);
+      setValue("Priority", fetched.Priority.toString());
+      setValue("Status", fetched.Status.toString());
+      setLoading(false);
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError) {
@@ -58,22 +55,18 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
         }
       }
     }
-  }, [dispatch, id]);
+  }, [id, setValue]);
 
   useEffect(() => {
-    if (issue && issue.id) {
-      setLoading(false);
-    } else {
-      fetchIssues();
-    }
-  }, [issue, fetchIssues]);
+    fetchIssues();
+  }, [fetchIssues]);
 
   const onSubmit = async (data: EditIssue) => {
     try {
-      dispatch(editIssue(data));
       await axios.patch(`/api/issues/${id}`, {
         ...data,
-        Status: data.Status?.replace(" ", "_"),
+        Status: data.Status,
+        Priority: data.Priority
       });
       router.push("/Issues");
     } catch (error) {
@@ -114,7 +107,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
               <p className="text-gray-500 my-1">Describtion:</p>
               <textarea
                 required
-                className="my-1 bg-black p-2 rounded w-full"
+                className="my-1 bg-black p-2 rounded w-full min-h-10 max-h-60"
                 placeholder={issue.Issue}
                 {...register("Issue")}
               />

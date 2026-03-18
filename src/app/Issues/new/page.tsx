@@ -9,9 +9,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Priority } from "@/generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
-import { AppDispatch } from "../../../../redux/store";
-import { useDispatch } from "react-redux";
-import { appendIssueCache } from "../../../../redux/slices/issuesSlice";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -38,12 +35,10 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [textShower, setTextShower] = useState(true);
-  const dispatch: AppDispatch = useDispatch();
 
   async function postToApi(issueForm: IssueForm) {
     try {
-      const { data } = await axios.post("/api/issues", issueForm);
-      dispatch(appendIssueCache({ issue: data.data.newIssue }));
+      await axios.post("/api/issues", issueForm);
       router.push("/Issues");
     } catch {
       setError("An Error Occurred");

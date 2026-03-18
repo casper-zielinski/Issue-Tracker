@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
 import { Plus, Edit } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
 import { useRouter } from "next/navigation";
 import { AiOutlineIssuesClose } from "react-icons/ai";
-import { AppDispatch, RootState } from "../../../redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { deserializeIssues, serializeIssues } from "@/hooks/serializeIssues";
-import { setIssuesCache } from "../../../redux/slices/issuesSlice";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 
 /**
@@ -29,10 +25,6 @@ const IssuePage = () => {
   const [issues, setIssues] = useState<Issue[]>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const issuesCache = useSelector(
-    (state: RootState) => state.issueState.issues
-  );
-  const dispatch: AppDispatch = useDispatch();
   const router = useRouter();
 
   /**
@@ -40,26 +32,19 @@ const IssuePage = () => {
    * Updates loading and error states accordingly
    */
   const fetchIssues = useCallback(async () => {
-    if (!issuesCache || issuesCache.length === 0) {
-      try {
-        const {
-          data: {
-            data: { issues },
-          },
-        } = await axios.get("/api/issues");
-        setIssues(issues);
-        dispatch(setIssuesCache({ issues: serializeIssues(issues) }));
-      } catch (error) {
-        setError(true);
-        console.log("Error fetching data to the Issue Page: ", error);
-      }
-    } else {
-      setIssues(deserializeIssues(issuesCache));
+    try {
+      const {
+        data: {
+          data: { issues },
+        },
+      } = await axios.get("/api/issues");
+      setIssues(issues);
+    } catch (error) {
+      setError(true);
+      console.log("Error fetching data to the Issue Page: ", error);
     }
 
     setLoading(false);
-    return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -149,14 +134,14 @@ const IssuePage = () => {
                 <div className="col-span-1 flex">
                   <span
                     className={`badge ${getBadgeColorPriority(
-                      issue.Priority
+                      issue.Priority,
                     )} m-2`}
                   >
                     {issue?.Priority}
                   </span>
                   <span
                     className={`badge badge-soft ${getBadgeColorStatus(
-                      issue?.Status
+                      issue?.Status,
                     )} m-2`}
                   >
                     {issue?.Status}
@@ -166,7 +151,7 @@ const IssuePage = () => {
                   className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl"
                   onClick={() => router.push(`Issues/edit/${issue.id}`)}
                 >
-                  <Edit />
+                  <Edit className="cursor-pointer" />
                 </div>
               </div>
             </div>
