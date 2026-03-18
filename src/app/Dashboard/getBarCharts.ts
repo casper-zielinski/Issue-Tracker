@@ -2,9 +2,9 @@ import { BarCharts, amount } from "@/app/Dashboard/types";
 import { Issue } from "@/generated/prisma";
 import styles from "./BarCharts.module.css";
 
-export function getBarChartsFromIssues(issues?: Issue[]): BarCharts[] {
-  if (!issues || (issues.length === 0)) {
-    return [];
+export function getBarChartsFromIssues(issues?: Issue[]): BarCharts[] | null {
+  if (!issues || issues.length === 0) {
+    return null;
   }
 
   const lowPriorityAmount: amount[] = [
@@ -28,7 +28,7 @@ export function getBarChartsFromIssues(issues?: Issue[]): BarCharts[] {
       Status: "IN PROGRESS",
     },
   ];
-  console.log(lowPriorityAmount);
+
   const mediumPriorityAmount: amount[] = [
     {
       amount: issues.filter(

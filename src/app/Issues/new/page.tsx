@@ -11,6 +11,8 @@ import { Priority } from "@/generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
 import { NewIssue } from "@/Interfaces/APIInterfaces";
 import { createIssueSchema } from "@/lib/validations/issues";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -31,10 +33,11 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [textShower, setTextShower] = useState(true);
+  const userId = useSelector((state: RootState) => state.userState.id)
 
   async function postToApi(issueForm: NewIssue) {
     try {
-      const validation = createIssueSchema.safeParse(issueForm);
+      const validation = createIssueSchema.safeParse({...issueForm, author: userId } as NewIssue);
       if (!validation.success) {
         setError("Invalid Data Provided");
         return;

@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
         Title: body.Title,
         Issue: body.Issue,
         Priority: body.Priority,
+        author: body.author,
       } as NewIssue,
     });
 

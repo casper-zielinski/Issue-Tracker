@@ -14,7 +14,7 @@ interface AuthProps {
 const Auth = ({ user, children }: AuthProps) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const fetchIssues = useCallback(() => {
+  const fetchUser = useCallback(() => {
     if (!user || !user.id) {
       dispatch(signOut());
     } else {
@@ -24,8 +24,8 @@ const Auth = ({ user, children }: AuthProps) => {
   }, [dispatch, user]);
 
   useEffect(() => {
-    fetchIssues();
-  }, [fetchIssues]);
+    fetchUser();
+  }, [fetchUser]);
 
   return <>{children}</>;
 };

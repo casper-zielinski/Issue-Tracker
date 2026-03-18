@@ -19,11 +19,7 @@ const Globalfetcher = async ({ children }: GlobalfetcherProps) => {
     bio: "",
   };
 
-  return (
-    <AuthProvider user={user}>
-      {children}
-    </AuthProvider>
-  );
+  return <AuthProvider user={user}>{children}</AuthProvider>;
 };
 
 export default Globalfetcher;

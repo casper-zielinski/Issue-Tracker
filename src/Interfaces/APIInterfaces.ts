@@ -17,4 +17,5 @@ export interface NewIssue {
   Title: string;
   Issue: string;
   Priority: Priority;
+  author: string
 }

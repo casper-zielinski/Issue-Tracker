@@ -1,4 +1,4 @@
-import { amount } from "@/app/Dashboard/types";
+import { amount, BarCharts } from "@/app/Dashboard/types";
 import styles from "../app/Dashboard/BarCharts.module.css";
 
 /**
@@ -6,7 +6,7 @@ import styles from "../app/Dashboard/BarCharts.module.css";
  * could not load issues
  * @todo to use a PlaceHolderBarChart
  */
-export const PlaceholderBarCharts = [
+export const PlaceholderBarCharts : BarCharts[] = [
   {
     totalamount: 0,
     amounts: [

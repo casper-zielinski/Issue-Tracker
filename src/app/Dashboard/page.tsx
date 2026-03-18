@@ -6,13 +6,13 @@ import Chart from "./Chart";
 import prisma from "@db/client";
 import { getBarChartsFromIssues } from "@/app/Dashboard/getBarCharts";
 import { BarCharts } from "./types";
+import { PlaceholderBarCharts } from "@/Constants/PlaceHolderCharts";
 
 const DashboardPage = async () => {
   let error = false;
   const getBarChartDataFromServer = async () => {
     try {
       const issues = await prisma.issue.findMany();
-      console.log(issues);
       return getBarChartsFromIssues(issues);
     } catch (err) {
       console.error(err);
@@ -21,7 +21,7 @@ const DashboardPage = async () => {
     }
   };
 
-  const barCharts: BarCharts[] = (await getBarChartDataFromServer()) || [];
+  const barCharts: BarCharts[] = (await getBarChartDataFromServer()) || PlaceholderBarCharts;
 
   return (
     <section className="p-3 pt-6 relative min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">

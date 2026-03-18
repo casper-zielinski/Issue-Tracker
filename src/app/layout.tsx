@@ -6,6 +6,7 @@ import { Theme } from "@radix-ui/themes";
 import Footer from "./Footer";
 import StoreProvider from "../../redux/StoreProvider";
 import Globalfetcher from "./Globalfetcher";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
@@ -34,6 +35,7 @@ export default function RootLayout({
               <Nav />
               <main className="flex-1 grow">{children}</main>
               <Footer />
+              <Toaster richColors theme="dark" />
             </Theme>
           </Globalfetcher>
         </body>
