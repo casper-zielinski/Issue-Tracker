@@ -1,13 +1,11 @@
-"use client";
+"use server";
 
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { Issue } from "../Dashboard/types";
 import { Plus, Edit } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
-import { useRouter } from "next/navigation";
 import { AiOutlineIssuesClose } from "react-icons/ai";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
+import prisma from "@db/client";
+import Link from "next/link";
 
 /**
  * IssuePage Component
@@ -20,36 +18,19 @@ import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
  * - Error handling with user-friendly alerts
  * - Navigation to create new issues and edit existing ones
  */
-const IssuePage = () => {
-  // State management for issues data and UI states
-  const [issues, setIssues] = useState<Issue[]>();
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  /**
-   * Fetches all issues from the API endpoint
-   * Updates loading and error states accordingly
-   */
-  const fetchIssues = useCallback(async () => {
+const IssuePage = async () => {
+  let error: boolean = false;
+  const getIssues = async () => {
     try {
-      const {
-        data: {
-          data: { issues },
-        },
-      } = await axios.get("/api/issues");
-      setIssues(issues);
-    } catch (error) {
-      setError(true);
-      console.log("Error fetching data to the Issue Page: ", error);
+      return (await prisma.issue.findMany()) || [];
+    } catch (err) {
+      console.error(err);
+      error = true;
+      return;
     }
+  };
 
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchIssues();
-  }, [fetchIssues]);
+  const issues = await getIssues();
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
@@ -60,13 +41,10 @@ const IssuePage = () => {
         </h1>
         <p className="text-gray-300 text-lg">View and Edit your Issues</p>
         <div className="self-start my-5">
-          <button
-            className="btn btn-primary btn-md"
-            onClick={() => router.push("/Issues/new")}
-          >
+          <Link className="btn btn-primary btn-md" href={"/Issues/new"}>
             New Issue
             <Plus />
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -95,7 +73,7 @@ const IssuePage = () => {
         </div>
       )}
 
-      {issues?.length === 0 && !loading && (
+      {issues?.length === 0 && (
         <div className="col-span-12 p-10 h-10 grid grid-cols-3 grid-flow-col md:justify-center">
           <div role="alert" className="alert alert-info col-span-3">
             <svg
@@ -119,51 +97,42 @@ const IssuePage = () => {
       )}
 
       <div className="grid grid-cols-12 gap-4 my-5">
-        {!loading ? (
-          issues?.map((issue) => (
-            <div
-              key={issue.id}
-              className="bg-gray-900 max-h-52 p-3 my-1 w-full text-white col-span-12 md:col-span-6 rounded hover:scale-101 hover:-translate-y-0.5 transition-all"
-            >
-              <p className="text-xl font-bold text-blue-400 mb-2">
-                {issue.Title}
-              </p>
-              <p className="text-gray-500 my-1">Describtion:</p>
-              <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
-              <div className="grid grid-cols-4 space-x-7 items-center">
-                <div className="col-span-1 flex">
-                  <span
-                    className={`badge ${getBadgeColorPriority(
-                      issue.Priority,
-                    )} m-2`}
-                  >
-                    {issue?.Priority}
-                  </span>
-                  <span
-                    className={`badge badge-soft ${getBadgeColorStatus(
-                      issue?.Status,
-                    )} m-2`}
-                  >
-                    {issue?.Status}
-                  </span>
-                </div>
-                <div
-                  className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl"
-                  onClick={() => router.push(`Issues/edit/${issue.id}`)}
+        {issues?.map((issue) => (
+          <div
+            key={issue.id}
+            className="bg-gray-900 max-h-52 p-3 my-1 w-full text-white col-span-12 md:col-span-6 rounded hover:scale-101 hover:-translate-y-0.5 transition-all"
+          >
+            <p className="text-xl font-bold text-blue-400 mb-2">
+              {issue.Title}
+            </p>
+            <p className="text-gray-500 my-1">Describtion:</p>
+            <p className="my-1 bg-black p-2 rounded">{issue?.Issue}</p>
+            <div className="grid grid-cols-4 space-x-7 items-center">
+              <div className="col-span-1 flex">
+                <span
+                  className={`badge ${getBadgeColorPriority(
+                    issue.Priority,
+                  )} m-2`}
                 >
-                  <Edit className="cursor-pointer" />
-                </div>
+                  {issue?.Priority}
+                </span>
+                <span
+                  className={`badge badge-soft ${getBadgeColorStatus(
+                    issue?.Status,
+                  )} m-2`}
+                >
+                  {issue?.Status}
+                </span>
               </div>
+              <Link
+                className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl cursor-pointer"
+                href={`/Issues/edit/${issue.id}`}
+              >
+                <Edit />
+              </Link>
             </div>
-          ))
-        ) : (
-          <>
-            <div className="bg-gray-500 animate-pulse col-span-12 md:col-span-6 w-full h-60 rounded"></div>
-            <div className="bg-gray-500 animate-pulse col-span-12 md:col-span-6 w-full h-60 rounded"></div>
-            <div className="bg-gray-500 animate-pulse col-span-12 md:col-span-6 w-full h-60 rounded"></div>
-            <div className="bg-gray-500 animate-pulse col-span-12 md:col-span-6 w-full h-60 rounded"></div>
-          </>
-        )}
+          </div>
+        ))}
       </div>
       <GradientOrbs classname="top-32 left-8 w-24 h-24 -z-10" />
       <GradientOrbs classname="bottom-10 right-8 w-96 h-96 -z-10" />
