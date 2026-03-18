@@ -11,6 +11,17 @@ export interface Issue {
   author: string | null;
 }
 
+export interface IssueSerializable {
+  id: number;
+  Title: string;
+  Issue: string;
+  Status: $Enums.Status;
+  Priority: $Enums.Priority;
+  createdAt: string;
+  updatedAt: string;
+  author: string | null;
+}
+
 export interface amount {
   amount: number;
   Status: string;

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Issue } from "../Dashboard/types";
-import { $Enums } from "@/generated/prisma";
 import { Plus, Edit } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
 import { useRouter } from "next/navigation";
 import { AiOutlineIssuesClose } from "react-icons/ai";
+import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 
 /**
  * IssuePage Component
@@ -24,62 +24,32 @@ const IssuePage = () => {
   // State management for issues data and UI states
   const [issues, setIssues] = useState<Issue[]>();
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   /**
    * Fetches all issues from the API endpoint
    * Updates loading and error states accordingly
    */
-  async function fetchIssues() {
+  const fetchIssues = useCallback(async () => {
     try {
-      const { data } = await axios.get("/api/issues");
-      setIssues(data);
+      const {
+        data: {
+          data: { issues },
+        },
+      } = await axios.get("/api/issues");
+      setIssues(issues);
     } catch (error) {
       setError(true);
       console.log("Error fetching data to the Issue Page: ", error);
-    } finally {
-      setLoading(true);
     }
-  }
 
-  /**
-   * Returns appropriate DaisyUI badge color class based on issue priority
-   * @param key - Priority enum value
-   * @returns CSS class string for badge styling
-   */
-  const getBadgeColorPriority = (key: $Enums.Priority) => {
-    switch (key) {
-      case "LOW":
-        return "badge-success";
-      case "MEDIUM":
-        return "badge-info";
-      case "HIGH":
-        return "badge-warning";
-      case "URGENT":
-        return "badge-error";
-    }
-  };
-
-  /**
-   * Returns appropriate DaisyUI badge color class based on issue status
-   * @param key - Status enum value
-   * @returns CSS class string for badge styling
-   */
-  const getBadgeColorStatus = (key: $Enums.Status) => {
-    switch (key) {
-      case "OPEN":
-        return "badge-error";
-      case "IN_PROGRESS":
-        return "badge-accent";
-      case "CLOSED":
-        return "badge-success";
-    }
-  };
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     fetchIssues();
-  }, []);
+  }, [fetchIssues]);
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
@@ -125,7 +95,7 @@ const IssuePage = () => {
         </div>
       )}
 
-      {issues?.length === 0 && loading && (
+      {issues?.length === 0 && !loading && (
         <div className="col-span-12 p-10 h-10 grid grid-cols-3 grid-flow-col md:justify-center">
           <div role="alert" className="alert alert-info col-span-3">
             <svg
@@ -149,7 +119,7 @@ const IssuePage = () => {
       )}
 
       <div className="grid grid-cols-12 gap-4 my-5">
-        {loading ? (
+        {!loading ? (
           issues?.map((issue) => (
             <div
               key={issue.id}
@@ -164,14 +134,14 @@ const IssuePage = () => {
                 <div className="col-span-1 flex">
                   <span
                     className={`badge ${getBadgeColorPriority(
-                      issue.Priority
+                      issue.Priority,
                     )} m-2`}
                   >
                     {issue?.Priority}
                   </span>
                   <span
                     className={`badge badge-soft ${getBadgeColorStatus(
-                      issue?.Status
+                      issue?.Status,
                     )} m-2`}
                   >
                     {issue?.Status}
@@ -179,12 +149,9 @@ const IssuePage = () => {
                 </div>
                 <div
                   className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl"
-                  onClick={() => {
-                    console.log("issue id: ", issue.id);
-                    console.log("issue:", issue.Title);
-                  }}
+                  onClick={() => router.push(`Issues/edit/${issue.id}`)}
                 >
-                  <Edit />
+                  <Edit className="cursor-pointer" />
                 </div>
               </div>
             </div>

@@ -1,3 +1,5 @@
+"use server";
+
 import React from "react";
 import GradientOrbs from "./GradientOrbs";
 import CTAButtons from "./components/CTAButtons";

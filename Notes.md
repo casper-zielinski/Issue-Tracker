@@ -1129,3 +1129,20 @@ Error [PrismaClientInitializationError]: Prisma has detected that this project w
 2. Set environment variables in Vercel:
 
     - `DATABASE_URL` = your database connection string (also in your .env file)
+
+### API's
+
+dynamic api's (so dynamic url's) also like in the frontend strucutre of the project routing need dynamic routes, which are made via [:dynamic] folder names.
+
+```tree
+———— app
+—————— api
+———————— issues
+——————————— [id]
+```
+
+now in the folder `[id]` you can use the ` { params }: { params: Promise<{ id: number }> }` Parameter (for example), getting the id is: 
+
+```
+const id = (await params).id;
+```

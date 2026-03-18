@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Settings,
   User,
@@ -46,8 +46,15 @@ const SettingsPage = () => {
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [logedIn, setLogedIn] = useState(true);
   const dispatch: AppDispatch = useDispatch();
-  const logedIn = useSelector((state: RootState) => state.logInState.logedIn);
+  const logedInState = useSelector(
+    (state: RootState) => state.logInState.logedIn
+  );
+
+  useEffect(() => {
+    if (!logedInState) setLogedIn(false);
+  }, [logedInState]);
 
   const handleSave = () => {
     setShowSaveSuccess(true);

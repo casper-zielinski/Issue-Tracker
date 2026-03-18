@@ -87,14 +87,6 @@ const SortButton = ({ setBarChart, DefaultBarChart }: SortButtonProps) => {
               </ul>
             </div>
           </li>
-          <li>
-            <a
-              onClick={() => setBarChart(DefaultBarChart)}
-              className="m-1 text-white"
-            >
-              Default
-            </a>
-          </li>
         </ul>
       </div>
     </div>

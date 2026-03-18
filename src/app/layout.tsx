@@ -5,13 +5,14 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import Footer from "./Footer";
 import StoreProvider from "../../redux/StoreProvider";
-import AuthProvider from "./Auth";
+import Globalfetcher from "./Globalfetcher";
 
 export const metadata: Metadata = {
   title: "Issue Tracker",
   description:
     "A Issue Tracker to Track your Issues and hopefully resolve them",
   applicationName: "Issue Tracker",
+  keywords: "Issue, Issue Tracker, Problem, Solving, Editing, Markdown",
 };
 
 export default function RootLayout({
@@ -22,8 +23,8 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="min-h-screen flex flex-col overflow-y-scroll scrollbar-hide">
-          <AuthProvider>
+        <body className="min-h-screen flex flex-col overflow-y-scroll scrollbar-hide bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
+          <Globalfetcher>
             <Theme
               appearance="dark"
               grayColor="sage"
@@ -34,7 +35,7 @@ export default function RootLayout({
               <main className="flex-1 grow">{children}</main>
               <Footer />
             </Theme>
-          </AuthProvider>
+          </Globalfetcher>
         </body>
       </html>
     </StoreProvider>

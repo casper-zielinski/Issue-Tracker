@@ -7,8 +7,10 @@ import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { $Enums, Priority } from "@/generated/prisma";
+import { Priority } from "@/generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
+import { NewIssue } from "@/Interfaces/APIInterfaces";
+import { createIssueSchema } from "@/lib/validations/issues";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -19,14 +21,8 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ),
 });
 
-interface IssueForm {
-  Title: string;
-  Issue: string;
-  Priority: $Enums.Priority;
-}
-
 const NewIssuePage = () => {
-  const { register, control, handleSubmit } = useForm<IssueForm>({
+  const { register, control, handleSubmit } = useForm<NewIssue>({
     defaultValues: {
       Priority: "MEDIUM",
     },
@@ -36,9 +32,14 @@ const NewIssuePage = () => {
   const [priority, setPriority] = useState("MEDIUM");
   const [textShower, setTextShower] = useState(true);
 
-  async function postToApi(data: IssueForm) {
+  async function postToApi(issueForm: NewIssue) {
     try {
-      await axios.post("/api/issues", data);
+      const validation = createIssueSchema.safeParse(issueForm);
+      if (!validation.success) {
+        setError("Invalid Data Provided");
+        return;
+      }
+      await axios.post("/api/issues", issueForm);
       router.push("/Issues");
     } catch {
       setError("An Error Occurred");
