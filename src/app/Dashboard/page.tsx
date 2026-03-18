@@ -1,72 +1,27 @@
-"use client";
+"use server";
 
-import {
-  BarChart,
-  Bar,
-  CartesianGrid,
-  Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-} from "recharts";
-import styles from "./BarCharts.module.css";
-import SortButton from "./SortButton";
-import { BarCharts, Issue } from "./types";
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import GradientOrbs from "../GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import { SetBarCharts } from "@/hooks/setIssues";
+import Chart from "./Chart";
+import prisma from "@db/client";
+import { getBarChartsFromIssues } from "@/app/Dashboard/getBarCharts";
+import { BarCharts } from "./types";
 
-/**
- * DashboardPage Component
- *
- * A comprehensive analytics dashboard that visualizes issue data using Recharts.
- * Features include:
- * - Interactive bar charts showing issues by priority and status
- * - Sorting functionality for chart data
- * - Real-time data fetching from API
- * - Responsive chart design with loading states
- * - Color-coded priority visualization (Low: Green, Medium: Blue, High: Orange, Urgent: Red)
- */
-const DashboardPage = () => {
-  // State management for issues data and chart configuration
-  const [issues, setIssues] = useState<Issue[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [barCharts, setBarCharts] = useState<BarCharts[]>([]);
-  const [error, setError] = useState(false);
-
-  /**
-   * Fetches issues data from API endpoint
-   * Used to populate dashboard charts and analytics
-   */
-  const fetchIssues = useCallback(async () => {
+const DashboardPage = async () => {
+  let error = false;
+  const getBarChartDataFromServer = async () => {
     try {
-      const {
-        data: {
-          data: { issues },
-        },
-      } = await axios.get("/api/issues");
-      setIssues(issues);
-    } catch (error) {
-      console.error(error);
-      setError(true);
+      const issues = await prisma.issue.findMany();
+      console.log(issues);
+      return getBarChartsFromIssues(issues);
+    } catch (err) {
+      console.error(err);
+      error = true;
+      return;
     }
+  };
 
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchIssues();
-  }, [fetchIssues]);
-
-  // to set the default barchart for the first render */
-  const defaultBarChart = SetBarCharts(issues);
-
-  // setting the state barchart with the defaultbarchart state, which will change after using the sort button */
-  useEffect(() => {
-    setBarCharts(defaultBarChart);
-  }, [defaultBarChart]);
+  const barCharts: BarCharts[] = (await getBarChartDataFromServer()) || [];
 
   return (
     <section className="p-3 pt-6 relative min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">
@@ -79,10 +34,10 @@ const DashboardPage = () => {
           View your Issues under a Dashboard
         </p>
         <div className="justify-self-start my-5">
-          <SortButton
+          {/* <SortButton
             DefaultBarChart={defaultBarChart || barCharts}
             setBarChart={setBarCharts}
-          />
+          /> */}
         </div>
       </div>
 
@@ -112,8 +67,7 @@ const DashboardPage = () => {
       )}
 
       <div className="grid gap-y-7 grid-cols-12 py-5">
-        {!loading &&
-          !error &&
+        {!error &&
           barCharts?.map((chart, index) => (
             <div
               className={`w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
@@ -126,36 +80,11 @@ const DashboardPage = () => {
                     Total Amount of Issues: {chart.totalamount}
                   </div>
                 </h2>
-                <ResponsiveContainer width="100%" height="80%">
-                  <BarChart data={chart?.amounts} title={chart.title}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="Status" className={styles.barText} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="amount" fill={chart.Color} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <Chart chartData={chart} />
               </>
             </div>
           ))}
       </div>
-
-      {!error && loading && (
-        <div className="grid gap-y-7 grid-cols-12 py-4">
-          <div
-            className={`w-11/12 h-52 xl:h-72 bg-gray-500 border-16 border-gray-500 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
-          ></div>
-          <div
-            className={`w-11/12 h-52 xl:h-72 bg-gray-500 border-16 border-gray-500 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
-          ></div>
-          <div
-            className={`w-11/12 h-52 xl:h-72 bg-gray-500 border-16 border-gray-500 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
-          ></div>
-          <div
-            className={`w-11/12 h-52 xl:h-72 bg-gray-500 border-16 border-gray-500 rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center animate-pulse mb-4`}
-          ></div>
-        </div>
-      )}
 
       <GradientOrbs classname="hidden md:block -z-10 top-0 left-1/4 w-80 h-80" />
     </section>

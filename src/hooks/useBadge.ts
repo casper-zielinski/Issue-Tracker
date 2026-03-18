@@ -33,6 +33,10 @@ export const getBadgeColorStatus = (key: Status | string) => {
       return "badge-accent";
     case "CLOSED":
       return "badge-success";
+    case "IN PROGRESS":
+      return "badge-accent";
+    case "INPROGRESS":
+      return "badge-accent";
     default:
       throw new Error("Invalid Status");
   }

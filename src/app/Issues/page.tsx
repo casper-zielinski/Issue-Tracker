@@ -7,22 +7,17 @@ import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 import prisma from "@db/client";
 import Link from "next/link";
 
-/**
- * IssuePage Component
- *
- * Main issues listing page that displays all user issues in a grid layout.
- * Features include:
- * - Fetching issues from API endpoint
- * - Priority and status badge display with color coding
- * - Loading states with skeleton animations
- * - Error handling with user-friendly alerts
- * - Navigation to create new issues and edit existing ones
- */
 const IssuePage = async () => {
   let error: boolean = false;
   const getIssues = async () => {
     try {
-      return (await prisma.issue.findMany()) || [];
+      return (
+        (await prisma.issue.findMany({
+          orderBy: {
+            updatedAt: "desc",
+          },
+        })) || []
+      );
     } catch (err) {
       console.error(err);
       error = true;
@@ -119,9 +114,9 @@ const IssuePage = async () => {
                 <span
                   className={`badge badge-soft ${getBadgeColorStatus(
                     issue?.Status,
-                  )} m-2`}
+                  )} m-2 ${issue?.Status?.startsWith("IN") ? "badge-lg text-xs p-2" : ""}`}
                 >
-                  {issue?.Status}
+                  {issue?.Status.replace("_", " ")}
                 </span>
               </div>
               <Link

@@ -69,7 +69,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
       const validation = updateIssueSchema.safeParse(data);
       if (!validation.success) {
         console.error("Invalid Data to update Issue");
-        throw new Error("Invalid Data to update Issue")
+        throw new Error("Invalid Data to update Issue");
       }
 
       await axios.patch(`/api/issues/${id}`, {
@@ -161,10 +161,12 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
                   >
                     <summary
                       className={`badge badge-soft hover:bg-base-300 cursor-pointer ${getBadgeColorStatus(
-                        dropdownValues?.Status || issue?.Status,
-                      )} m-2`}
+                        dropdownValues?.Status?.replace("_", " ") ||
+                          issue?.Status.replace("_", " "),
+                      )} m-2 ${(dropdownValues?.Status || issue?.Status)?.startsWith("IN") ? "badge-lg text-xs p-2" : ""}`}
                     >
-                      {dropdownValues.Status?.replace("_","") || issue?.Status.replace("_","")}
+                      {dropdownValues.Status?.replace("_", " ") ||
+                        issue?.Status.replace("_", " ")}
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-[9999] w-28 p-2 mb-2 shadow-sm">
                       {StatusArray.map((status) => (
@@ -177,7 +179,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
                           }}
                           key={status}
                         >
-                          {status.replace("_","")}
+                          {status.replace("_", " ")}
                         </li>
                       ))}
                     </ul>
