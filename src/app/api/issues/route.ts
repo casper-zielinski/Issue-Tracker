@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import prisma from "@db/client";
-import { DataResponse, ErrorResponse } from "@/Interfaces/APIInterfaces";
-import { PriorityArray } from "@/Constants/PriorityStatus";
-
-export const PriorityEnum = z.enum(PriorityArray);
-
-const createIssueSchema = z.object({
-  Title: z.string().min(1, "Title is required").max(255),
-  Issue: z.string().min(1, "Describtion is required"),
-  Priority: PriorityEnum.default("MEDIUM"),
-});
+import { DataResponse, ErrorResponse, NewIssue } from "@/Interfaces/APIInterfaces";
+import { createIssueSchema } from "@/lib/validations/issues";
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,7 +21,7 @@ export async function POST(request: NextRequest) {
         Title: body.Title,
         Issue: body.Issue,
         Priority: body.Priority,
-      },
+      } as NewIssue,
     });
 
     return NextResponse.json(
@@ -52,7 +43,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const issues = await prisma.issue.findMany();
     return NextResponse.json(

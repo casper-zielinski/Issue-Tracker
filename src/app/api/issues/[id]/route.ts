@@ -1,19 +1,8 @@
 import { ErrorResponse, DataResponse } from "@/Interfaces/APIInterfaces";
 import prisma from "@db/client";
 import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
-import { PriorityEnum } from "../route";
 import { Issue, Prisma } from "@/generated/prisma";
-import { StatusArray } from "@/Constants/PriorityStatus";
-
-const StatusEnum = z.enum(StatusArray);
-
-const updateIssueSchema = z.object({
-  Title: z.string().min(1, "Title is required").max(255).optional(),
-  Issue: z.string().min(1, "Describtion is required").optional(),
-  Priority: PriorityEnum.default("MEDIUM").optional(),
-  Status: StatusEnum.default("OPEN").optional(),
-});
+import { updateIssueSchema } from "@/lib/validations/issues";
 
 export async function GET(
   _: NextRequest,

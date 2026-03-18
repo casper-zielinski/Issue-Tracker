@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 import { Save } from "lucide-react";
@@ -9,12 +9,15 @@ import { useForm } from "react-hook-form";
 import { PriorityArray, StatusArray } from "@/Constants/PriorityStatus";
 import { Priority, Status } from "@/generated/prisma";
 import { Issue } from "@/app/Dashboard/types";
+import { updateIssueSchema } from "@/lib/validations/issues";
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
   const [loading, setLoading] = useState(true);
   const [issue, setIssue] = useState<Issue | null>(null);
   const router = useRouter();
+  const priorityRef = useRef<HTMLDetailsElement>(null);
+  const statusRef = useRef<HTMLDetailsElement>(null);
 
   interface EditIssue {
     Title?: string;
@@ -63,10 +66,14 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const onSubmit = async (data: EditIssue) => {
     try {
+      const validation = updateIssueSchema.safeParse(data);
+      if (!validation.success) {
+        console.error("Invalid Data to update Issue");
+        throw new Error("Invalid Data to update Issue")
+      }
+
       await axios.patch(`/api/issues/${id}`, {
         ...data,
-        Status: data.Status,
-        Priority: data.Priority
       });
       router.push("/Issues");
     } catch (error) {
@@ -82,7 +89,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
           className={`modal ${!loading ? "modal-open" : ""} md:scale-125`}
           title="Issue to Edit"
         >
-          <div className="modal-box p-2 bg-gray-900">
+          <div className="modal-box p-2 pt-5 bg-gray-900 !overflow-visible">
             <form method="dialog">
               <button
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -92,14 +99,14 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
               </button>
             </form>
             <form
-              className="bg-gray-900 h-[50vh] p-3 w-full text-white rounded"
+              className="bg-gray-900 p-3 w-full text-white rounded"
               onSubmit={handleSubmit(onSubmit)}
               name="Issue Editor"
             >
               <input
                 required
                 type="text"
-                className="text-xl font-bold text-blue-400 mb-2 w-full focus:p-1"
+                className="text-xl font-bold text-blue-400 mb-2 w-full focus:p-1 break-words"
                 placeholder={issue.Title}
                 {...register("Title")}
                 contentEditable="plaintext-only"
@@ -113,21 +120,31 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
               />
               <div className="grid grid-cols-4 space-x-7 items-center">
                 <div className="col-span-1 flex">
-                  <details className="dropdown">
+                  <details
+                    className="dropdown"
+                    ref={priorityRef}
+                    onClick={() => {
+                      if (statusRef.current) statusRef.current.open = false;
+                    }}
+                  >
                     <summary
                       className={`badge badge-soft hover:bg-base-300 cursor-pointer ${getBadgeColorPriority(
-                        dropdownValues.Priority || issue.Priority
+                        dropdownValues.Priority || issue.Priority,
                       )} m-2`}
                     >
                       {dropdownValues.Priority || issue.Priority}
                     </summary>
                     <ul
-                      className={`menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 mb-2 shadow-sm`}
+                      className={`menu dropdown-content bg-base-100 rounded-box z-[9999] w-28 p-2 mb-2 shadow-sm`}
                     >
                       {PriorityArray.map((priority) => (
                         <li
                           className="cursor-pointer hover:bg-gray-800 p-1 rounded"
-                          onClick={() => setValue("Priority", priority)}
+                          onClick={() => {
+                            setValue("Priority", priority);
+                            if (priorityRef.current)
+                              priorityRef.current.open = false;
+                          }}
                           key={priority}
                         >
                           {priority}
@@ -135,25 +152,32 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
                       ))}
                     </ul>
                   </details>
-                  <details className="dropdown">
+                  <details
+                    className="dropdown"
+                    ref={statusRef}
+                    onClick={() => {
+                      if (priorityRef.current) priorityRef.current.open = false;
+                    }}
+                  >
                     <summary
-                      className={`badge badge-soft ${
-                        dropdownValues?.Status?.startsWith("IN") ? "h-14" : " "
-                      } hover:bg-base-300 cursor-pointer ${getBadgeColorStatus(
-                        dropdownValues?.Status?.replace(" ", "_") ||
-                          issue?.Status
+                      className={`badge badge-soft hover:bg-base-300 cursor-pointer ${getBadgeColorStatus(
+                        dropdownValues?.Status || issue?.Status,
                       )} m-2`}
                     >
-                      {dropdownValues.Status || issue?.Status}
+                      {dropdownValues.Status?.replace("_","") || issue?.Status.replace("_","")}
                     </summary>
-                    <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 mb-2 shadow-sm">
+                    <ul className="menu dropdown-content bg-base-100 rounded-box z-[9999] w-28 p-2 mb-2 shadow-sm">
                       {StatusArray.map((status) => (
                         <li
                           className="cursor-pointer hover:bg-gray-600 p-1 rounded"
-                          onClick={() => setValue("Status", status)}
+                          onClick={() => {
+                            setValue("Status", status);
+                            if (statusRef.current)
+                              statusRef.current.open = false;
+                          }}
                           key={status}
                         >
-                          {status}
+                          {status.replace("_","")}
                         </li>
                       ))}
                     </ul>
