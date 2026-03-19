@@ -1,7 +1,7 @@
 import { ErrorResponse, DataResponse } from "@/Interfaces/APIInterfaces";
 import prisma from "@db/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Issue, Prisma } from "@/generated/prisma";
+import { Issue, Prisma } from "../../../../generated/prisma";
 import { updateIssueSchema } from "@/lib/validations/issues";
 
 export async function GET(

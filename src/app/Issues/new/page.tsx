@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Priority } from "@/generated/prisma";
+import { Priority } from "../../../generated/prisma";
 import GradientOrbs from "@/app/GradientOrbs";
 import { NewIssue } from "@/Interfaces/APIInterfaces";
 import { createIssueSchema } from "@/lib/validations/issues";
