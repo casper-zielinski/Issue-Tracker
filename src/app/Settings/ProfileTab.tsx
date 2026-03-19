@@ -7,6 +7,7 @@ const ProfileTab = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const userInfo = useSelector((state: RootState) => state.userState);
 
   useEffect(() => {
@@ -58,8 +59,8 @@ const ProfileTab = () => {
             type="text"
             className="input input-bordered w-full bg-zinc-900"
             placeholder="Software Developer"
-            defaultValue="Software Developer"
-            readOnly
+            value={jobTitle}
+            onChange={(e) => setJobTitle(e.target.value)}
           />
         </div>
       </div>

@@ -8,7 +8,7 @@ export const createIssueSchema = z.object({
   Title: z.string().min(1, "Title is required").max(255),
   Issue: z.string().min(1, "Describtion is required"),
   Priority: PriorityEnum.default("MEDIUM"),
-  author: z.string()
+  author: z.string().optional().nullable()
 });
 
 export const updateIssueSchema = z.object({

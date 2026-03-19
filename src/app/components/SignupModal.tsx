@@ -98,7 +98,7 @@ const SignupModal = ({ isOpen, onClose, openLoginModal }: SignupModalProps) => {
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="fixed top-4 right-4 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
         >
           <X className="w-6 h-6" />
         </button>

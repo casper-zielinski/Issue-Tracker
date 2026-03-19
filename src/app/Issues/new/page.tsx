@@ -33,16 +33,22 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [textShower, setTextShower] = useState(true);
-  const userId = useSelector((state: RootState) => state.userState.id)
+  const userId = useSelector((state: RootState) => state.userState.id);
 
   async function postToApi(issueForm: NewIssue) {
     try {
-      const validation = createIssueSchema.safeParse({...issueForm, author: userId } as NewIssue);
+      const validation = createIssueSchema.safeParse({
+        ...issueForm,
+        author: userId,
+      } as NewIssue);
       if (!validation.success) {
         setError("Invalid Data Provided");
         return;
       }
-      await axios.post("/api/issues", issueForm);
+      await axios.post("/api/issues", {
+        ...issueForm,
+        author: userId,
+      });
       router.push("/Issues");
     } catch {
       setError("An Error Occurred");
@@ -177,12 +183,12 @@ const NewIssuePage = () => {
           )}
         />
 
-        <div className="col-span-12">
+        <div className="col-span-12 my-2">
           <Controller
             name="Issue"
             control={control}
             render={({ field }) => (
-              <div className="rounded transition-all">
+              <div className="rounded transition-all min-h-[50vh] h-40 md:h-56 lg:h-80">
                 <SimpleMDE
                   placeholder="Issue"
                   className="bg-sky-700 rounded w-1/1 md:w-6/7 m-4 focus-within:shadow-2xl text-black justify-self-center"
@@ -194,7 +200,10 @@ const NewIssuePage = () => {
         </div>
 
         <div className="col-span-12 flex justify-center">
-          <button className="font-bold btn btn-primary btn-md" type="submit">
+          <button
+            className="font-bold btn btn-primary btn-md my-4"
+            type="submit"
+          >
             Submit New Issue
           </button>
         </div>

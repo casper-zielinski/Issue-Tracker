@@ -6,6 +6,7 @@ import { createIssueSchema } from "@/lib/validations/issues";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log(body);
     const validation = createIssueSchema.safeParse(body);
     if (!validation.success)
       return NextResponse.json(

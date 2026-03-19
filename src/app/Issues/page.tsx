@@ -70,12 +70,16 @@ const IssuePage = async () => {
       )}
 
       {issues?.length === 0 && (
-        <div className="w-full flex flex-col items-center space-y-3.5 bg-gray-900 rounded-xl p-6 max-w-md relative border border-gray-700 shadow-2xl">
-          <BadgeAlert width={50} height={50}></BadgeAlert>
-          <p className="text-center font-bold">
-            No issues found. Create a new one!
-          </p>
-          <Link href={"/Issues/new"}><Button>To Create new Issue</Button></Link>
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="flex flex-col items-center space-y-3.5 bg-gray-900 rounded-xl p-6 max-w-md relative border border-gray-700 shadow-2xl">
+            <BadgeAlert className="md:scale-110 lg:scale-125" width={70} height={70}></BadgeAlert>
+            <p className="text-center font-bold md:text-xl lg:text-2xl">
+              No issues found. Create a new one!
+            </p>
+            <Link href={"/Issues/new"}>
+              <Button className="lg:scale-110 cursor-pointer">To Create new Issue</Button>
+            </Link>
+          </div>
         </div>
       )}
 
