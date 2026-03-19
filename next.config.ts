@@ -1,11 +1,7 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from 'next';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const nextConfig: import('next').NextConfig = {
+const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -23,11 +19,11 @@ const nextConfig: import('next').NextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@/generated/prisma': path.resolve(__dirname, 'src/generated/prisma'),
-      '@/generated': path.resolve(__dirname, 'src/generated'),
+      '@/generated/prisma': path.resolve(process.cwd(), 'src/generated/prisma'),
+      '@/generated': path.resolve(process.cwd(), 'src/generated'),
     };
     return config;
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

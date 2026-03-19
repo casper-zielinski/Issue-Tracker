@@ -26,7 +26,7 @@ export const signOut = async (dispatch: AppDispatch) => {
 export const logIn = async (
   email: string,
   password: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) => {
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -42,7 +42,7 @@ export const logIn = async (
     signIn({
       username: data.user?.email?.split(".")[0],
       email: data.user?.email,
-    })
+    }),
   );
   dispatch(signUp());
 };
@@ -53,7 +53,7 @@ export const signInUser = async (
   password: string,
   confirmPassword: string,
   fullName: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
 ) => {
   const supabase = createClient();
   if (!email || !password || !fullName || !username) {
@@ -76,6 +76,7 @@ export const signInUser = async (
         full_name: fullName,
         username: username,
       },
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });
 
@@ -89,7 +90,7 @@ export const signInUser = async (
       username: username,
       email: email,
       bio: "",
-    })
+    }),
   );
   dispatch(signUp());
 };

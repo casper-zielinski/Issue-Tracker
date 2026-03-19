@@ -46,14 +46,15 @@ const SettingsPage = () => {
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
-  const [logedIn, setLogedIn] = useState(true);
+  const [logedIn, setLogedIn] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const logedInState = useSelector(
-    (state: RootState) => state.logInState.logedIn
+    (state: RootState) => state.logInState.logedIn,
   );
 
   useEffect(() => {
     if (!logedInState) setLogedIn(false);
+    else setLogedIn(true);
   }, [logedInState]);
 
   const handleSave = () => {
@@ -225,12 +226,20 @@ const SettingsPage = () => {
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
+        openSignUpModal={() => {
+          setShowLoginModal(false);
+          setShowSignupModal(true);
+        }}
       />
 
       {/* Signup Modal */}
       <SignupModal
         isOpen={showSignupModal}
         onClose={() => setShowSignupModal(false)}
+        openLoginModal={() => {
+          setShowSignupModal(false);
+          setShowLoginModal(true);
+        }}
       />
     </div>
   );

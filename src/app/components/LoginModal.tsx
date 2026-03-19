@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Eye, EyeOff, Mail, Lock, LogIn } from "lucide-react";
+import { X, Eye, EyeOff, Mail, Lock, LogIn, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "../../../redux/store";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import { logIn } from "../supabase/auth";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  openSignUpModal: () => void;
 }
 
 /**
@@ -20,7 +21,7 @@ interface LoginModalProps {
  * and error handling. On successful login, updates Redux state and
  * redirects to home page.
  */
-const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
+const LoginModal = ({ isOpen, onClose, openSignUpModal }: LoginModalProps) => {
   // State for password visibility toggle
   const [showPassword, setShowPassword] = useState(false);
 
@@ -196,9 +197,20 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         </form>
 
         {/* Additional Options */}
-        <div className="mt-4 text-center">
-          <button className="text-sky-400 hover:text-sky-300 text-sm underline">
+        <div className="mt-4 text-center space-y-3.5">
+          <button
+            type="button"
+            className="text-sky-400 hover:text-sky-300 text-sm underline"
+          >
             Forgot your password?
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary w-full flex items-center justify-center gap-2"
+            onClick={openSignUpModal}
+          >
+            <UserPlus className="w-5 h-5" />
+            To Sign Up
           </button>
         </div>
       </div>

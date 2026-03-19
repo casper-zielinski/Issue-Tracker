@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="min-h-screen flex flex-col overflow-y-scroll scrollbar-hide bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
+        <body className="min-h-screen flex flex-col overflow-y-scroll scrollbar-hide">
           <Globalfetcher>
             <Theme
               appearance="dark"
@@ -33,7 +33,7 @@ export default function RootLayout({
               scaling="100%"
             >
               <Nav />
-              <main className="flex-1 grow">{children}</main>
+              <main className="flex-1 min-h-0 grow bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">{children}</main>
               <Footer />
               <Toaster richColors theme="dark" />
             </Theme>

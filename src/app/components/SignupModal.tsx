@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Eye, EyeOff, User, Mail, Lock, UserPlus } from "lucide-react";
+import {
+  X,
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  UserPlus,
+  LogIn,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
@@ -10,6 +19,7 @@ import { signInUser } from "../supabase/auth";
 interface SignupModalProps {
   isOpen: boolean;
   onClose: () => void;
+  openLoginModal: () => void;
 }
 
 /**
@@ -20,7 +30,7 @@ interface SignupModalProps {
  * password visibility toggles, and error handling. On successful
  * registration, updates Redux state and redirects to home page.
  */
-const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
+const SignupModal = ({ isOpen, onClose, openLoginModal }: SignupModalProps) => {
   // Password visibility state for both password fields
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -57,7 +67,7 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
         formData.password,
         formData.confirmPassword,
         formData.fullName,
-        dispatch
+        dispatch,
       );
 
       setLoading(false);
@@ -66,7 +76,6 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
     } catch {
       setError("Error");
     }
-
   };
 
   const handleClose = () => {
@@ -84,12 +93,12 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-hidden">
-      <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md relative border border-gray-700 shadow-2xl">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 pt-10 overflow-scroll">
+      <div className="bg-gray-900 p-6 w-full max-w-md relative border border-gray-700 shadow-2xl">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+          className="fixed top-4 right-4 text-gray-400 hover:text-white transition-colors"
         >
           <X className="w-6 h-6" />
         </button>
@@ -261,6 +270,14 @@ const SignupModal = ({ isOpen, onClose }: SignupModalProps) => {
             )}
           </button>
         </form>
+        <button
+          type="button"
+          className="mt-3 btn btn-secondary w-full flex items-center justify-center gap-2"
+          onClick={openLoginModal}
+        >
+          <LogIn className="w-5 h-5" />
+          To Sign In
+        </button>
       </div>
     </div>
   );
