@@ -1,11 +1,12 @@
 "use server";
 
-import { Plus, Edit } from "lucide-react";
+import { Plus, Edit, BadgeAlert } from "lucide-react";
 import GradientOrbs from "../GradientOrbs";
 import { AiOutlineIssuesClose } from "react-icons/ai";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 import prisma from "@db/client";
 import Link from "next/link";
+import { Button } from "@radix-ui/themes";
 
 const IssuePage = async () => {
   let error: boolean = false;
@@ -69,25 +70,12 @@ const IssuePage = async () => {
       )}
 
       {issues?.length === 0 && (
-        <div className="col-span-12 p-10 h-10 grid grid-cols-3 grid-flow-col md:justify-center">
-          <div role="alert" className="alert alert-info col-span-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              className="stroke-current shrink-0 w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            <span className="md:text-lg">
-              No issues found. Create a new one!
-            </span>
-          </div>
+        <div className="w-full flex flex-col items-center space-y-3.5 bg-gray-900 rounded-xl p-6 max-w-md relative border border-gray-700 shadow-2xl">
+          <BadgeAlert width={50} height={50}></BadgeAlert>
+          <p className="text-center font-bold">
+            No issues found. Create a new one!
+          </p>
+          <Link href={"/Issues/new"}><Button>To Create new Issue</Button></Link>
         </div>
       )}
 

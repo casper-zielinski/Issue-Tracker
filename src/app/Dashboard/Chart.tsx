@@ -15,7 +15,7 @@ import { BarCharts } from "./types";
 
 const Chart = ({chartData} : {chartData: BarCharts}) => {
   return (
-    <ResponsiveContainer width="100%" height="80%">
+    <ResponsiveContainer className={"w-full"} width="100%" height="80%">
       <BarChart data={chartData?.amounts} title={chartData.title}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="Status" className={styles.barText} />

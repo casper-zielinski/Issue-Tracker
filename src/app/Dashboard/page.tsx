@@ -70,7 +70,7 @@ const DashboardPage = async () => {
         {!error &&
           barCharts?.map((chart, index) => (
             <div
-              className={`w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
+              className={`w-full md:w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
               key={index}
             >
               <>

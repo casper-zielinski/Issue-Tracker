@@ -148,3 +148,18 @@ export type sso_providers = Prisma.sso_providersModel
  * This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
  */
 export type users = Prisma.usersModel
+/**
+ * Model profiles
+ * 
+ */
+export type profiles = Prisma.profilesModel
+/**
+ * Model teams
+ * 
+ */
+export type teams = Prisma.teamsModel
+/**
+ * Model team_members
+ * 
+ */
+export type team_members = Prisma.team_membersModel

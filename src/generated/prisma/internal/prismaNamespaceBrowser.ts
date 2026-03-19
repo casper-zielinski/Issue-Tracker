@@ -67,7 +67,10 @@ export const ModelName = {
   sessions: 'sessions',
   sso_domains: 'sso_domains',
   sso_providers: 'sso_providers',
-  users: 'users'
+  users: 'users',
+  profiles: 'profiles',
+  teams: 'teams',
+  team_members: 'team_members'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -338,6 +341,41 @@ export const UsersScalarFieldEnum = {
 } as const
 
 export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+
+
+export const ProfilesScalarFieldEnum = {
+  id: 'id',
+  full_name: 'full_name',
+  email: 'email',
+  avatar_url: 'avatar_url',
+  bio: 'bio',
+  created_at: 'created_at',
+  job_title: 'job_title',
+  username: 'username'
+} as const
+
+export type ProfilesScalarFieldEnum = (typeof ProfilesScalarFieldEnum)[keyof typeof ProfilesScalarFieldEnum]
+
+
+export const TeamsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  created_at: 'created_at',
+  created_by: 'created_by'
+} as const
+
+export type TeamsScalarFieldEnum = (typeof TeamsScalarFieldEnum)[keyof typeof TeamsScalarFieldEnum]
+
+
+export const Team_membersScalarFieldEnum = {
+  team_id: 'team_id',
+  user_id: 'user_id',
+  role: 'role',
+  joined_at: 'joined_at'
+} as const
+
+export type Team_membersScalarFieldEnum = (typeof Team_membersScalarFieldEnum)[keyof typeof Team_membersScalarFieldEnum]
 
 
 export const SortOrder = {
