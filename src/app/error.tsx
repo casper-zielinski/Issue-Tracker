@@ -23,7 +23,7 @@ const error = () => {
         </div>
         <div
           className="flex gap-2 mt-4 cursor-pointer"
-          onClick={() => window.navigation.reload()}
+          onClick={() => window.location.reload()}
         >
           <RefreshCcw></RefreshCcw> Refresh Page
         </div>

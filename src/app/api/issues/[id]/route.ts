@@ -57,7 +57,7 @@ export async function GET(
     return NextResponse.json(
       {
         data: {
-          issue: issue,
+          issue: issue[0],
           id: id,
         },
         message: "Successfully got issue with id",
