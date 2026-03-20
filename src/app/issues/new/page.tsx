@@ -9,6 +9,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import GradientOrbs from "@/app/components/GradientOrbs";
 import { NewIssue } from "@/Interfaces/APIInterfaces";
+import { ROUTES } from "@/Constants/routes";
 import { createIssueSchema } from "@/lib/validations/issues";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
@@ -48,7 +49,7 @@ const NewIssuePage = () => {
         ...issueForm,
         author: userId,
       });
-      router.push("/Issues");
+      router.push(ROUTES.ISSUES);
     } catch {
       setError("An Error Occurred");
     }

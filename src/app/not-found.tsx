@@ -1,6 +1,7 @@
 import { Button } from "@radix-ui/themes";
 import { CloudOff } from "lucide-react";
 import Link from "next/link";
+import { ROUTES } from "@/Constants/routes";
 
 const NotFound = () => {
   return (
@@ -17,7 +18,7 @@ const NotFound = () => {
             <Link href={"/"}>To Homepage</Link>
           </Button>
           <Button className="bg-black">
-            <Link href={"/Dashboard"}>To Dashboard</Link>
+            <Link href={ROUTES.DASHBOARD}>To Dashboard</Link>
           </Button>
         </div>
       </div>

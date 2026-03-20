@@ -1,5 +1,5 @@
-import { BarCharts, amount } from "@/app/Dashboard/types";
-import { Issue } from "@/app/Dashboard/types";
+import { BarCharts, amount } from "@/app/dashboard/types";
+import { Issue } from "@/app/dashboard/types";
 import styles from "./BarCharts.module.css";
 
 export function getBarChartsFromIssues(issues?: Issue[]): BarCharts[] | null {

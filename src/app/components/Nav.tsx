@@ -7,6 +7,7 @@ import { VscEditSession } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/Constants/routes";
 
 const Nav = () => {
   const [rendered, setRendered] = useState(false);
@@ -44,8 +45,8 @@ const Nav = () => {
           >
             <li>
               <Link
-                href="/Dashboard"
-                className={currentPath === "/Dashboard" ? "bg-white" : ""}
+                href={ROUTES.DASHBOARD}
+                className={currentPath === ROUTES.DASHBOARD ? "bg-white" : ""}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown, as HTMLElement because blur is a HTMLElement method
                 }}
@@ -55,8 +56,8 @@ const Nav = () => {
             </li>
             <li>
               <Link
-                href="/Issues"
-                className={currentPath === "/Issues" ? "bg-white" : ""}
+                href={ROUTES.ISSUES}
+                className={currentPath === ROUTES.ISSUES ? "bg-white" : ""}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
                 }}
@@ -66,8 +67,8 @@ const Nav = () => {
             </li>
             <li>
               <Link
-                href="/Settings"
-                className={currentPath === "/Settings" ? "bg-white" : ""}
+                href={ROUTES.SETTINGS}
+                className={currentPath === ROUTES.SETTINGS ? "bg-white" : ""}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
                 }}
@@ -107,9 +108,9 @@ const Nav = () => {
           <ul className="menu menu-horizontal px-1 flex space-x-2">
             <li>
               <Link
-                href="/Dashboard"
+                href={ROUTES.DASHBOARD}
                 className={
-                  currentPath === "/Dashboard"
+                  currentPath === ROUTES.DASHBOARD
                     ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }
@@ -119,9 +120,9 @@ const Nav = () => {
             </li>
             <li>
               <Link
-                href="/Issues"
+                href={ROUTES.ISSUES}
                 className={
-                  currentPath.match(/^\/Issues(\/.*)?$/) !== null
+                  currentPath.startsWith(ROUTES.ISSUES) !== null
                     ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }
@@ -131,9 +132,9 @@ const Nav = () => {
             </li>
             <li>
               <Link
-                href="/Settings"
+                href={ROUTES.SETTINGS}
                 className={
-                  currentPath === "/Settings"
+                  currentPath === ROUTES.SETTINGS
                     ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }
@@ -147,7 +148,7 @@ const Nav = () => {
       <div className="avatar avatar-placeholder ml-auto">
         <div
           className="bg-neutral text-neutral-content w-8 sm:w-12 rounded-full cursor-pointer"
-          onClick={() => router.push("/Settings")}
+          onClick={() => router.push(ROUTES.SETTINGS)}
         >
           <span>
             {rendered && user.email ? user.email.substring(0, 2) : ""}

@@ -2,9 +2,9 @@
 
 import GradientOrbs from "../components/GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import Chart from "../Dashboard/Chart";
-import { getBarChartsFromIssues } from "@/app/Dashboard/getBarCharts";
-import { BarCharts, Issue } from "../Dashboard/types";
+import Chart from "./Chart";
+import { getBarChartsFromIssues } from "@/app/dashboard/getBarCharts";
+import { BarCharts, Issue } from "./types";
 import { PlaceholderBarCharts } from "@/Constants/PlaceHolderCharts";
 import { createClient } from "@/lib/supabase/server";
 

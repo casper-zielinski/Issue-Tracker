@@ -7,6 +7,7 @@ import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
 import Link from "next/link";
 import { Button } from "@radix-ui/themes";
 import { createClient } from "@/lib/supabase/server";
+import { ROUTES } from "@/Constants/routes";
 
 const IssuePage = async () => {
   let error: boolean = false;
@@ -32,7 +33,7 @@ const IssuePage = async () => {
         </h1>
         <p className="text-gray-300 text-lg">View and Edit your Issues</p>
         <div className="self-start my-5">
-          <Link className="btn btn-primary btn-md" href={"/Issues/new"}>
+          <Link className="btn btn-primary btn-md" href={ROUTES.ISSUES_NEW}>
             New Issue
             <Plus />
           </Link>
@@ -75,7 +76,7 @@ const IssuePage = async () => {
             <p className="text-center font-bold md:text-xl lg:text-2xl">
               No issues found. Create a new one!
             </p>
-            <Link href={"/Issues/new"} className="cursor-pointer">
+            <Link href={ROUTES.ISSUES_NEW} className="cursor-pointer">
               <Button className="lg:scale-110">To Create new Issue</Button>
             </Link>
           </div>
@@ -112,7 +113,7 @@ const IssuePage = async () => {
               </div>
               <Link
                 className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl cursor-pointer"
-                href={`/Issues/edit/${issue.id}`}
+                href={ROUTES.ISSUES_EDIT(issue.id)}
               >
                 <Edit />
               </Link>

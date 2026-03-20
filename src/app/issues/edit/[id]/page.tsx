@@ -3,15 +3,17 @@
 import { use, useCallback, useEffect, useRef, useState } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
-import { Save } from "lucide-react";
+import { Save, Trash2 } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { PriorityArray, StatusArray } from "@/Constants/PriorityStatus";
 import { Priority, Status } from "@/types/enums";
-import { Issue } from "@/app/Dashboard/types";
+import { Issue } from "@/app/dashboard/types";
 import { updateIssueSchema } from "@/lib/validations/issues";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../redux/store";
+import { ROUTES } from "@/Constants/routes";
+import { toast } from "sonner";
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -83,9 +85,21 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
         ...data,
         author: userId,
       });
-      router.push("/Issues");
+      toast.success("Successfully edited Issue");
     } catch (error) {
       console.error(error);
+      toast.error("Error editing Issue, Issue maybe got deleted");
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      await axios.delete(`/api/issues/${id}`);
+      toast.success("Successfully deleted issue");
+      router.push(ROUTES.ISSUES);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error deleting Issue, Issue maybe got already deleted");
     }
   };
 
@@ -101,7 +115,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             <form method="dialog">
               <button
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                onClick={() => router.push("/Issues")}
+                onClick={() => router.push(ROUTES.ISSUES)}
               >
                 ✕
               </button>
@@ -193,12 +207,21 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
                     </ul>
                   </details>
                 </div>
-                <button
-                  className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl"
-                  type="submit"
-                >
-                  <Save />
-                </button>
+                <div className="col-span-3 justify-self-end gap-2 flex items-center-safe">
+                  <button
+                    className="relative top-[0.07rem] hover:scale-105 hover:shadow-2xl"
+                    type="submit"
+                  >
+                    <Save />
+                  </button>
+                  <button
+                    className="hover:scale-105 hover:shadow-2xl"
+                    type="button"
+                    onClick={() => onDelete()}
+                  >
+                    <Trash2 />
+                  </button>
+                </div>
               </div>
             </form>
           </div>

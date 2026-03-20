@@ -3,6 +3,7 @@
 import { Button } from "@radix-ui/themes";
 import { TriangleAlert, RefreshCcw } from "lucide-react";
 import Link from "next/link";
+import { ROUTES } from "@/Constants/routes";
 
 const error = () => {
   return (
@@ -19,7 +20,7 @@ const error = () => {
             <Link href={"/"}>To Homepage</Link>
           </Button>
           <Button className="bg-black">
-            <Link href={"/Issues"}>To all Issues</Link>
+            <Link href={ROUTES.ISSUES}>To all Issues</Link>
           </Button>
         </div>
         <div

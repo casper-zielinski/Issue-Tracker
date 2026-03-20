@@ -1,5 +1,5 @@
-import { amount, BarCharts } from "@/app/Dashboard/types";
-import styles from "../app/Dashboard/BarCharts.module.css";
+import { amount, BarCharts } from "@/app/dashboard/types";
+import styles from "../app/dashboard/BarCharts.module.css";
 
 /**
  * Momentarally not used, used for a moment to display the charts when user
