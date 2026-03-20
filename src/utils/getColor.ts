@@ -1,4 +1,4 @@
-import { Priority } from "@/generated/prisma";
+import { Priority } from "@/types/enums";
 
 export const getColor = (priority: Priority): string => {
   switch (priority) {

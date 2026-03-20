@@ -1,4 +1,4 @@
-import { Priority } from "@/generated/prisma";
+import { Priority } from "@/types/enums";
 
 /**
  * Interfaces for The Api Responses, used by both frontend and backend

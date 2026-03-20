@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Priority } from "../../../generated/prisma";
 import GradientOrbs from "@/app/components/GradientOrbs";
 import { NewIssue } from "@/Interfaces/APIInterfaces";
 import { createIssueSchema } from "@/lib/validations/issues";
@@ -124,7 +123,7 @@ const NewIssuePage = () => {
                     onClick={() => {
                       setPriority("LOW");
                       setTextShower(false);
-                      field.onChange(Priority.LOW);
+                      field.onChange("LOW");
                     }}
                   >
                     Low
@@ -140,7 +139,7 @@ const NewIssuePage = () => {
                     onClick={() => {
                       setPriority("MEDIUM");
                       setTextShower(false);
-                      field.onChange(Priority.MEDIUM);
+                      field.onChange("MEDIUM");
                     }}
                   >
                     Medium
@@ -156,7 +155,7 @@ const NewIssuePage = () => {
                     onClick={() => {
                       setPriority("HIGH");
                       setTextShower(false);
-                      field.onChange(Priority.HIGH);
+                      field.onChange("HIGH");
                     }}
                   >
                     High
@@ -172,7 +171,7 @@ const NewIssuePage = () => {
                     onClick={() => {
                       setPriority("URGENT");
                       setTextShower(false);
-                      field.onChange(Priority.URGENT);
+                      field.onChange("URGENT");
                     }}
                   >
                     Urgent

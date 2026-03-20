@@ -1,4 +1,4 @@
-import { Status, Priority } from "@/generated/prisma";
+import { Status, Priority } from "@/types/enums";
 
 /**
  * Returns appropriate DaisyUI badge color class based on issue priority

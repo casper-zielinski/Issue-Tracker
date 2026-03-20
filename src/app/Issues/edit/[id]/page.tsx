@@ -7,7 +7,7 @@ import { Save } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { PriorityArray, StatusArray } from "@/Constants/PriorityStatus";
-import { Priority, Status } from "@/generated/prisma";
+import { Priority, Status } from "@/types/enums";
 import { Issue } from "@/app/Dashboard/types";
 import { updateIssueSchema } from "@/lib/validations/issues";
 import { useSelector } from "react-redux";

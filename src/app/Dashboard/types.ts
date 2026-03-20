@@ -1,11 +1,11 @@
-import { $Enums } from "@/generated/prisma";
+import { Priority, Status } from "@/types/enums";
 
 export interface Issue {
   id: number;
   Title: string;
   Issue: string;
-  Status: $Enums.Status;
-  Priority: $Enums.Priority;
+  Status: Status;
+  Priority: Priority;
   createdAt: Date;
   updatedAt: Date;
   author: string | null;
@@ -15,8 +15,8 @@ export interface IssueSerializable {
   id: number;
   Title: string;
   Issue: string;
-  Status: $Enums.Status;
-  Priority: $Enums.Priority;
+  Status: Status;
+  Priority: Priority;
   createdAt: string;
   updatedAt: string;
   author: string | null;

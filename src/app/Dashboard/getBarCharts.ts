@@ -1,5 +1,5 @@
 import { BarCharts, amount } from "@/app/Dashboard/types";
-import { Issue } from "@/generated/prisma";
+import { Issue } from "@/app/Dashboard/types";
 import styles from "./BarCharts.module.css";
 
 export function getBarChartsFromIssues(issues?: Issue[]): BarCharts[] | null {
