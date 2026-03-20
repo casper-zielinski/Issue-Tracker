@@ -8,7 +8,7 @@ import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Priority } from "../../../generated/prisma";
-import GradientOrbs from "@/app/GradientOrbs";
+import GradientOrbs from "@/app/components/GradientOrbs";
 import { NewIssue } from "@/Interfaces/APIInterfaces";
 import { createIssueSchema } from "@/lib/validations/issues";
 import { useSelector } from "react-redux";

@@ -1,24 +1,19 @@
 "use server";
 
 import { Plus, Edit, BadgeAlert } from "lucide-react";
-import GradientOrbs from "../GradientOrbs";
+import GradientOrbs from "../components/GradientOrbs";
 import { AiOutlineIssuesClose } from "react-icons/ai";
 import { getBadgeColorPriority, getBadgeColorStatus } from "@/hooks/useBadge";
-import prisma from "@db/client";
 import Link from "next/link";
 import { Button } from "@radix-ui/themes";
+import { createClient } from "@/lib/supabase/server";
 
 const IssuePage = async () => {
   let error: boolean = false;
   const getIssues = async () => {
     try {
-      return (
-        (await prisma.issue.findMany({
-          orderBy: {
-            updatedAt: "desc",
-          },
-        })) || []
-      );
+      const supabase = await createClient();
+      return (await supabase.from("Issue").select("*")).data;
     } catch (err) {
       console.error(err);
       error = true;
@@ -26,7 +21,7 @@ const IssuePage = async () => {
     }
   };
 
-  const issues = await getIssues();
+  const issues = (await getIssues()) || [];
 
   return (
     <div className="p-3 pt-6 bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 min-h-screen">
@@ -45,7 +40,7 @@ const IssuePage = async () => {
       </div>
 
       {error && (
-        <div className="p-1 absolute top-1/2 left-1/2 -translate-1/2">
+        <div className="p-1 top-1/2 left-1/2 -translate-1/2">
           <div role="alert" className="alert alert-error w-[85vw]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,12 +67,16 @@ const IssuePage = async () => {
       {issues?.length === 0 && (
         <div className="w-full h-full flex justify-center items-center">
           <div className="flex flex-col items-center space-y-3.5 bg-gray-900 rounded-xl p-6 max-w-md relative border border-gray-700 shadow-2xl">
-            <BadgeAlert className="md:scale-110 lg:scale-125" width={70} height={70}></BadgeAlert>
+            <BadgeAlert
+              className="md:scale-110 lg:scale-125"
+              width={70}
+              height={70}
+            ></BadgeAlert>
             <p className="text-center font-bold md:text-xl lg:text-2xl">
               No issues found. Create a new one!
             </p>
-            <Link href={"/Issues/new"}>
-              <Button className="lg:scale-110 cursor-pointer">To Create new Issue</Button>
+            <Link href={"/Issues/new"} className="cursor-pointer">
+              <Button className="lg:scale-110">To Create new Issue</Button>
             </Link>
           </div>
         </div>

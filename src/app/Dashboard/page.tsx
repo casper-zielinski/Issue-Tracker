@@ -1,18 +1,19 @@
 "use server";
 
-import GradientOrbs from "../GradientOrbs";
+import GradientOrbs from "../components/GradientOrbs";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import Chart from "./Chart";
-import prisma from "@db/client";
+import Chart from "../Dashboard/Chart";
 import { getBarChartsFromIssues } from "@/app/Dashboard/getBarCharts";
-import { BarCharts } from "./types";
+import { BarCharts, Issue } from "../Dashboard/types";
 import { PlaceholderBarCharts } from "@/Constants/PlaceHolderCharts";
+import { createClient } from "@/lib/supabase/server";
 
 const DashboardPage = async () => {
   let error = false;
   const getBarChartDataFromServer = async () => {
     try {
-      const issues = await prisma.issue.findMany();
+      const supabase = await createClient();
+      const issues = (await supabase.from("Issue").select("*")).data as Issue[];
       return getBarChartsFromIssues(issues);
     } catch (err) {
       console.error(err);
@@ -21,7 +22,8 @@ const DashboardPage = async () => {
     }
   };
 
-  const barCharts: BarCharts[] = (await getBarChartDataFromServer()) || PlaceholderBarCharts;
+  const barCharts: BarCharts[] =
+    (await getBarChartDataFromServer()) || PlaceholderBarCharts;
 
   return (
     <section className="p-3 pt-6 relative min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 scrollbar-hide">

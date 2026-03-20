@@ -10,6 +10,8 @@ import { PriorityArray, StatusArray } from "@/Constants/PriorityStatus";
 import { Priority, Status } from "@/generated/prisma";
 import { Issue } from "@/app/Dashboard/types";
 import { updateIssueSchema } from "@/lib/validations/issues";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../redux/store";
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -18,12 +20,14 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
   const priorityRef = useRef<HTMLDetailsElement>(null);
   const statusRef = useRef<HTMLDetailsElement>(null);
+  const userId = useSelector((state: RootState) => state.userState.id);
 
   interface EditIssue {
     Title?: string;
     Issue?: string;
     Priority?: Priority | string;
     Status?: Status | string;
+    author?: string;
   }
 
   const { register, handleSubmit, setValue, watch, formState } = useForm({
@@ -66,7 +70,10 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const onSubmit = async (data: EditIssue) => {
     try {
-      const validation = updateIssueSchema.safeParse(data);
+      const validation = updateIssueSchema.safeParse({
+        ...data,
+        author: userId,
+      } as EditIssue);
       if (!validation.success) {
         console.error("Invalid Data to update Issue");
         throw new Error("Invalid Data to update Issue");
@@ -74,6 +81,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
 
       await axios.patch(`/api/issues/${id}`, {
         ...data,
+        author: userId,
       });
       router.push("/Issues");
     } catch (error) {

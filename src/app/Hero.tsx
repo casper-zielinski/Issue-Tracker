@@ -1,7 +1,7 @@
 "use server";
 
 import React from "react";
-import GradientOrbs from "./GradientOrbs";
+import GradientOrbs from "./components/GradientOrbs";
 import CTAButtons from "./components/CTAButtons";
 
 const Hero = () => {

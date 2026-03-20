@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/supabase";
+import { supabaseClientSide } from "@/lib/supabase/supabase";
 import { AppDispatch } from "../../../redux/store";
 import {
   signIn,
@@ -6,7 +6,6 @@ import {
 } from "../../../redux/slices/userSlice";
 import { logOut, signUp } from "../../../redux/slices/logSlice";
 
-const supabase = createClient();
 /**
  * to sign out the user
  * @param dispatch to set Global Redux State
@@ -14,7 +13,7 @@ const supabase = createClient();
 export const signOut = async (dispatch: AppDispatch) => {
   dispatch(logOut());
   dispatch(signOutSlice());
-  await supabase.auth.signOut();
+  await supabaseClientSide.auth.signOut();
 };
 
 /**
@@ -28,7 +27,7 @@ export const logIn = async (
   password: string,
   dispatch: AppDispatch,
 ) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabaseClientSide.auth.signInWithPassword({
     email: email,
     password: password,
   });
@@ -66,7 +65,7 @@ export const signInUser = async (
     throw Error("Password length minimum 6 Letters");
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { error } = await supabaseClientSide.auth.signUp({
     email: email,
     password: password,
     options: {
@@ -100,8 +99,10 @@ export interface EditableUserData {
 }
 
 export const editData = async (editData: EditableUserData) => {
-  await supabase.from("profiles").upsert({ editData });
+  await supabaseClientSide.from("profiles").upsert({ editData });
   if (editData.username) {
-    await supabase.auth.updateUser({ data: { username: editData.username } });
+    await supabaseClientSide.auth.updateUser({
+      data: { username: editData.username },
+    });
   }
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import GradientOrbs from "@/app/GradientOrbs";
+import GradientOrbs from "@/app/components/GradientOrbs";
 import CTAButtons from "@/app/components/CTAButtons";
 
 const NotFoundPage = () => {

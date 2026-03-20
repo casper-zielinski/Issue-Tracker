@@ -1,8 +1,8 @@
 import { ErrorResponse, DataResponse } from "@/Interfaces/APIInterfaces";
-import prisma from "@db/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Issue, Prisma } from "../../../../generated/prisma";
 import { updateIssueSchema } from "@/lib/validations/issues";
+import { createClient } from "@/lib/supabase/server";
+
 
 export async function GET(
   _: NextRequest,
@@ -22,10 +22,25 @@ export async function GET(
   // parsting to int, otherwise prisma will recognize this as a string
   const id = parseInt(awaitedParams.id.toString());
 
+  const supabase = await createClient();
+
   try {
-    const issue: Issue | null = await prisma.issue.findUnique({
-      where: { id: id },
-    });
+    const { data: issue, error: postgresError } = await supabase
+      .from("Issue")
+      .select("*")
+      .eq("id", id);
+
+    if (postgresError) {
+      return NextResponse.json(
+        {
+          error: postgresError,
+          message: "Supabase Postres Error",
+        } as ErrorResponse,
+        {
+          status: 500,
+        },
+      );
+    }
 
     if (!issue) {
       return NextResponse.json(
@@ -84,19 +99,31 @@ export async function PATCH(
     }
 
     const id = parseInt((await params).id.toString());
+    const supabase = await createClient();
 
-    const editedIssue = await prisma.issue.update({
-      where: {
-        id: id,
-      },
-      data: {
+    const { data: editedIssue, error: postgresError } = await supabase
+      .from("Issue")
+      .update({
         Title: body.Title,
         Issue: body.Issue,
         Priority: body.Priority,
         Status: body.Status,
-        author: null,
-      },
-    });
+        author: body.author,
+      })
+      .eq("id", id)
+      .select("*");
+
+    if (postgresError) {
+      return NextResponse.json(
+        {
+          error: postgresError,
+          message: "Supabase Postres Error",
+        } as ErrorResponse,
+        {
+          status: 500,
+        },
+      );
+    }
 
     return NextResponse.json(
       {
@@ -110,22 +137,16 @@ export async function PATCH(
     );
   } catch (error) {
     console.error(error);
-    if (error instanceof Prisma.PrismaClientValidationError) {
-      return NextResponse.json(
-        { error: error.cause, message: error.message } as ErrorResponse,
-        { status: 500 },
-      );
-    } else {
-      return NextResponse.json(
-        {
-          error: error,
-          message: "Failed to update issue",
-        } as ErrorResponse,
-        {
-          status: 500,
-        },
-      );
-    }
+
+    return NextResponse.json(
+      {
+        error: error,
+        message: "Failed to update issue",
+      } as ErrorResponse,
+      {
+        status: 500,
+      },
+    );
   }
 }
 
@@ -149,11 +170,25 @@ export async function DELETE(
       );
     }
 
-    const deletedIssue = await prisma.issue.delete({
-      where: {
-        id: id,
-      },
-    });
+    const supabase = await createClient();
+
+    const { data: deletedIssue, error: postgresError } = await supabase
+      .from("Issue")
+      .delete()
+      .eq("id", id)
+      .select("*");
+
+    if (postgresError) {
+      return NextResponse.json(
+        {
+          error: postgresError,
+          message: "Supabase Postres Error",
+        } as ErrorResponse,
+        {
+          status: 500,
+        },
+      );
+    }
 
     return NextResponse.json(
       {

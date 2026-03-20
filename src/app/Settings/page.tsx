@@ -13,7 +13,7 @@ import {
   LogIn,
   UserPlus,
 } from "lucide-react";
-import GradientOrbs from "../GradientOrbs";
+import GradientOrbs from "../components/GradientOrbs";
 import LoginModal from "../components/LoginModal";
 import SignupModal from "../components/SignupModal";
 import ProfileTab from "./ProfileTab";
