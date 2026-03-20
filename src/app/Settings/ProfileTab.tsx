@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
+import { useForm } from "react-hook-form";
 
 const ProfileTab = () => {
   const [name, setName] = useState("");
@@ -9,12 +10,15 @@ const ProfileTab = () => {
   const [bio, setBio] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const userInfo = useSelector((state: RootState) => state.userState);
+  const {  } = useForm();
 
   useEffect(() => {
     if (userInfo.email) {
       setName(userInfo.name);
-      setUsername(userInfo.username);
+      setUsername(userInfo.username || "Your Username");
       setEmail(userInfo.email);
+      setBio(userInfo.bio || "Your Bio");
+      setJobTitle(userInfo.job_title || "Your Job Title");
     }
   }, [userInfo]);
 

@@ -6,12 +6,12 @@ import {
 } from "../../../redux/slices/userSlice";
 import { logOut, signUp } from "../../../redux/slices/logSlice";
 
+const supabase = createClient();
 /**
  * to sign out the user
  * @param dispatch to set Global Redux State
  */
 export const signOut = async (dispatch: AppDispatch) => {
-  const supabase = createClient();
   dispatch(logOut());
   dispatch(signOutSlice());
   await supabase.auth.signOut();
@@ -28,7 +28,6 @@ export const logIn = async (
   password: string,
   dispatch: AppDispatch,
 ) => {
-  const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
@@ -55,7 +54,6 @@ export const signInUser = async (
   fullName: string,
   dispatch: AppDispatch,
 ) => {
-  const supabase = createClient();
   if (!email || !password || !fullName || !username) {
     throw Error("Empty fields");
   }
@@ -93,4 +91,17 @@ export const signInUser = async (
     }),
   );
   dispatch(signUp());
+};
+
+export interface EditableUserData {
+  username?: string;
+  job_title?: string;
+  bio?: string;
+}
+
+export const editData = async (editData: EditableUserData) => {
+  await supabase.from("profiles").upsert({ editData });
+  if (editData.username) {
+    await supabase.auth.updateUser({ data: { username: editData.username } });
+  }
 };

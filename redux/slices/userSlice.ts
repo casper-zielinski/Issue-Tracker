@@ -3,9 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface User {
   id: string;
   name: string;
-  username: string;
+  username?: string;
   email: string;
-  bio: string;
+  bio?: string;
+  job_title?: string;
 }
 
 const initialState = {
