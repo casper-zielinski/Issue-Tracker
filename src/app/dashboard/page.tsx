@@ -44,8 +44,8 @@ const DashboardPage = async () => {
       </div>
 
       {error && (
-        <div className="p-1 absolute top-1/2 left-1/2 -translate-1/2">
-          <div role="alert" className="alert alert-error w-[85vw]">
+        <div className="flex justify-center items-center py-16 px-4">
+          <div role="alert" className="alert alert-error w-full max-w-xl">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 md:h-9 w-6 md:w-9 shrink-0 stroke-current"
@@ -72,7 +72,7 @@ const DashboardPage = async () => {
         {!error &&
           barCharts?.map((chart, index) => (
             <div
-              className={`w-full md:w-11/12 h-72 xl:h-96 bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center justify-center flex-col items-center mb-4`}
+              className={`w-full md:w-11/12 h-72 md:h-80 lg:h-96 xl:h-[28rem] bg-gray-900 border-16 border-gray-900 ${chart.Style} rounded-2xl col-span-12 md:col-span-6 justify-self-center flex flex-col items-center mb-4 p-3`}
               key={index}
             >
               <>

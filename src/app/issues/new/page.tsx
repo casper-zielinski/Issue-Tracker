@@ -56,9 +56,9 @@ const NewIssuePage = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20 px-2 sm:px-4 py-4">
       {error && (
-        <div className="col-span-12 grid grid-cols-3 grid-flow-col md:justify-center p-3 scrollbar-hide">
+        <div className="grid grid-cols-3 grid-flow-col md:justify-center p-3 scrollbar-hide mb-2">
           <div
             role="alert"
             className="alert alert-error col-span-3 md:col-span-1"
@@ -78,7 +78,7 @@ const NewIssuePage = () => {
             </svg>
             <span className="md:text-base">Error! Could not load issues</span>
             <button
-              className="btn btn-sm md:btn-md btn-neutral rounded-2xl"
+              className="btn btn-sm md:btn-md btn-neutral rounded-2xl cursor-pointer"
               onClick={() => setError("")}
             >
               Close
@@ -88,7 +88,7 @@ const NewIssuePage = () => {
       )}
 
       <form
-        className="grid grid-cols-12 gap-4 p-3"
+        className="grid grid-cols-12 gap-4 p-2 sm:p-3"
         onSubmit={handleSubmit((data) => {
           postToApi(data);
         })}
@@ -97,7 +97,7 @@ const NewIssuePage = () => {
           <TextField.Root
             placeholder="Title"
             {...register("Title")}
-            className="border-2 w-4/5 lg:w-2/3 focus-within:shadow-lg"
+            className="border-2 w-full sm:w-4/5 lg:w-2/3 focus-within:shadow-lg"
             size={"3"}
           ></TextField.Root>
         </div>
@@ -106,20 +106,21 @@ const NewIssuePage = () => {
           name="Priority"
           control={control}
           render={({ field }) => (
-            <div className="dropdown dropdown-start col-span-2">
-              <div tabIndex={0} role="button" className="btn m-1">
+            <div className="dropdown dropdown-start col-span-5 xs:col-span-4 sm:col-span-3 md:col-span-2">
+              <div tabIndex={0} role="button" className="btn m-1 cursor-pointer">
                 {textShower ? "Priority" : field.value}
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm text-black dark:text-white"
+                className="dropdown-content menu bg-base-100 rounded-box z-10 w-36 p-2 shadow-sm text-black dark:text-white"
               >
                 <li>
                   <a
                     className={
-                      priority === "LOW"
+                      "cursor-pointer " +
+                      (priority === "LOW"
                         ? "bg-green-600 text-black font-bold"
-                        : ""
+                        : "")
                     }
                     onClick={() => {
                       setPriority("LOW");
@@ -133,9 +134,10 @@ const NewIssuePage = () => {
                 <li>
                   <a
                     className={
-                      priority === "MEDIUM"
+                      "cursor-pointer " +
+                      (priority === "MEDIUM"
                         ? "bg-blue-600 text-black font-bold"
-                        : ""
+                        : "")
                     }
                     onClick={() => {
                       setPriority("MEDIUM");
@@ -149,9 +151,10 @@ const NewIssuePage = () => {
                 <li>
                   <a
                     className={
-                      priority === "HIGH"
+                      "cursor-pointer " +
+                      (priority === "HIGH"
                         ? "bg-orange-600 text-black font-bold"
-                        : ""
+                        : "")
                     }
                     onClick={() => {
                       setPriority("HIGH");
@@ -165,9 +168,10 @@ const NewIssuePage = () => {
                 <li>
                   <a
                     className={
-                      priority === "URGENT"
+                      "cursor-pointer " +
+                      (priority === "URGENT"
                         ? "bg-red-600 text-black font-bold"
-                        : ""
+                        : "")
                     }
                     onClick={() => {
                       setPriority("URGENT");
@@ -183,15 +187,16 @@ const NewIssuePage = () => {
           )}
         />
 
-        <div className="col-span-12 my-2">
+        <div className="col-span-12 mt-2">
           <Controller
             name="Issue"
             control={control}
             render={({ field }) => (
-              <div className="rounded transition-all min-h-[50vh] h-40 md:h-56 lg:h-80">
+              <div className="relative w-full overflow-visible">
                 <SimpleMDE
                   placeholder="Issue"
-                  className="bg-sky-700 rounded w-1/1 md:w-6/7 m-4 focus-within:shadow-2xl text-black justify-self-center"
+                  className="bg-sky-700 rounded w-full md:w-6/7 mx-auto focus-within:shadow-2xl text-black"
+                  options={{ minHeight: "calc(100vh - 380px)" }}
                   {...field}
                 />
               </div>
@@ -199,9 +204,9 @@ const NewIssuePage = () => {
           />
         </div>
 
-        <div className="col-span-12 flex justify-center">
+        <div className="col-span-12 flex justify-center mt-6 mb-4">
           <button
-            className="font-bold btn btn-primary btn-md my-4"
+            className="font-bold btn btn-primary btn-md cursor-pointer"
             type="submit"
           >
             Submit New Issue

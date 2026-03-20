@@ -24,7 +24,7 @@ const NotificationsTab = () => {
       </h2>
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
+        <div className="flex items-center justify-between gap-4 p-4 bg-gray-800 rounded-lg">
           <div>
             <h3 className="text-white font-medium">Email Notifications</h3>
             <p className="text-gray-400 text-sm">
@@ -33,7 +33,7 @@ const NotificationsTab = () => {
           </div>
           <input
             type="checkbox"
-            className="toggle toggle-neutral"
+            className="toggle toggle-neutral shrink-0"
             checked={notifications.email}
             onChange={(e) =>
               setNotifications((prev) => ({
@@ -44,7 +44,7 @@ const NotificationsTab = () => {
           />
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
+        <div className="flex items-center justify-between gap-4 p-4 bg-gray-800 rounded-lg">
           <div>
             <h3 className="text-white font-medium">Push Notifications</h3>
             <p className="text-gray-400 text-sm">
@@ -53,7 +53,7 @@ const NotificationsTab = () => {
           </div>
           <input
             type="checkbox"
-            className="toggle toggle-primary"
+            className="toggle toggle-primary shrink-0"
             checked={notifications.push}
             onChange={(e) =>
               setNotifications((prev) => ({
@@ -64,7 +64,7 @@ const NotificationsTab = () => {
           />
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
+        <div className="flex items-center justify-between gap-4 p-4 bg-gray-800 rounded-lg">
           <div>
             <h3 className="text-white font-medium">Weekly Summary</h3>
             <p className="text-gray-400 text-sm">
@@ -73,7 +73,7 @@ const NotificationsTab = () => {
           </div>
           <input
             type="checkbox"
-            className="toggle toggle-primary"
+            className="toggle toggle-primary shrink-0"
             checked={notifications.weekly}
             onChange={(e) =>
               setNotifications((prev) => ({

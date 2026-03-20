@@ -24,7 +24,7 @@ const Nav = () => {
       <div className="navbar-start">
         {/* Mobile Dropdown */}
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden cursor-pointer">
             <svg
               className="h-5 w-5"
               fill="none"
@@ -46,34 +46,34 @@ const Nav = () => {
             <li>
               <Link
                 href={ROUTES.DASHBOARD}
-                className={currentPath === ROUTES.DASHBOARD ? "bg-white" : ""}
+                className={`cursor-pointer text-black active:bg-transparent active:text-black focus:bg-transparent ${currentPath === ROUTES.DASHBOARD ? "bg-white" : "hover:bg-sky-200"}`}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown, as HTMLElement because blur is a HTMLElement method
                 }}
               >
-                <span className="text-black">Dashboard</span>
+                Dashboard
               </Link>
             </li>
             <li>
               <Link
                 href={ROUTES.ISSUES}
-                className={currentPath === ROUTES.ISSUES ? "bg-white" : ""}
+                className={`cursor-pointer text-black active:bg-transparent active:text-black focus:bg-transparent ${currentPath === ROUTES.ISSUES ? "bg-white" : "hover:bg-sky-200"}`}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
                 }}
               >
-                <span className="text-black">Issues</span>
+                Issues
               </Link>
             </li>
             <li>
               <Link
                 href={ROUTES.SETTINGS}
-                className={currentPath === ROUTES.SETTINGS ? "bg-white" : ""}
+                className={`cursor-pointer text-black active:bg-transparent active:text-black focus:bg-transparent ${currentPath === ROUTES.SETTINGS ? "bg-white" : "hover:bg-sky-200"}`}
                 onClick={() => {
                   (document.activeElement as HTMLElement)?.blur(); //to close the dropdown
                 }}
               >
-                <span className="text-black">Settings</span>
+                Settings
               </Link>
             </li>
           </ul>
@@ -82,8 +82,8 @@ const Nav = () => {
         <div
           className={
             currentPath === "/"
-              ? "mx-3 border-5 bg-white border-white shadow rounded"
-              : "mx-3 border-5 border-sky-700 hover:bg-sky-500  hover:border-sky-500 hover:shadow-2xl hover:text-white rounded"
+              ? "mx-3 border-5 bg-white border-white shadow rounded cursor-pointer"
+              : "mx-3 border-5 border-sky-700 hover:bg-sky-500 hover:border-sky-500 hover:shadow-2xl hover:text-white rounded cursor-pointer"
           }
         >
           <Link href="/">

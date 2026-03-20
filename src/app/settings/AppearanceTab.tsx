@@ -25,7 +25,7 @@ const AppearanceTab = () => {
         <div>
           <label className="block text-gray-300 mb-2">Theme</label>
           <select
-            className="select select-bordered w-full max-w-xs bg-zinc-900"
+            className="select select-bordered w-full sm:max-w-xs bg-zinc-900"
             value={theme}
             onChange={(e) => setTheme(e.target.value)}
           >
@@ -38,7 +38,7 @@ const AppearanceTab = () => {
         <div>
           <label className="block text-gray-300 mb-2">Language</label>
           <select
-            className="select select-bordered w-full max-w-xs bg-zinc-900"
+            className="select select-bordered w-full sm:max-w-xs bg-zinc-900"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
           >
@@ -49,7 +49,7 @@ const AppearanceTab = () => {
           </select>
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
+        <div className="flex items-center justify-between gap-4 p-4 bg-gray-800 rounded-lg">
           <div>
             <h3 className="text-white font-medium">Auto-save</h3>
             <p className="text-gray-400 text-sm">
@@ -58,7 +58,7 @@ const AppearanceTab = () => {
           </div>
           <input
             type="checkbox"
-            className="toggle toggle-primary"
+            className="toggle toggle-primary shrink-0"
             checked={autoSave}
             onChange={(e) => setAutoSave(e.target.checked)}
           />

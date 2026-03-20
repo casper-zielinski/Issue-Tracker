@@ -21,7 +21,7 @@ const DataTab = () => {
           <p className="text-gray-400 text-sm mb-4">
             Download all your issues and data
           </p>
-          <button className="btn btn-info">Export JSON</button>
+          <button className="cursor-pointer btn btn-info">Export JSON</button>
         </div>
 
         <div className="p-4 bg-gray-800 rounded-lg">
@@ -31,7 +31,7 @@ const DataTab = () => {
           </p>
           <input
             type="file"
-            className="file-input file-input-bordered file-input-neutral w-full max-w-xs bg-zinc-900"
+            className="file-input file-input-bordered file-input-neutral w-full sm:max-w-xs bg-zinc-900"
           />
         </div>
 
@@ -42,7 +42,7 @@ const DataTab = () => {
           <p className="text-gray-400 text-sm mb-4">
             Permanently delete your account and all data
           </p>
-          <button className="btn btn-error">Delete Account</button>
+          <button className="cursor-pointer btn btn-error">Delete Account</button>
         </div>
       </div>
     </div>

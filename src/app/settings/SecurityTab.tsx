@@ -19,7 +19,7 @@ const SecurityTab = () => {
           <label className="block text-gray-300 mb-2">Current Password</label>
           <input
             type="password"
-            className="input input-bordered w-full max-w-md bg-zinc-900"
+            className="input input-bordered w-full sm:max-w-md bg-zinc-900"
             placeholder="Enter current password"
           />
         </div>
@@ -28,7 +28,7 @@ const SecurityTab = () => {
           <label className="block text-gray-300 mb-2">New Password</label>
           <input
             type="password"
-            className="input input-bordered w-full max-w-md bg-zinc-900"
+            className="input input-bordered w-full sm:max-w-md bg-zinc-900"
             placeholder="Enter new password"
           />
         </div>
@@ -39,12 +39,12 @@ const SecurityTab = () => {
           </label>
           <input
             type="password"
-            className="input input-bordered w-full max-w-md bg-zinc-900"
+            className="input input-bordered w-full sm:max-w-md bg-zinc-900"
             placeholder="Confirm new password"
           />
         </div>
 
-        <button className="btn btn-warning btn-md">Update Password</button>
+        <button className="cursor-pointer btn btn-warning btn-md">Update Password</button>
 
         <div className="divider"></div>
 
@@ -55,7 +55,7 @@ const SecurityTab = () => {
           <p className="text-gray-400 text-sm mb-4">
             Add an extra layer of security to your account
           </p>
-          <button className="btn btn-outline btn-primary">Enable 2FA</button>
+          <button className="cursor-pointer btn btn-outline btn-primary">Enable 2FA</button>
         </div>
       </div>
     </div>

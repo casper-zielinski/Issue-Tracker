@@ -144,21 +144,21 @@ const SettingsPage = () => {
         {/* Tab Navigation */}
         <div className="col-span-12 md:col-span-3">
           <div className="bg-gray-900 rounded-lg p-4">
-            <nav className="space-y-2">
+            <nav className="flex flex-row md:flex-col gap-1 md:space-y-1 overflow-x-auto md:overflow-x-visible">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    className={`cursor-pointer flex-shrink-0 md:flex-shrink flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-lg transition-all text-sm md:text-base ${
                       activeTab === tab.id
                         ? "bg-sky-600 text-white shadow-lg"
                         : "text-gray-300 hover:bg-gray-800 hover:text-white"
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
-                    {tab.label}
+                    <Icon className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
+                    <span className="whitespace-nowrap md:whitespace-normal">{tab.label}</span>
                   </button>
                 );
               })}
@@ -168,7 +168,7 @@ const SettingsPage = () => {
 
         {/* Tab Content */}
         <div className="col-span-12 md:col-span-9">
-          <div className="bg-gray-900 rounded-lg p-6">
+          <div className="bg-gray-900 rounded-lg p-3 sm:p-6">
             {/* Profile Tab */}
             {activeTab === "profile" && <ProfileTab />}
 
@@ -189,17 +189,17 @@ const SettingsPage = () => {
         {/* Action Buttons */}
         <div className="col-span-12 flex justify-center gap-4 mt-6 mb-3">
           <button
-            className="btn btn-primary btn-xs md:btn-lg flex items-center gap-2"
+            className="cursor-pointer btn btn-primary btn-sm sm:btn-md md:btn-lg flex items-center gap-2"
             onClick={handleSave}
           >
-            <Save className="w-5 h-5" />
+            <Save className="w-4 h-4 md:w-5 md:h-5" />
             Save Changes
           </button>
           <button
-            className="btn btn-neutral btn-xs md:btn-lg flex items-center gap-2"
+            className="cursor-pointer btn btn-neutral btn-sm sm:btn-md md:btn-lg flex items-center gap-2"
             onClick={handleReset}
           >
-            <RotateCcw className="w-5 h-5" />
+            <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
             Reset to Defaults
           </button>
         </div>

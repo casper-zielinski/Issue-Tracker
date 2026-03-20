@@ -9,17 +9,17 @@ const NotFoundPage = () => {
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-900/20 via-black to-gray-900/20">
       <div className="text-center px-6 py-12 max-w-2xl">
         <div className="mb-8">
-          <h1 className="text-9xl font-bold text-slate-300 dark:text-slate-700">
+          <h1 className="text-9xl font-bold text-gray-300">
             404
           </h1>
-          <div className="h-1 w-24 bg-blue-500 mx-auto mt-4 rounded-full"></div>
+          <div className="h-1 w-24 bg-sky-700 mx-auto mt-4 rounded-full"></div>
         </div>
 
-        <h2 className="text-3xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
+        <h2 className="text-3xl font-semibold text-white mb-4">
           Issue Not Found
         </h2>
 
-        <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
+        <p className="text-lg text-gray-400 mb-8">
           The issue you&apos;re trying to edit doesn&apos;t exist or may have
           been deleted.
         </p>
@@ -29,7 +29,7 @@ const NotFoundPage = () => {
           IssuesText={"Back to Issues"}
         />
 
-        <div className="mt-12 text-slate-500 dark:text-slate-500 text-sm">
+        <div className="mt-12 text-gray-500 text-sm">
           <p>Need help? Check if the issue ID is correct.</p>
         </div>
       </div>
