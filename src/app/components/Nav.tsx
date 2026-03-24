@@ -122,7 +122,7 @@ const Nav = () => {
               <Link
                 href={ROUTES.ISSUES}
                 className={
-                  currentPath.startsWith(ROUTES.ISSUES) !== null
+                  currentPath.startsWith(ROUTES.ISSUES)
                     ? "bg-white border-1 border-white text-black"
                     : "border-1 border-sky-700"
                 }

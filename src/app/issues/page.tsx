@@ -1,5 +1,3 @@
-"use server";
-
 import { Plus, Edit, BadgeAlert } from "lucide-react";
 import GradientOrbs from "../components/GradientOrbs";
 import { AiOutlineIssuesClose } from "react-icons/ai";
@@ -8,17 +6,19 @@ import Link from "next/link";
 import { Button } from "@radix-ui/themes";
 import { createClient } from "@/lib/supabase/server";
 import { ROUTES } from "@/Constants/routes";
+import DeleteIssueButton from "../components/DeleteIssueButton";
+import { Issue } from "../dashboard/types";
 
 const IssuePage = async () => {
   let error: boolean = false;
-  const getIssues = async () => {
+  const getIssues = async (): Promise<Issue[] | null> => {
     try {
       const supabase = await createClient();
-      return (await supabase.from("Issue").select("*")).data;
+      return (await supabase.from("Issue").select("*")).data as Issue[] | null;
     } catch (err) {
       console.error(err);
       error = true;
-      return;
+      return null;
     }
   };
 
@@ -33,7 +33,10 @@ const IssuePage = async () => {
         </h1>
         <p className="text-gray-300 text-lg">View and Edit your Issues</p>
         <div className="self-center my-5">
-          <Link className="btn btn-primary btn-md cursor-pointer" href={ROUTES.ISSUES_NEW}>
+          <Link
+            className="btn btn-primary btn-md cursor-pointer"
+            href={ROUTES.ISSUES_NEW}
+          >
             New Issue
             <Plus />
           </Link>
@@ -93,7 +96,9 @@ const IssuePage = async () => {
               {issue.Title}
             </p>
             <p className="text-gray-500 my-1">Describtion:</p>
-            <p className="my-1 bg-black p-2 rounded overflow-hidden line-clamp-3">{issue?.Issue}</p>
+            <p className="my-1 bg-black p-2 rounded overflow-hidden line-clamp-3">
+              {issue?.Issue}
+            </p>
             <div className="grid grid-cols-4 space-x-7 items-center">
               <div className="col-span-1 flex">
                 <span
@@ -111,12 +116,15 @@ const IssuePage = async () => {
                   {issue?.Status.replace("_", " ")}
                 </span>
               </div>
-              <Link
-                className="col-span-3 justify-self-end hover:scale-105 hover:shadow-2xl cursor-pointer"
-                href={ROUTES.ISSUES_EDIT(issue.id)}
-              >
-                <Edit />
-              </Link>
+              <div className="col-span-3 justify-self-end gap-2 flex items-center-safe">
+                <Link
+                  className="col-span-3 hover:scale-105 hover:shadow-2xl cursor-pointer"
+                  href={ROUTES.ISSUES_EDIT(issue.id)}
+                >
+                  <Edit />
+                </Link>
+                <DeleteIssueButton issueId={issue.id} />
+              </div>
             </div>
           </div>
         ))}

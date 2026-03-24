@@ -107,7 +107,11 @@ const NewIssuePage = () => {
           control={control}
           render={({ field }) => (
             <div className="dropdown dropdown-start col-span-5 xs:col-span-4 sm:col-span-3 md:col-span-2">
-              <div tabIndex={0} role="button" className="btn m-1 cursor-pointer">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn m-1 cursor-pointer"
+              >
                 {textShower ? "Priority" : field.value}
               </div>
               <ul
@@ -196,7 +200,7 @@ const NewIssuePage = () => {
                 <SimpleMDE
                   placeholder="Issue"
                   className="bg-sky-700 rounded w-full md:w-6/7 mx-auto focus-within:shadow-2xl text-black"
-                  options={{ minHeight: "calc(100vh - 380px)" }}
+                  options={{ minHeight: "calc(100vh - 420px)" }}
                   {...field}
                 />
               </div>

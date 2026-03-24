@@ -1,4 +1,4 @@
-import { Priority } from "@/types/enums";
+import { Priority, Status } from "@/types/enums";
 
 /**
  * Interfaces for The Api Responses, used by both frontend and backend
