@@ -1,7 +1,7 @@
 "use client";
 
 import { TextField } from "@radix-ui/themes";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
@@ -33,6 +33,7 @@ const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("MEDIUM");
   const [textShower, setTextShower] = useState(true);
+  const mdeOptions = useMemo(() => ({ minHeight: "calc(100vh - 420px)" }), []);
   const userId = useSelector((state: RootState) => state.userState.id);
 
   async function postToApi(issueForm: NewIssue) {
@@ -200,8 +201,9 @@ const NewIssuePage = () => {
                 <SimpleMDE
                   placeholder="Issue"
                   className="bg-sky-700 rounded w-full md:w-6/7 mx-auto focus-within:shadow-2xl text-black"
-                  options={{ minHeight: "calc(100vh - 420px)" }}
-                  {...field}
+                  options={mdeOptions}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               </div>
             )}
